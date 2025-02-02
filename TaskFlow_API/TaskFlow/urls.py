@@ -6,6 +6,6 @@ from .views import UserView
 router = routers.DefaultRouter()
 router.register(r'users',UserView,'user')
 urlpatterns = [
-    path('s',include(router.urls)),
+    path('Api_User/',include(router.urls)),
     
 ]
