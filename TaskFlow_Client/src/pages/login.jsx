@@ -4,9 +4,10 @@ import { loginUser } from "../API/user_API";
 const Login = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-
+  const [disable, setDisable] = useState(false);
   const handleLogin = async (e) => {
     e.preventDefault();
+    setDisable(true);
     const userData = await loginUser(username, password);
 
     if (userData) {
@@ -15,8 +16,10 @@ const Login = () => {
           userData.username
         }! Perteneces a los grupos: ${userData.groups.join(", ")}`
       );
+      setDisable(false);
     } else {
       alert("Error al iniciar sesión");
+      setDisable(false);
     }
   };
 
@@ -65,22 +68,15 @@ const Login = () => {
               </a>
             </div>
             <button
+              disabled={disable}
               type="submit"
               class="w-32 bg-gradient-to-r from-cyan-400 to-cyan-600 text-white py-2 rounded-lg mx-auto block focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-cyan-500 mt-4 mb-6"
             >
-              Acceso
+              {disable ? "Validando..." : "Acceso"}
             </button>
           </form>
-          <div class="text-center">
-            <p class="text-sm">
-              ¿No tienes una cuenta?{" "}
-              <a href="#" class="text-cyan-600">
-                Regístrate ahora
-              </a>
-            </p>
-          </div>
           <p class="text-xs text-gray-600 text-center mt-10">
-            &copy; 2023 WCS LAT
+            &copy; 2025 TFW LAT
           </p>
         </div>
       </div>

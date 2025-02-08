@@ -10,7 +10,7 @@ class UserSerializer(serializers.ModelSerializer):
 class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
     def validate(self, attrs):
         # Llamamos al método original para obtener el usuario y el token
-        data = super().validate(attrs)
+        data = super().validate(attrs) 
         
         if not self.user.is_active:
             raise serializers.ValidationError("Este usuario está inactivo.")
