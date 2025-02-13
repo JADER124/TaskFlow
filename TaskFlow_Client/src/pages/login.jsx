@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { loginUser } from "../API/user_API";
-
+import { useApi } from "../Context/UserAuth";
 const Login = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [disable, setDisable] = useState(false);
+  const { loginUser } = useApi();
   const handleLogin = async (e) => {
     e.preventDefault();
     setDisable(true);
