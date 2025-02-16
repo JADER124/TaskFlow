@@ -1,23 +1,28 @@
 import React, { useEffect, useState } from "react";
 import { loginUser } from "../API/user_API";
 import { useApi } from "../Context/UserAuth";
+import { useNavigate } from "react-router-dom";
 const Login = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [disable, setDisable] = useState(false);
   const { loginUser } = useApi();
+  const navigate = useNavigate();
   const handleLogin = async (e) => {
     e.preventDefault();
     setDisable(true);
     const userData = await loginUser(username, password);
 
     if (userData) {
-      alert(
-        `¡Bienvenido, ${
-          userData.username
-        }! Perteneces a los grupos: ${userData.groups.join(", ")}`
-      );
       setDisable(false);
+
+      if (userData.groups.includes(1)) {
+        navigate("/admin-dashboard");
+      } else if (userData.groups.includes(2)) {
+        navigate("/user-dashboard");
+      } else {
+        navigate("/"); // Ruta por defecto si no pertenece a ningún grupo específico
+      }
     } else {
       alert("Error al iniciar sesión");
       setDisable(false);
