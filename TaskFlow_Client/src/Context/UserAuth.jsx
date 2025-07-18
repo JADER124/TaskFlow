@@ -6,7 +6,7 @@ export const ApiProvider = ({ children }) => {
   const loginUser = async (username, password) => {
     try {
       const response = await axios.post(
-        "http://127.0.0.1:8000/TaskFlow/api/token/",
+        "http://127.0.0.1:8000/auth/api/token/",
         {
           username: username,
           password: password,

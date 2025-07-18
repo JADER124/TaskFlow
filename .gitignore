@@ -1,0 +1,28 @@
+# Byte-compiled / cache
+__pycache__/
+*.py[cod]
+*.pyc
+*.pyo
+*.pyd
+*.pyc
+
+# Django database
+*.sqlite3
+
+# Virtual env
+venv/
+
+# VS Code
+.vscode/
+
+# React
+node_modules/
+dist/
+build/
+
+# Logs
+*.log
+
+# Sistema operativo
+.DS_Store
+Thumbs.db
