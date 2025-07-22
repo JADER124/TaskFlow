@@ -8,6 +8,7 @@ export const ApiProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [isAuth, setIsAuth] = useState(false);
 
+
   const loginFromComponent = (userData) => {
     setUser({ username: userData.username, groups: userData.groups });
     setIsAuth(true);
