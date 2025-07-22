@@ -129,6 +129,8 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 
+CORS_ALLOW_CREDENTIALS = True
+
 CORS_ALLOWED_ORIGINS = ['http://localhost:5173']
 
 # Default primary key field type
