@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { loginUser } from "../API/authApi";
+import { loginUser,setCookie } from "../API/authApi";
 import { useAuth } from "../context/authContext"
 import { useNavigate } from "react-router-dom";
 
@@ -13,16 +13,19 @@ const Login = () => {
   const handleLogin = async (e) => {
     e.preventDefault();
     setDisable(true);
+
     try {
       const userData = await loginUser(username, password);
+
       if (userData) {
         setDisable(false);
         loginFromComponent(userData);
 
-        if (userData.groups.includes(1)) {
+        const secureCookie = await setCookie(userData.access, userData.refresh)
+        console.log(secureCookie)
+        
+        if (userData.groups.includes(1) && secureCookie?.status === 200) {
           navigate("/admin-dashboard");
-        } else if (userData.groups.includes(2)) {
-          navigate("/user-dashboard");
         } else {
           navigate("/"); // Ruta por defecto si no pertenece a ningún grupo específico
         }

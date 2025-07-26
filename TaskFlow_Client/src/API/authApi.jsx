@@ -17,10 +17,27 @@ export const loginUser = async (username, password) => {
       username,
       password,
     });
-    console.log(response)
     return response.data;
   } catch (error) {
     console.error("Error en login:", error.response?.data || error.message);
     throw error;
+  }
+};
+
+export const setCookie = async (access,refresh) => {
+    try {
+    const response = await api.post(
+      "/token/setcookie/",
+      {
+        access,
+        refresh,
+      },
+      {
+        withCredentials: true,
+      }
+    );
+    return response;
+    } catch (error) {
+      console.log("Errror"+error.response.data)
   }
 };
