@@ -41,3 +41,17 @@ export const setCookie = async (access,refresh) => {
       console.log("Errror"+error.response.data)
   }
 };
+
+export const verifyCookie = async () => {
+  try {
+    const res = await api.get(
+      "/token/verifycookie/", 
+      { 
+        withCredentials: true 
+      }
+    );
+    return res
+  } catch (error) {
+    console.log(error.message)
+  }
+};
