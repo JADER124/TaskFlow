@@ -1,4 +1,5 @@
 from rest_framework.decorators import api_view, permission_classes
+from rest_framework_simplejwt.tokens import AccessToken, TokenError
 from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 from django.http import JsonResponse
@@ -34,3 +35,20 @@ def setcookie(request):
 
     except Exception as e:
         return JsonResponse({'error': f'Error al establecer las cookies: {str(e)}'}, status=500)
+
+
+@api_view(['GET'])
+@permission_classes([AllowAny])
+def verify_cookie(request):
+    access_token = request.COOKIES.get('access_token')
+
+    if not access_token:
+        return JsonResponse({'error': 'No se encontró la cookie access_token.'}, status=401)
+    try:
+        # Verificar y decodificar el token
+        token = AccessToken(access_token)
+        user_id = token['user_id']
+        return JsonResponse({'mensaje': 'Token válido', 'user_id': user_id}, status=200)
+
+    except TokenError as e:
+        return JsonResponse({'error': f'Token inválido o expirado: {str(e)}'}, status=401)
