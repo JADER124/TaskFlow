@@ -2,7 +2,7 @@
 
 import axios from "axios";
 
-const BASE_URL = "http://127.0.0.1:8000/auth/api";
+const BASE_URL = "http://localhost:8000/auth/api";
 
 // instancia de axios para crear una base y evitar repetir la ruta
 const api = axios.create({
@@ -52,6 +52,6 @@ export const verifyCookie = async () => {
     );
     return res
   } catch (error) {
-    console.log(error.message)
+    console.log(error)
   }
 };

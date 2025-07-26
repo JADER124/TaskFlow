@@ -1,49 +1,59 @@
 import React, { useEffect, useState } from "react";
-import { loginUser,setCookie,verifyCookie } from "../API/authApi";
-import { useAuth } from "../context/authContext"
-import { useNavigate } from "react-router-dom";
+import { loginUser, setCookie, verifyCookie } from "../API/authApi"; // Funciones que hacen peticiones al backend
+import { useAuth } from "../context/authContext"; // Contexto global para manejar autenticación
+import { useNavigate } from "react-router-dom"; // Hook para redireccionar programáticamente
 
 const Login = () => {
+  // Estados para almacenar las credenciales del usuario
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+
+  // Estado para deshabilitar el botón durante la petición
   const [disable, setDisable] = useState(false);
-  const { loginFromComponent,setShouldVerify ,triggerVerify} = useAuth();
+
+  // Extrae funciones del contexto de autenticación
+  const { loginFromComponent } = useAuth();
+
+  // Hook para redireccionar después del login
   const navigate = useNavigate();
 
+  // Función que maneja el envío del formulario
   const handleLogin = async (e) => {
-    e.preventDefault();
-    setDisable(true);
+    e.preventDefault(); // Previene recarga del formulario
+    setDisable(true); // Desactiva el botón mientras se hace login
 
     try {
+      // Llama al backend para autenticar al usuario
       const userData = await loginUser(username, password);
 
       if (userData) {
-        setDisable(false);
-        loginFromComponent(userData);
+        setDisable(false); // Reactiva el botón
 
-        const secureCookie = await setCookie(userData.access, userData.refresh)
-        console.log(secureCookie)
-        triggerVerify();
-        //const prueba = await verifyCookie()
-        //console.log("prueba"+prueba)
-        //console.log(secureCookie)
-        
+        // Actualiza el contexto de usuario (esto puede incluir nombre y grupos)
+        loginFromComponent();
+
+        // Envía los tokens al backend para que los guarde como cookies HttpOnly
+        const secureCookie = await setCookie(userData.access, userData.refresh);
+
+        // Si el usuario pertenece al grupo de admin y la cookie fue creada exitosamente
         if (userData.groups.includes(1) && secureCookie?.status === 200) {
-          navigate("/admin");
+          navigate("/admin"); // Redirige a dashboard admin
         } else {
-          navigate("/"); // Ruta por defecto si no pertenece a ningún grupo específico
+          navigate("/"); // Redirige a ruta por defecto
         }
       } else {
         alert("Error al iniciar sesión");
-        setDisable(false);
+        setDisable(false); // Reactiva el botón para volver a intentar
       }
     } catch (error) {
+      // Manejo de error si ocurre algún fallo al autenticar
       setDisable(false);
       setUsername('');
       setPassword('');
     }
   };
 
+  // JSX que renderiza el formulario de login
   return (
     <div className="bg-gray-100">
       <div className="min-h-screen flex items-center justify-center">

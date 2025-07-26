@@ -3,6 +3,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Login from "./pages/login";
 import { AdminHome } from "./pages/AdminHome";
 import PrivateRoutes from "./components/privateRoutes";
+import NewTasks from "./pages/newTasks";
 
 function App() {
   return (
@@ -13,6 +14,13 @@ function App() {
         element={
           <PrivateRoutes>
             <AdminHome />
+          </PrivateRoutes>
+          } 
+        />
+        <Route path="/tasks" 
+        element={
+          <PrivateRoutes>
+            <NewTasks />
           </PrivateRoutes>
           } 
         />
