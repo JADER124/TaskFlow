@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Outlet } from "react-router-dom";
 import Login from "./pages/login";
 import { AdminHome } from "./pages/AdminHome";
 import PrivateRoutes from "./components/privateRoutes";
@@ -17,7 +17,7 @@ function App() {
 
         {/* Agrupar todas las rutas privadas bajo /admin */}
          <Route element={<PrivateRoutes />}>
-          <Route path="/admin">
+          <Route path="/admin" element={<Outlet />}>
             <Route index element={<AdminHome />} /> {/* /admin */}
             <Route path="tasks" element={<NewTasks />} /> {/* /admin/tasks */}
             {/* puedes seguir agregando más rutas aquí */}

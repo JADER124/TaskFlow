@@ -1,6 +1,7 @@
 import React from 'react';
 import { useAuth } from "../context/authContext"; // Importa el contexto de autenticación
-import { Navigate } from "react-router-dom"; // Componente para redirigir a otra ruta
+import { Navigate, Outlet } from "react-router-dom"; // Componente para redirigir a otra ruta
+import Loader from "./loader"
 
 // Componente que protege las rutas privadas de la aplicación
 // Solo permite el acceso si el usuario está autenticado
@@ -9,13 +10,13 @@ const privateRoutes = ({ children }) => {
   const { isAuth, loading } = useAuth();
 
   // Mientras se verifica la sesión (ej. al recargar), muestra un mensaje o loader
-  if (loading) return <div>Cargando sesión...</div>;
+  if (loading) return <Loader/>;
 
   // Si el usuario no está autenticado, redirige al login ("/")
   if (!isAuth) return <Navigate to="/" />;
 
   // Si está autenticado, permite el acceso al contenido de la ruta protegida
-  return children;
+  return <Outlet />;
 };
 
 export default privateRoutes;
