@@ -36,10 +36,13 @@ const Login = () => {
         const secureCookie = await setCookie(userData.access, userData.refresh);
 
         // Si el usuario pertenece al grupo de admin y la cookie fue creada exitosamente
-        if (userData.groups.includes(1) && secureCookie?.status === 200) {
+        if (
+          userData.groups.includes("Coordinadores") &&
+          secureCookie?.status === 200
+        ) {
           navigate("/admin"); // Redirige a dashboard admin
         } else {
-          navigate("/"); // Redirige a ruta por defecto
+          navigate("/"); // Redirige a ruta por defectox
         }
       } else {
         alert("Error al iniciar sesión");
@@ -48,8 +51,8 @@ const Login = () => {
     } catch (error) {
       // Manejo de error si ocurre algún fallo al autenticar
       setDisable(false);
-      setUsername('');
-      setPassword('');
+      setUsername("");
+      setPassword("");
     }
   };
 
@@ -70,7 +73,10 @@ const Login = () => {
           </h1>
           <form onSubmit={handleLogin}>
             <div className="mb-6">
-              <label htmlFor="email" className="block mb-2 text-sm text-gray-600">
+              <label
+                htmlFor="email"
+                className="block mb-2 text-sm text-gray-600"
+              >
                 Correo electrónico
               </label>
               <input
@@ -83,7 +89,10 @@ const Login = () => {
               />
             </div>
             <div className="mb-6">
-              <label htmlFor="password" className="block mb-2 text-sm text-gray-600">
+              <label
+                htmlFor="password"
+                className="block mb-2 text-sm text-gray-600"
+              >
                 Contraseña
               </label>
               <input
@@ -94,7 +103,10 @@ const Login = () => {
                 className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-500"
                 required
               />
-              <a href="#" className="block text-right text-xs text-cyan-600 mt-2">
+              <a
+                href="#"
+                className="block text-right text-xs text-cyan-600 mt-2"
+              >
                 ¿Olvidaste tu contraseña?
               </a>
             </div>
