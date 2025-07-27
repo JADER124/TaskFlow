@@ -11,7 +11,7 @@ export const ApiProvider = ({ children }) => {
   const [user, setUser] = useState(null);
 
   // Estado que indica si el usuario está autenticado
-  const [isAuth, setIsAuth] = useState(false);
+  const [isAuth, setIsAuth] = useState(true);
 
   // Estado que indica si todavía se está verificando la sesión (útil para mostrar loaders)
   const [loading, setLoading] = useState(true);

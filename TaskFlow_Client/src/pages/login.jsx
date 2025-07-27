@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { loginUser, setCookie, verifyCookie } from "../API/authApi"; // Funciones que hacen peticiones al backend
 import { useAuth } from "../context/authContext"; // Contexto global para manejar autenticación
 import { useNavigate } from "react-router-dom"; // Hook para redireccionar programáticamente
+import logo from "../assets/taskFlow.png"
 
 const Login = () => {
   // Estados para almacenar las credenciales del usuario
@@ -58,11 +59,11 @@ const Login = () => {
     <div className="bg-gray-100">
       <div className="min-h-screen flex items-center justify-center">
         <div className="max-w-md w-full p-6 bg-white rounded-lg shadow-lg">
-          <div className="flex justify-center mb-8">
+          <div className="flex justify-center">
             <img
-              src="https://cdn-icons-png.flaticon.com/512/1077/1077114.png"
+              src={logo}
               alt="Logo"
-              className="w-30 h-20"
+              className="w-full max-w-[300px] h-auto my-3"
             />
           </div>
           <h1 className="text-2xl font-semibold text-center text-gray-500 mt-8 mb-6">
