@@ -2,7 +2,7 @@ import React from 'react';
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
-import { User, Phone, Building2, MapPin } from 'lucide-react';
+import { User, Phone, Building2, MapPin, Mail,File } from 'lucide-react';
 
 const schema = yup.object().shape({
   nit: yup.string().required("El NIT es requerido"),
@@ -13,7 +13,7 @@ const schema = yup.object().shape({
   .min(7, "Debe tener al menos 7 dígitos")
   .max(15, "Máximo 15 dígitos"),
   nombreComercial: yup.string().required("El nombre comercial es requerido"),
-  sede: yup.string().required("La sede es requerida"),
+  correo: yup.string().required("La sede es requerida"),
   direccion: yup.string().required("La dirección es requerida"),
 });
 
@@ -49,7 +49,7 @@ const clientForm = () => {
             <div>
               <label htmlFor="nit" className="block text-sm font-medium text-gray-700 mb-2">NIT</label>
               <div className="relative">
-                <Building2 className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
+                <File className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
                 <input
                   type="text"
                   id="nit"
@@ -106,20 +106,20 @@ const clientForm = () => {
 
             {/* Sede */}
             <div>
-              <label htmlFor="sede" className="block text-sm font-medium text-gray-700 mb-2">Sede</label>
+              <label htmlFor="sede" className="block text-sm font-medium text-gray-700 mb-2">Correo</label>
               <div className="relative">
-                <Building2 className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
+                <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
                 <input
                   type="text"
-                  id="sede"
-                  {...register("sede")}
+                  id="correo"
+                  {...register("correo")}
                   className={`w-full pl-10 pr-4 py-3 border rounded-lg focus:ring-2 transition-colors ${
-                    errors.sede ? 'border-red-500 bg-red-50 focus:ring-red-500' : 'border-gray-300 bg-gray-50 focus:ring-blue-500'
+                    errors.correo ? 'border-red-500 bg-red-50 focus:ring-red-500' : 'border-gray-300 bg-gray-50 focus:ring-blue-500'
                   }`}
-                  placeholder="Ingrese la sede"
+                  placeholder="Ingrese el correo"
                 />
               </div>
-              {errors.sede && <p className="mt-1 text-sm text-red-600">{errors.sede.message}</p>}
+              {errors.correo && <p className="mt-1 text-sm text-red-600">{errors.correo.message}</p>}
             </div>
           </div>
 
