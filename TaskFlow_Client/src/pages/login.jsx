@@ -26,6 +26,7 @@ const Login = () => {
     try {
       // Llama al backend para autenticar al usuario
       const userData = await loginUser(username, password);
+      console.log(userData)
 
       if (userData) {
         setDisable(false); // Reactiva el botón

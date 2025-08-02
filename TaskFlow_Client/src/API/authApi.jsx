@@ -38,7 +38,7 @@ export const setCookie = async (access,refresh) => {
     );
     return response;
     } catch (error) {
-      console.log("Errror"+error.response.data)
+      console.log("Error"+error.response.data)
   }
 };
 

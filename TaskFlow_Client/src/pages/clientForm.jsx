@@ -3,9 +3,12 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { User, Phone, Building2, MapPin, Mail,File } from 'lucide-react';
+import { saveClient } from '../API/saveClient';
 
 const schema = yup.object().shape({
-  nit: yup.string().required("El NIT es requerido"),
+  nit: yup.string().required("El NIT es requerido")
+  .min(7, "Debe tener al menos 7 digitos")
+  .matches(/^[0-9]+$/, "Solo se permiten números"),
   telefono: yup
   .string()
   .required("El teléfono es requerido")
@@ -13,7 +16,7 @@ const schema = yup.object().shape({
   .min(7, "Debe tener al menos 7 dígitos")
   .max(15, "Máximo 15 dígitos"),
   nombreComercial: yup.string().required("El nombre comercial es requerido"),
-  correo: yup.string().required("La sede es requerida"),
+  correo: yup.string().required("El correo es requerido"),
   direccion: yup.string().required("La dirección es requerida"),
 });
 
@@ -23,11 +26,29 @@ const clientForm = () => {
     resolver: yupResolver(schema)
   });
 
-  const onSubmit = (data) => {
-    console.log("Datos del cliente:", data);
-    alert("Cliente registrado exitosamente!");
+  // Función asíncrona que se ejecuta cuando se envía el formulario
+const onSubmit = async (data) => {
+  // Muestra en consola los datos del cliente que se van a enviar (útil para depurar o verificar que el formulario capturó bien los datos)
+  console.log("Datos del cliente:", data);
+
+  try {
+    // Llama a la función saveClient (probablemente una función que hace una solicitud POST al backend)
+    // y espera a que se complete la respuesta
+    const result = await saveClient(data);
+
+    // Si la petición fue exitosa, se muestra un mensaje al usuario con el contenido del campo 'mensaje' recibido en la respuesta
+    alert(result.mensaje);
+
+    // Se limpia el formulario llamando a reset (probablemente proporcionado por React Hook Form)
     reset();
-  };
+
+  } catch (e) {
+    // Si ocurre un error (por ejemplo, fallo de conexión o error en el backend), se muestra un mensaje de error al usuario
+    alert("Error al registrar cliente");
+  }
+};
+
+    
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 p-4 flex items-center justify-center">
@@ -160,5 +181,6 @@ const clientForm = () => {
     </div>
   )
 }
+
 
 export default clientForm

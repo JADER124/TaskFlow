@@ -12,7 +12,7 @@ function App() {
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<Login />} />
-        <Route path="/register-nit" element={<ClientForm />} />
+        <Route path="/clientform" element={<ClientForm />} />
         <Route path="/request" element={<CreateRequest />} />
 
         {/* Agrupar todas las rutas privadas bajo /admin */}
