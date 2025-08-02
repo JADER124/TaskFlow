@@ -49,7 +49,6 @@ class TipoServicio(models.Model):
 
 class Solicitud(models.Model):
     cliente = models.ForeignKey(Cliente, on_delete=models.CASCADE)
-    sede = models.ForeignKey(ClienteSede, on_delete=models.CASCADE)
     tipo_servicio = models.ForeignKey(TipoServicio, on_delete=models.CASCADE)
     estado = models.ForeignKey(EstadoServicios, on_delete=models.CASCADE)
     descripcion = models.TextField(blank=True, null=True)
@@ -57,7 +56,7 @@ class Solicitud(models.Model):
     usuario_creacion = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True, related_name='solicitudes_creadas')
 
     def __str__(self):
-        return f"Solicitud #{self.id} - {self.cliente.nombre}"
+        return f"Solicitud #{self.id} - {self.cliente.nit}"
 
 class Formulario(models.Model):
     solicitud = models.ForeignKey(Solicitud, on_delete=models.CASCADE)
