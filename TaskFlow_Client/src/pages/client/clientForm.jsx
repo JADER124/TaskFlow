@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { User, Phone, Building2, MapPin, Mail,File } from 'lucide-react';
 import { saveClient } from '../../API/saveClient';
+import ConfirmationModal from '../../components/shared/modalConfirmation'
 
 const schema = yup.object().shape({
   nit: yup.string().required("El NIT es requerido")
@@ -25,16 +26,22 @@ const clientForm = () => {
   const {register,handleSubmit,reset, formState: { errors }} = useForm({
     resolver: yupResolver(schema)
   });
+  const [mostrarModal, setMostrarModal] = useState(false);
+  const [formData, setFormData] = useState(null);
+
+  
+  const handleFormSubmit = (data) => {
+  setFormData(data);          // Guarda los datos temporalmente
+  setMostrarModal(true);      // Abre el modal de confirmación
+};
 
   // Función asíncrona que se ejecuta cuando se envía el formulario
-const onSubmit = async (data) => {
-  // Muestra en consola los datos del cliente que se van a enviar (útil para depurar o verificar que el formulario capturó bien los datos)
-  console.log("Datos del cliente:", data);
+  const onSubmit = async () => {
 
   try {
     // Llama a la función saveClient (probablemente una función que hace una solicitud POST al backend)
     // y espera a que se complete la respuesta
-    const result = await saveClient(data);
+    const result = await saveClient(formData);
 
     // Si la petición fue exitosa, se muestra un mensaje al usuario con el contenido del campo 'mensaje' recibido en la respuesta
     alert(result.mensaje);
@@ -45,6 +52,9 @@ const onSubmit = async (data) => {
   } catch (e) {
     // Si ocurre un error (por ejemplo, fallo de conexión o error en el backend), se muestra un mensaje de error al usuario
     alert("Error al registrar cliente");
+  } finally {
+    setMostrarModal(false)
+    setFormData(null)
   }
 };
 
@@ -63,7 +73,7 @@ const onSubmit = async (data) => {
         </div>
 
         {/* Formulario */}
-        <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+        <form onSubmit={handleSubmit(handleFormSubmit)} className="space-y-6">
           {/* Fila 1 */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {/* NIT */}
@@ -165,7 +175,7 @@ const onSubmit = async (data) => {
           {/* Botón */}
           <div className="pt-4">
             <button
-              type="submit"
+              type = "submit"
               className="w-full bg-gradient-to-r from-blue-500 to-indigo-600 text-white py-3 px-6 rounded-lg font-medium text-lg hover:from-blue-600 hover:to-indigo-700 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-all duration-200 transform hover:scale-[1.02] active:scale-[0.98] shadow-lg"
             >
               Registrarme
@@ -178,6 +188,16 @@ const onSubmit = async (data) => {
           <p>¿Ya tienes una cuenta? <a href="/request" className="text-blue-600 hover:text-blue-800 font-medium">Crea una solicitud</a></p>
         </div>
       </div>
+      {mostrarModal && (
+        <ConfirmationModal
+          title="¿Estás seguro?"
+          message="Esta acción no se puede deshacer."
+          onConfirm={onSubmit}
+          onClose={() => setMostrarModal(false)}
+          confirmText="Sí, continuar"
+          cancelText="Cancelar"
+              />
+            )}
     </div>
   )
 }
