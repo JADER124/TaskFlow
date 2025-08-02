@@ -1,11 +1,12 @@
 import { useState } from "react";
-import { BrowserRouter, Routes, Route, Outlet } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import Login from "./pages/login";
 import { AdminHome } from "./pages/admin/AdminHome";
 import PrivateRoutes from "./components/auth/privateRoutes";
 import NewTasks from "./pages/admin/newTasks";
 import ClientForm from "./pages/client/clientForm";
 import CreateRequest from "./pages/client/createRequest";
+import { AdminLayout } from "./components/layouts/adminLayout";
 
 function App() {
   return (
@@ -16,14 +17,15 @@ function App() {
         <Route path="/createRequest" element={<CreateRequest />} />
 
         {/* Agrupar todas las rutas privadas bajo /admin */}
-         <Route element={<PrivateRoutes />}>
-          <Route path="/admin" element={<Outlet />}>
+        <Route element={<PrivateRoutes />}>
+          <Route path="/admin" element={<AdminLayout />}>
             <Route index element={<AdminHome />} /> {/* /admin */}
             <Route path="tasks" element={<NewTasks />} /> {/* /admin/tasks */}
             {/* puedes seguir agregando más rutas aquí */}
           </Route>
         </Route>
-
+        {/* Ruta comodín para rutas no encontradas */}
+        <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </BrowserRouter>
   );

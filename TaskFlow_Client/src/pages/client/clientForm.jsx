@@ -185,7 +185,7 @@ const clientForm = () => {
 
         {/* Footer */}
         <div className="mt-8 text-center text-sm text-gray-500">
-          <p>¿Ya tienes una cuenta? <a href="/request" className="text-blue-600 hover:text-blue-800 font-medium">Crea una solicitud</a></p>
+          <p>¿Ya tienes una cuenta? <a href="/createRequest" className="text-blue-600 hover:text-blue-800 font-medium">Crea una solicitud</a></p>
         </div>
       </div>
       {mostrarModal && (

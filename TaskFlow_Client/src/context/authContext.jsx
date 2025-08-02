@@ -16,10 +16,22 @@ export const ApiProvider = ({ children }) => {
   // Estado que indica si todavía se está verificando la sesión (útil para mostrar loaders)
   const [loading, setLoading] = useState(true);
 
+  //Estado que almacena el grupo del usuario logueado
+  const [group, setGroup] = useState("");
+
   // Hook que se ejecuta solo una vez al montar el componente
   // Verifica si existe una cookie válida y actualiza el estado de autenticación
   useEffect(() => {
     const checkAuth = async () => {
+
+      // VERIFICACIÓN previa con localStorage
+      const loggedInFlag = sessionStorage.getItem("isLoggedIn");
+      if (!loggedInFlag) {
+        setIsAuth(false);   // No se ha iniciado sesión
+        setLoading(false);  // Finaliza sin hacer petición
+        return;
+      }
+
       try {
         const res = await verifyCookie();
         
@@ -46,7 +58,7 @@ export const ApiProvider = ({ children }) => {
 
   // Devuelve el proveedor del contexto con los valores necesarios
   return (
-    <UserAuthContext.Provider value={{ user, isAuth, loading, loginFromComponent }}>
+    <UserAuthContext.Provider value={{ user, isAuth, loading, loginFromComponent, setGroup, group }}>
       {children}
     </UserAuthContext.Provider>
   );
