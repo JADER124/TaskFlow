@@ -21,5 +21,6 @@ from django.urls import path,include
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('auth/', include('TaskFlow.urls.auth_urls')),
-    path('client/', include('TaskFlow.urls.client_urls'))
+    path('client/', include('TaskFlow.urls.client_urls')),
+    path('requests/', include('TaskFlow.urls.consultas_urls'))
 ]

@@ -4,7 +4,10 @@ from rest_framework_simplejwt.tokens import AccessToken, TokenError  # (No se us
 from rest_framework.permissions import AllowAny  # Permite acceso sin autenticación
 from rest_framework.response import Response  # Para retornar respuestas estándar de DRF
 from django.http import JsonResponse  # Para retornar respuestas JSON nativas de Django
-from ..models import Cliente  # Se importa el modelo Cliente desde la carpeta superior (carpeta padre)
+from ..models import Cliente,TipoServicio, EstadoServicios, Solicitud
+from django.contrib.auth.models import User
+from django.utils.timezone import now
+# Se importa el modelo Cliente desde la carpeta superior (carpeta padre)
 
 # Vista API para registrar un nuevo cliente
 @api_view(['POST'])  # Esta vista solo acepta solicitudes HTTP de tipo POST
@@ -49,3 +52,44 @@ def setclient(request):
     except Exception as e:
         # Si ocurre un error inesperado (por ejemplo, fallo en la base de datos), se captura y se informa con código 500
         return JsonResponse({'error': f'Error al procesar la solicitud: {str(e)}'}, status=500)
+    
+    
+@api_view(['POST'])
+@permission_classes([AllowAny])
+def createrequest(request):
+    nit = request.data.get('nit')
+    motivo = request.data.get('motivoSolicitud')
+    tipo_servicio_nombre = request.data.get('tipoServicio')
+
+    # Validar campos requeridos
+    if not all([nit, motivo, tipo_servicio_nombre]):
+        return Response({'error': 'Todos los campos son requeridos.'}, status=400)
+
+    # Buscar el cliente por NIT
+    try:
+        cliente = Cliente.objects.get(nit=nit)
+    except Cliente.DoesNotExist:
+        return Response({'error': 'Cliente no encontrado con ese NIT.'}, status=404)
+
+    # Obtener o crear tipo de servicio
+    tipo_servicio, _ = TipoServicio.objects.get_or_create(nombre=tipo_servicio_nombre)
+
+    # Obtener o crear un estado por defecto (ej: "Pendiente")
+    estado, _ = EstadoServicios.objects.get_or_create(nombre="Pendiente")
+
+    # Crear la solicitud
+    solicitud = Solicitud.objects.create(
+        cliente=cliente,
+        tipo_servicio=tipo_servicio,
+        estado=estado,
+        descripcion=motivo,
+        fecha_creacion=now(),
+        usuario_creacion=None  # Puede dejarse nulo
+    )
+
+    return Response({
+        'mensaje': 'Solicitud creada exitosamente',
+        'id_solicitud': solicitud.id
+    }, status=201)
+
+

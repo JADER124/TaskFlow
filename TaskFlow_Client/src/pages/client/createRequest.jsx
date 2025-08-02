@@ -1,40 +1,45 @@
-import React from 'react';
+import React from "react";
 import { useForm } from "react-hook-form";
-import { yupResolver } from '@hookform/resolvers/yup';
-import * as yup from 'yup';
-import { FileText, User, Settings } from 'lucide-react';
-import { clientRequest } from '../../API/saveClient';
+import { yupResolver } from "@hookform/resolvers/yup";
+import * as yup from "yup";
+import { FileText, User, Settings } from "lucide-react";
+import { clientRequest } from "../../API/saveClient";
 
 // Validaciones con Yup
 const schema = yup.object().shape({
   nit: yup.string().required("El NIT es requerido"),
-  motivoSolicitud: yup.string().required("El motivo de la solicitud es requerido"),
-  tipoServicio: yup.string().required("Debe seleccionar un tipo de servicio")
+  motivoSolicitud: yup
+    .string()
+    .required("El motivo de la solicitud es requerido"),
+  tipoServicio: yup.string().required("Debe seleccionar un tipo de servicio"),
 });
 
 const createRequest = () => {
-
-  const {register,handleSubmit,reset,formState: { errors }} = useForm({
-    resolver: yupResolver(schema)
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm({
+    resolver: yupResolver(schema),
   });
 
   const onSubmit = async (data) => {
     console.log("Datos de la solicitud:", data);
     try {
-        // Llama a la función saveClient (probablemente una función que hace una solicitud POST al backend)
-        // y espera a que se complete la respuesta
-        const result = await clientRequest(data);
-    
-        // Si la petición fue exitosa, se muestra un mensaje al usuario con el contenido del campo 'mensaje' recibido en la respuesta
-        alert(result.mensaje);
-    
-        // Se limpia el formulario llamando a reset (probablemente proporcionado por React Hook Form)
-        reset();
-    
-      } catch (e) {
-        // Si ocurre un error (por ejemplo, fallo de conexión o error en el backend), se muestra un mensaje de error al usuario
-        alert("Error al registrar cliente");
-      }
+      // Llama a la función saveClient (probablemente una función que hace una solicitud POST al backend)
+      // y espera a que se complete la respuesta
+      const result = await clientRequest(data);
+      console.log(result);
+      // Si la petición fue exitosa, se muestra un mensaje al usuario con el contenido del campo 'mensaje' recibido en la respuesta
+      alert(result.mensaje);
+
+      // Se limpia el formulario llamando a reset (probablemente proporcionado por React Hook Form)
+      reset();
+    } catch (e) {
+      // Si ocurre un error (por ejemplo, fallo de conexión o error en el backend), se muestra un mensaje de error al usuario
+      alert("Error al registrar cliente");
+    }
   };
 
   return (
@@ -45,16 +50,24 @@ const createRequest = () => {
           <div className="w-20 h-20 bg-gradient-to-r from-blue-500 to-indigo-600 rounded-full flex items-center justify-center mx-auto mb-4">
             <FileText className="w-10 h-10 text-white" />
           </div>
-          <h1 className="text-2xl font-bold text-gray-800 mb-2">Solicitud de Servicio</h1>
-          <p className="text-gray-600">Complete los datos para generar su solicitud</p>
+          <h1 className="text-2xl font-bold text-gray-800 mb-2">
+            Solicitud de Servicio
+          </h1>
+          <p className="text-gray-600">
+            Complete los datos para generar su solicitud
+          </p>
         </div>
 
         {/* Formulario */}
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-
           {/* NIT */}
           <div>
-            <label htmlFor="nit" className="block text-sm font-medium text-gray-700 mb-2">NIT</label>
+            <label
+              htmlFor="nit"
+              className="block text-sm font-medium text-gray-700 mb-2"
+            >
+              NIT
+            </label>
             <div className="relative">
               <User className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
               <input
@@ -62,17 +75,24 @@ const createRequest = () => {
                 id="nit"
                 {...register("nit")}
                 className={`w-full pl-10 pr-4 py-3 border rounded-lg focus:ring-2 transition-colors ${
-                  errors.nit ? 'border-red-500 bg-red-50 focus:ring-red-500' : 'border-gray-300 bg-gray-50 focus:ring-blue-500'
+                  errors.nit
+                    ? "border-red-500 bg-red-50 focus:ring-red-500"
+                    : "border-gray-300 bg-gray-50 focus:ring-blue-500"
                 }`}
                 placeholder="Ingrese su NIT"
               />
             </div>
-            {errors.nit && <p className="mt-1 text-sm text-red-600">{errors.nit.message}</p>}
+            {errors.nit && (
+              <p className="mt-1 text-sm text-red-600">{errors.nit.message}</p>
+            )}
           </div>
 
           {/* Motivo de la solicitud */}
           <div>
-            <label htmlFor="motivoSolicitud" className="block text-sm font-medium text-gray-700 mb-2">
+            <label
+              htmlFor="motivoSolicitud"
+              className="block text-sm font-medium text-gray-700 mb-2"
+            >
               Motivo de la solicitud
             </label>
             <div className="relative">
@@ -82,20 +102,32 @@ const createRequest = () => {
                 rows={4}
                 {...register("motivoSolicitud")}
                 className={`w-full pl-10 pr-4 py-3 border rounded-lg focus:ring-2 transition-colors resize-none ${
-                  errors.motivoSolicitud ? 'border-red-500 bg-red-50 focus:ring-red-500' : 'border-gray-300 bg-gray-50 focus:ring-blue-500'
+                  errors.motivoSolicitud
+                    ? "border-red-500 bg-red-50 focus:ring-red-500"
+                    : "border-gray-300 bg-gray-50 focus:ring-blue-500"
                 }`}
                 placeholder="Describa el motivo de su solicitud..."
               />
             </div>
-            {errors.motivoSolicitud && <p className="mt-1 text-sm text-red-600">{errors.motivoSolicitud.message}</p>}
+            {errors.motivoSolicitud && (
+              <p className="mt-1 text-sm text-red-600">
+                {errors.motivoSolicitud.message}
+              </p>
+            )}
           </div>
 
           {/* Tipo de servicio */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-3">Tipo de servicio</label>
-            <div className={`border rounded-lg p-4 space-y-3 ${
-              errors.tipoServicio ? 'border-red-500 bg-red-50' : 'border-gray-300 bg-gray-50'
-            }`}>
+            <label className="block text-sm font-medium text-gray-700 mb-3">
+              Tipo de servicio
+            </label>
+            <div
+              className={`border rounded-lg p-4 space-y-3 ${
+                errors.tipoServicio
+                  ? "border-red-500 bg-red-50"
+                  : "border-gray-300 bg-gray-50"
+              }`}
+            >
               {["instalacion", "mantenimiento", "reparacion"].map((tipo) => (
                 <div className="flex items-center" key={tipo}>
                   <input
@@ -115,7 +147,11 @@ const createRequest = () => {
                 </div>
               ))}
             </div>
-            {errors.tipoServicio && <p className="mt-1 text-sm text-red-600">{errors.tipoServicio.message}</p>}
+            {errors.tipoServicio && (
+              <p className="mt-1 text-sm text-red-600">
+                {errors.tipoServicio.message}
+              </p>
+            )}
           </div>
 
           {/* Botón */}
@@ -131,11 +167,19 @@ const createRequest = () => {
 
         {/* Footer */}
         <div className="mt-8 text-center text-sm text-gray-500">
-          <p>¿Necesita actualizar sus datos? <a href="#" className="text-blue-600 hover:text-blue-800 font-medium">Contactar soporte</a></p>
+          <p>
+            ¿Necesita actualizar sus datos?{" "}
+            <a
+              href="#"
+              className="text-blue-600 hover:text-blue-800 font-medium"
+            >
+              Contactar soporte
+            </a>
+          </p>
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default createRequest
+export default createRequest;
