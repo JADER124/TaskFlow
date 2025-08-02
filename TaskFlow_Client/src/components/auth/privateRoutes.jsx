@@ -1,7 +1,7 @@
 import React from 'react';
-import { useAuth } from "../context/authContext"; // Importa el contexto de autenticación
+import { useAuth } from "../../context/authContext"; // Importa el contexto de autenticación
 import { Navigate, Outlet } from "react-router-dom"; // Componente para redirigir a otra ruta
-import Loader from "./loader"
+import Loader from "../shared/loader"
 
 // Componente que protege las rutas privadas de la aplicación
 // Solo permite el acceso si el usuario está autenticado

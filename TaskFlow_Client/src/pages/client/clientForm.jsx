@@ -3,7 +3,7 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { User, Phone, Building2, MapPin, Mail,File } from 'lucide-react';
-import { saveClient } from '../API/saveClient';
+import { saveClient } from '../../API/saveClient';
 
 const schema = yup.object().shape({
   nit: yup.string().required("El NIT es requerido")

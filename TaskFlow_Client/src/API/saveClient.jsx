@@ -30,3 +30,24 @@ export const saveClient = async (data) => {
   }
   
 };
+
+export const clientRequest = async (data) => {
+  try {
+    // Se hace una solicitud POST al endpoint '/set/' con los datos del cliente
+    const response = await api.post("/set/createrequest", data);
+
+    // Si la respuesta es exitosa, se devuelve solo el cuerpo de la respuesta (response.data)
+    return response.data;
+
+  } catch (error) {
+    // Si ocurre un error, se muestra un mensaje por consola para depuración.
+    // Se intenta acceder al error específico del backend (error.response.data),
+    // si no está disponible, se muestra el mensaje general del error
+    console.error("Error al traer datos del registro:", error.response?.data || error.message);
+
+    // Se lanza el error hacia fuera para que quien llame esta función (por ejemplo, onSubmit) lo maneje
+    throw error;
+  }
+  
+};
+

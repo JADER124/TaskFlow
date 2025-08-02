@@ -1,19 +1,19 @@
 import { useState } from "react";
 import { BrowserRouter, Routes, Route, Outlet } from "react-router-dom";
 import Login from "./pages/login";
-import { AdminHome } from "./pages/AdminHome";
-import PrivateRoutes from "./components/privateRoutes";
-import NewTasks from "./pages/newTasks";
-import ClientForm from "./pages/clientForm";
-import CreateRequest from "./pages/createRequest";
+import { AdminHome } from "./pages/admin/AdminHome";
+import PrivateRoutes from "./components/auth/privateRoutes";
+import NewTasks from "./pages/admin/newTasks";
+import ClientForm from "./pages/client/clientForm";
+import CreateRequest from "./pages/client/createRequest";
 
 function App() {
   return (
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<Login />} />
-        <Route path="/clientform" element={<ClientForm />} />
-        <Route path="/request" element={<CreateRequest />} />
+        <Route path="/clientForm" element={<ClientForm />} />
+        <Route path="/createRequest" element={<CreateRequest />} />
 
         {/* Agrupar todas las rutas privadas bajo /admin */}
          <Route element={<PrivateRoutes />}>

@@ -3,6 +3,7 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import { FileText, User, Settings } from 'lucide-react';
+import { clientRequest } from '../../API/saveClient';
 
 // Validaciones con Yup
 const schema = yup.object().shape({
@@ -17,10 +18,23 @@ const createRequest = () => {
     resolver: yupResolver(schema)
   });
 
-  const onSubmit = (data) => {
+  const onSubmit = async (data) => {
     console.log("Datos de la solicitud:", data);
-    alert("Solicitud enviada exitosamente!");
-    reset();
+    try {
+        // Llama a la función saveClient (probablemente una función que hace una solicitud POST al backend)
+        // y espera a que se complete la respuesta
+        const result = await clientRequest(data);
+    
+        // Si la petición fue exitosa, se muestra un mensaje al usuario con el contenido del campo 'mensaje' recibido en la respuesta
+        alert(result.mensaje);
+    
+        // Se limpia el formulario llamando a reset (probablemente proporcionado por React Hook Form)
+        reset();
+    
+      } catch (e) {
+        // Si ocurre un error (por ejemplo, fallo de conexión o error en el backend), se muestra un mensaje de error al usuario
+        alert("Error al registrar cliente");
+      }
   };
 
   return (
