@@ -1,4 +1,4 @@
-import React from "react";
+import React,{uses} from "react";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
@@ -8,6 +8,7 @@ import { useAuth } from "../context/authContext";
 // Hook de navegación de React Router
 import { useNavigate } from "react-router-dom";
 import logo from "../assets/taskFlow.png";
+import { useAlert, Alert } from "../components/shared/alert";
 
 // Esquema de validación con Yup
 const schema = yup.object().shape({
@@ -17,6 +18,8 @@ const schema = yup.object().shape({
 
 // Componente Login
 const Login = () => {
+  //hooks para utilizar alertas
+   const { currentAlert, hideAlert, showError, showSuccess, showWarning, showInfo } = useAlert();
   // Hook de React Hook Form con Yup como validador
   const {
     register, // Asigna campos del formulario
@@ -54,6 +57,8 @@ const Login = () => {
           userData.groups.includes("Coordinadores") &&
           secureCookie?.status === 200
         ) {
+          // guardar usuario en el sessionstorage para mostrar en dashboard
+          sessionStorage.setItem("username",username)
           // Marca la sesión como activa localmente
           sessionStorage.setItem("isLoggedIn", "true");
 
@@ -68,7 +73,8 @@ const Login = () => {
         alert("Error al iniciar sesión");
       }
     } catch (error) {
-      // Si ocurre error, limpia el formulario
+      // Error normal (se cierra solo)
+      showError("Error", error.response?.data?.detail);
       reset();
     }
   };
@@ -136,6 +142,13 @@ const Login = () => {
 
           <p className="text-xs text-gray-600 text-center mt-10">&copy; 2025 TASTFLOW TEAM</p>
         </div>
+        {/* Render Alert */}
+      {currentAlert && (
+        <Alert
+          {...currentAlert}
+          onClose={hideAlert}
+        />
+      )}
       </div>
     </div>
   );

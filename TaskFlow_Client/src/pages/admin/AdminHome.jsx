@@ -86,9 +86,11 @@ export const AdminHome = () => {
                   className="border border-gray-300 rounded-md px-3 py-1 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
                 >
                   <option value="todas">Todas las solicitudes</option>
-                  <option value="abiertas">Abiertas</option>
-                  <option value="pendiente">Pendientes</option>
-                  <option value="cerradas">Cerradas</option>
+                  <option value="abierta">Abiertas</option>
+                  <option value="asignada">Asignadas</option>
+                  <option value="en curso">En curso</option>
+                  <option value="cerrada">Cerradas</option>
+                  <option value="finalizada">Finalizadas</option>
                 </select>
               </div>
             </div>

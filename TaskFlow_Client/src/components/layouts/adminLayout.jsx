@@ -1,5 +1,5 @@
 // Nuevo archivo: src/components/layouts/AdminLayout.jsx
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Home,
   CheckSquare,
@@ -12,6 +12,14 @@ import { Outlet, NavLink } from "react-router-dom";
 
 export const AdminLayout = () => {
   const [activeSection, setActiveSection] = useState("inicio");
+  const [userLogged, setuserLogged] = useState("");
+
+  useEffect(() => {
+    const username = sessionStorage.getItem("username");
+    if (username) {
+      setuserLogged(username);
+    }
+  }, []);
 
   const sidebarItems = [
     { id: "inicio", label: "Inicio", icon: Home, path: "." },
@@ -50,8 +58,8 @@ export const AdminLayout = () => {
               <User className="w-4 h-4 text-white" />
             </div>
             <div className="ml-3">
-              <p className="text-sm font-medium text-gray-200">Usuario</p>
-              <p className="text-xs text-gray-400">Mi Empresa</p>
+              <p className="text-sm font-medium text-gray-200">{userLogged}</p>
+              <p className="text-xs text-gray-400">Basculas y balanzas SAS</p>
             </div>
           </div>
         </div>

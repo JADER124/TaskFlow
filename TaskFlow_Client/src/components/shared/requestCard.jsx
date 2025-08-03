@@ -18,12 +18,14 @@ import {
 
 const getStatusColor = (estado_nombre) => {
   switch (estado_nombre.toLowerCase()) {
-    case "completado":
+    case "finalizada":
       return "bg-green-100 text-green-700";
-    case "asignado":
+    case "asignada":
       return "bg-blue-100 text-blue-700";
-    case "pendiente":
+    case "en curso":
       return "bg-yellow-100 text-yellow-700";
+    case "cerrada":
+      return "bg-purple-100 text-purple-700";
     default:
       return "bg-gray-100 text-gray-700";
   }
@@ -50,11 +52,14 @@ export const RequestCard = ({ req }) => (
         <div className="flex items-center space-x-1">
           <div
             className={`w-2 h-2 rounded-full ${
-              req.estado_nombre === "Asignado"
+              req.estado_nombre === "Asignada"
                 ? "bg-blue-500"
-                : req.estado_nombre === "Pendiente"
+                : req.estado_nombre === "En curso"
                 ? "bg-yellow-500"
-                : "bg-green-500"
+                : req.estado_nombre === "Finalizada"
+                ? "bg-green-500" : 
+                req.estado_nombre === "Cerrada"
+                ? "bg-purple-500" :  "bg-gray-500" 
             }`}
           ></div>
         </div>
