@@ -2,5 +2,5 @@ from django.urls import path
 from ..views.getsolicitudes import getsolicitudes  
 
 urlpatterns = [
-    path('api/getallsolicitudes/', getsolicitudes, name='listar_solicitudes'),
+    path('api/getallsolicitudes/', getsolicitudes, name='getsolicitudes'),
 ]
