@@ -15,6 +15,7 @@ import {
   Filter,
   Search,
 } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 const getStatusColor = (estado_nombre) => {
   switch (estado_nombre.toLowerCase()) {
@@ -31,8 +32,12 @@ const getStatusColor = (estado_nombre) => {
   }
 };
 
-export const RequestCard = ({ req }) => (
-  <div className="bg-white border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow cursor-pointer">
+export const RequestCard = ({ req }) => {
+  const navigate = useNavigate();
+  return(
+  <div
+  onClick={() => navigate(`/admin/request/${req.id}`)} 
+  className="bg-white border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow cursor-pointer">
     {/* Header con título y dropdowns */}
     <div className="flex items-start justify-between mb-3">
       <div className="flex items-center space-x-3">
@@ -118,3 +123,4 @@ export const RequestCard = ({ req }) => (
 
   </div>
 );
+};

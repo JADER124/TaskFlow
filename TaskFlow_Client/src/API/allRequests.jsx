@@ -14,9 +14,26 @@ const api = axios.create({
 export const getRequests = async () => {
   try {
 
-    const response = await api.get("/getallsolicitudes/",{
-        withCredentials:true,
-    });
+    const response = await api.get("/getallsolicitudes/");
+
+    // Si la respuesta es exitosa, se devuelve solo el cuerpo de la respuesta (response.data)
+    return response.data;
+
+  } catch (error) {
+    // Si ocurre un error, se muestra un mensaje por consola para depuración.
+    // Se intenta acceder al error específico del backend (error.response.data),
+    // si no está disponible, se muestra el mensaje general del error
+    console.error("Error al traer datos del registro:", error.response?.data || error.message);
+
+    // Se lanza el error hacia fuera para que quien llame esta función (por ejemplo, onSubmit) lo maneje
+    throw error;
+  }
+  
+};
+export const getDetailRequest = async (id) => {
+  try {
+
+    const response = await api.get(`/getsolicitud/${id}/`);
 
     // Si la respuesta es exitosa, se devuelve solo el cuerpo de la respuesta (response.data)
     return response.data;

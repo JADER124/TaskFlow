@@ -7,6 +7,7 @@ import NewTasks from "./pages/admin/newTasks";
 import ClientForm from "./pages/client/clientForm";
 import CreateRequest from "./pages/client/createRequest";
 import { AdminLayout } from "./components/layouts/adminLayout";
+import RequestDetail from "./pages/admin/requestDetail"
 
 function App() {
   return (
@@ -21,7 +22,7 @@ function App() {
           <Route path="/admin" element={<AdminLayout />}>
             <Route index element={<AdminHome />} /> {/* /admin */}
             <Route path="tasks" element={<NewTasks />} /> {/* /admin/tasks */}
-            {/* puedes seguir agregando más rutas aquí */}
+            <Route path="request/:id" element={<RequestDetail />} />
           </Route>
         </Route>
         {/* Ruta comodín para rutas no encontradas */}

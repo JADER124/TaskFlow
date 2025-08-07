@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { Filter, Search } from "lucide-react";
 import { getRequests } from "../../API/allRequests";
+import Loader from "../../components/shared/loader"
 
 // Componente visual que representa cada solicitud
 import { RequestCard } from "../../components/shared/requestCard";
 
 // Componente principal de la vista de administración
 export const AdminHome = () => {
+  const [loading, setLoading] = useState(true);
   // Estado para el filtro de estado de la solicitud
   const [selectedFilter, setSelectedFilter] = useState("todas");
 
@@ -28,6 +30,8 @@ export const AdminHome = () => {
         setRequests(data); // Guarda las solicitudes en el estado original
       } catch (err) {
         console.error(err); // Manejo de error (por ejemplo, problema de red)
+      } finally {
+        setLoading(false);
       }
     };
 
@@ -62,7 +66,6 @@ export const AdminHome = () => {
 
     filtrar(); // Ejecuta la lógica de filtrado
   }, [requests, selectedFilter, searchTerm]); // Se ejecuta si cambian estos valores
-
 
   return (
     <div className="h-screen bg-gray-50 p-6 overflow-hidden">
@@ -110,9 +113,15 @@ export const AdminHome = () => {
 
         {/* Lista de solicitudes (scrollable) */}
         <div className="flex-1 overflow-y-auto pr-1 space-y-3">
-          {filteredRequests.map((req) => (
-            <RequestCard key={req.id} req={req} />
-          ))}
+          {loading ? (
+            <div className="flex justify-center items-center h-full">
+              <Loader />
+            </div>
+          ) : (
+            filteredRequests.map((req) => (
+              <RequestCard key={req.id} req={req} />
+            ))
+          )}
         </div>
 
         {/* Paginación (sticky abajo) */}
