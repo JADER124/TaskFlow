@@ -54,7 +54,7 @@ class Solicitud(models.Model):
     descripcion = models.TextField(blank=True, null=True)
     fecha_creacion = models.DateTimeField(auto_now_add=True)
     usuario_creacion = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True, related_name='solicitudes_creadas')
-
+    usuario_asociado = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True, related_name='solicitudes_asiganadas')
     def __str__(self):
         return f"Solicitud #{self.id} - {self.cliente.nit}"
 
