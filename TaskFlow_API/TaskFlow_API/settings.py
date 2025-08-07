@@ -59,6 +59,11 @@ REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework_simplejwt.authentication.JWTAuthentication',
     ),
+    
+    'DEFAULT_PERMISSION_CLASSES': (
+        
+        'rest_framework.permissions.IsAuthenticated',
+    )
 }
 # configuracion del tiempo de vida del token jwt. 
 from datetime import timedelta
