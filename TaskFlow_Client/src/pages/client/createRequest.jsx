@@ -8,6 +8,7 @@ import { clientRequest } from "../../API/saveClient";
 // Validaciones con Yup
 const schema = yup.object().shape({
   nit: yup.string().required("El NIT es requerido"),
+  direccion: yup.string().required("La dirección es requerida"),
   motivoSolicitud: yup
     .string()
     .required("El motivo de la solicitud es requerido"),
@@ -84,6 +85,32 @@ const createRequest = () => {
             </div>
             {errors.nit && (
               <p className="mt-1 text-sm text-red-600">{errors.nit.message}</p>
+            )}
+          </div>
+          {/* DIRECCIÓN */}
+          <div>
+            <label
+              htmlFor="direccion"
+              className="block text-sm font-medium text-gray-700 mb-2"
+            >
+              DIRECCIÓN
+            </label>
+            <div className="relative">
+              <User className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
+              <input
+                type="text"
+                id="direccion"
+                {...register("direccion")}
+                className={`w-full pl-10 pr-4 py-3 border rounded-lg focus:ring-2 transition-colors ${
+                  errors.direccion
+                    ? "border-red-500 bg-red-50 focus:ring-red-500"
+                    : "border-gray-300 bg-gray-50 focus:ring-blue-500"
+                }`}
+                placeholder="Ingrese su dirección"
+              />
+            </div>
+            {errors.direccion && (
+              <p className="mt-1 text-sm text-red-600">{errors.direccion.message}</p>
             )}
           </div>
 

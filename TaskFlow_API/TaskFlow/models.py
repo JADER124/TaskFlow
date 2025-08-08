@@ -52,6 +52,7 @@ class Solicitud(models.Model):
     tipo_servicio = models.ForeignKey(TipoServicio, on_delete=models.CASCADE)
     estado = models.ForeignKey(EstadoServicios, on_delete=models.CASCADE)
     descripcion = models.TextField(blank=True, null=True)
+    direccion = models.TextField(blank=True, null=True)
     fecha_creacion = models.DateTimeField(auto_now_add=True)
     usuario_creacion = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True, related_name='solicitudes_creadas')
     usuario_asociado = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True, related_name='solicitudes_asiganadas')

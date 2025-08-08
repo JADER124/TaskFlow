@@ -2,9 +2,10 @@ import React, { useState } from 'react';
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
-import { User, Phone, Building2, MapPin, Mail,File } from 'lucide-react';
+import { User, Phone, Building2, MapPin, Mail,File, AlertTriangle } from 'lucide-react';
 import { saveClient } from '../../API/saveClient';
 import ConfirmationModal from '../../components/shared/modalConfirmation'
+import { useAlert, Alert } from "../../components/shared/alert";
 
 const schema = yup.object().shape({
   nit: yup.string().required("El NIT es requerido")
@@ -23,6 +24,9 @@ const schema = yup.object().shape({
 
 const clientForm = () => {
 
+  // Validar errores con los hooks de errores
+  const { currentAlert, hideAlert, showError, showSuccess, showWarning, showInfo } = useAlert();
+
   const {register,handleSubmit,reset, formState: { errors }} = useForm({
     resolver: yupResolver(schema)
   });
@@ -39,6 +43,7 @@ const clientForm = () => {
   const onSubmit = async () => {
 
   try {
+    
     // Llama a la función saveClient (probablemente una función que hace una solicitud POST al backend)
     // y espera a que se complete la respuesta
     const result = await saveClient(formData);
@@ -49,9 +54,9 @@ const clientForm = () => {
     // Se limpia el formulario llamando a reset (probablemente proporcionado por React Hook Form)
     reset();
 
-  } catch (e) {
+  } catch (error) {
     // Si ocurre un error (por ejemplo, fallo de conexión o error en el backend), se muestra un mensaje de error al usuario
-    alert("Error al registrar cliente");
+    showError("Error: ", error.response?.data?.message);
   } finally {
     setMostrarModal(false)
     setFormData(null)
@@ -198,6 +203,12 @@ const clientForm = () => {
           cancelText="Cancelar"
               />
             )}
+        {currentAlert && (
+                <Alert
+                  {...currentAlert}
+                  onClose={hideAlert}
+                />
+              )}    
     </div>
   )
 }

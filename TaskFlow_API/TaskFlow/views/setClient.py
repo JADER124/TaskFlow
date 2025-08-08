@@ -12,6 +12,7 @@ from django.utils.timezone import now
 # Vista API para registrar un nuevo cliente
 @api_view(['POST'])  # Esta vista solo acepta solicitudes HTTP de tipo POST
 @permission_classes([AllowAny])  # No requiere autenticación; cualquier usuario puede acceder
+
 def setclient(request):
     # Se extraen los campos enviados en el cuerpo del request (generalmente en formato JSON)
     nit = request.data.get('nit')
@@ -23,6 +24,10 @@ def setclient(request):
     # Se valida que el campo obligatorio 'nit' no esté vacío
     if not nit:
         return Response({'error': 'El NIT es requerido.'}, status=400)  # Si falta el NIT, se retorna un error 400
+    
+    if Cliente.objects.filter(nit=nit).exists():
+        return Response({'message': 'Señor usuario, el NIT ingresado ya existe'}, status=400)
+    
 
     try:
         # Se imprime por consola el contenido del request para fines de depuración (solo visible en el backend)
@@ -58,11 +63,12 @@ def setclient(request):
 @permission_classes([AllowAny])
 def createrequest(request):
     nit = request.data.get('nit')
+    direccion = request.data.get('direccion')
     motivo = request.data.get('motivoSolicitud')
     tipo_servicio_nombre = request.data.get('tipoServicio')
 
     # Validar campos requeridos
-    if not all([nit, motivo, tipo_servicio_nombre]):
+    if not all([nit, motivo, tipo_servicio_nombre, direccion]):
         return Response({'error': 'Todos los campos son requeridos.'}, status=400)
 
     # Buscar el cliente por NIT
@@ -82,6 +88,7 @@ def createrequest(request):
         cliente=cliente,
         tipo_servicio=tipo_servicio,
         estado=estado,
+        direccion = direccion,
         descripcion=motivo,
         fecha_creacion=now(),
         usuario_creacion=None  # Puede dejarse nulo
@@ -91,5 +98,4 @@ def createrequest(request):
         'mensaje': 'Solicitud creada exitosamente',
         'id_solicitud': solicitud.id
     }, status=201)
-
 
