@@ -7,12 +7,6 @@ class SolicitudDetailSerializer(serializers.ModelSerializer):
     cliente_nombre         = serializers.CharField(source='cliente.nombre', read_only=True)
     tipo_servicio_nombre   = serializers.CharField(source='tipo_servicio.nombre', read_only=True)
     estado_nombre          = serializers.CharField(source='estado.nombre', read_only=True)
-
-    # Nuevo: ID del usuario asignado (si lo hay)
-    usuario_asociado_id     = serializers.IntegerField(
-        source='usuario_asociado.id',
-        read_only=True
-    )
     # Nuevo: nombre completo o username, o mensaje por defecto
     usuario_asociado_nombre = serializers.SerializerMethodField()
 
@@ -28,8 +22,7 @@ class SolicitudDetailSerializer(serializers.ModelSerializer):
             'estado_nombre',
             'descripcion',
             'fecha_creacion',
-            # campos de asignación
-            'usuario_asociado_id',
+            'usuario_asociado',
             'usuario_asociado_nombre',
         ]
 
