@@ -1,16 +1,17 @@
-from rest_framework.decorators import api_view, permission_classes
-from rest_framework_simplejwt.tokens import AccessToken, TokenError
-from rest_framework.permissions import AllowAny
-from rest_framework.response import Response
 from django.http import JsonResponse
+from django.contrib.auth import get_user_model
+from rest_framework.decorators import api_view, permission_classes
+from rest_framework.permissions import AllowAny
+from rest_framework_simplejwt.tokens import AccessToken
+from rest_framework_simplejwt.exceptions import TokenError
+
+User = get_user_model()
 
 @api_view(['POST'])
 @permission_classes([AllowAny])
 def setcookie(request):
     access = request.data.get('access')
     refresh = request.data.get('refresh')
-    groups = request.data.get('groups')
-    
 
     if not access or not refresh:
         return Response({'error': 'No se encontró un token en la solicitud.'}, status=400)
@@ -32,14 +33,6 @@ def setcookie(request):
             secure=False,
             samesite='Lax'
         )
-        
-        response.set_cookie(
-            key='groups',
-            value=refresh,
-            httponly=True,
-            secure=False,
-            samesite='Lax'
-        )
 
         return response
 
@@ -51,7 +44,6 @@ def setcookie(request):
 @permission_classes([AllowAny])
 def verify_cookie(request):
     access_token = request.COOKIES.get('access_token')
-    groups = request.COOKIES.get('groups')
 
     if not access_token:
         return JsonResponse({'error': 'No se encontró la cookie access_token.'}, status=401)
@@ -59,7 +51,9 @@ def verify_cookie(request):
         # Verificar y decodificar el token
         token = AccessToken(access_token)
         user_id = token['user_id']
-        return JsonResponse({'mensaje': 'Token válido', 'user_id': user_id, 'groups': groups}, status=200)
+        user = User.objects.get(pk=user_id, is_active=True)
+        groups = list(user.groups.values_list('name', flat=True))
+        return JsonResponse({'mensaje': 'Token válido', 'user_id': user_id, 'groups' : groups}, status=200)
 
     except TokenError as e:
         return JsonResponse({'error': f'Token inválido o expirado: {str(e)}'}, status=401)
