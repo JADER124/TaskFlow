@@ -22,5 +22,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('auth/', include('TaskFlow.urls.auth_urls')),
     path('client/', include('TaskFlow.urls.client_urls')),
-    path('requests/', include('TaskFlow.urls.consultas_urls'))
+    path('requests/', include('TaskFlow.urls.consultas_urls')),
+    path('modificaciones/', include('TaskFlow.urls.modificaciones_urls'))
+    
 ]
