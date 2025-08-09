@@ -24,6 +24,7 @@ class SolicitudDetailSerializer(serializers.ModelSerializer):
             'fecha_creacion',
             'usuario_asociado',
             'usuario_asociado_nombre',
+            'direccion'
         ]
 
     def get_usuario_asociado_nombre(self, obj):

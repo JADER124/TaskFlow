@@ -1,6 +1,6 @@
 from django.contrib.auth import get_user_model
 from rest_framework.decorators import api_view, permission_classes
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticated,AllowAny
 from rest_framework.response import Response
 from ..serializers.list_user_serializer import listUserSerializer
 
@@ -8,7 +8,7 @@ from ..serializers.list_user_serializer import listUserSerializer
 User = get_user_model()
 
 @api_view(['GET'])
-@permission_classes([IsAuthenticated])  # Solo usuarios autenticados pueden consultar la lista
+@permission_classes([AllowAny])  # Solo usuarios autenticados pueden consultar la lista
 def list_user(request):
     """
     Devuelve todos los usuarios activos que pertenecen al grupo 'Tecnicos'.
