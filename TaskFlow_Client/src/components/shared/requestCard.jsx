@@ -72,8 +72,7 @@ export const RequestCard = ({ req }) => {
         {/* Tecnico asignado */}
         <div className="flex items-center space-x-2">
           <User className="w-4 h-4 text-gray-400" />
-          <span className="text-sm text-gray-700">Nombre_Tecnico</span>
-          <ChevronDown className="w-4 h-4 text-gray-400" />
+          <span className="text-sm text-gray-700">{req.usuario_asociado_nombre}</span>
         </div>
 
         {/* Estado del servicio*/}
@@ -101,7 +100,7 @@ export const RequestCard = ({ req }) => {
               .join("")}
           </span>
         </div>
-        <span className="text-sm text-gray-600">Nombre_Coordinador</span>
+        <span className="text-sm text-gray-600">Basculas y Balanzas SAS</span>
       </div>
 
       <div className="flex items-center space-x-1">

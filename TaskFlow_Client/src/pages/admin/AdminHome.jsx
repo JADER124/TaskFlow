@@ -56,7 +56,8 @@ export const AdminHome = () => {
         resultado = resultado.filter(
           (r) =>
             r.cliente_nombre.toLowerCase().includes(searchTerm.toLowerCase()) ||
-            r.descripcion.toLowerCase().includes(searchTerm.toLowerCase())
+            r.descripcion.toLowerCase().includes(searchTerm.toLowerCase()) ||
+            r.usuario_asociado_nombre.toLowerCase().includes(searchTerm.toLowerCase())
         );
       }
 
