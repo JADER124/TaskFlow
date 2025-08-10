@@ -1,0 +1,2323 @@
+[
+{
+  "model": "auth.group",
+  "fields": {
+    "name": "Coordinadores",
+    "permissions": [
+      [
+        "add_estadoservicios",
+        "TaskFlow",
+        "estadoservicios"
+      ],
+      [
+        "change_estadoservicios",
+        "TaskFlow",
+        "estadoservicios"
+      ],
+      [
+        "delete_estadoservicios",
+        "TaskFlow",
+        "estadoservicios"
+      ],
+      [
+        "view_estadoservicios",
+        "TaskFlow",
+        "estadoservicios"
+      ],
+      [
+        "add_formulario",
+        "TaskFlow",
+        "formulario"
+      ],
+      [
+        "change_formulario",
+        "TaskFlow",
+        "formulario"
+      ],
+      [
+        "delete_formulario",
+        "TaskFlow",
+        "formulario"
+      ],
+      [
+        "view_formulario",
+        "TaskFlow",
+        "formulario"
+      ],
+      [
+        "add_formulariorepuesto",
+        "TaskFlow",
+        "formulariorepuesto"
+      ],
+      [
+        "change_formulariorepuesto",
+        "TaskFlow",
+        "formulariorepuesto"
+      ],
+      [
+        "delete_formulariorepuesto",
+        "TaskFlow",
+        "formulariorepuesto"
+      ],
+      [
+        "view_formulariorepuesto",
+        "TaskFlow",
+        "formulariorepuesto"
+      ],
+      [
+        "add_repuesto",
+        "TaskFlow",
+        "repuesto"
+      ],
+      [
+        "change_repuesto",
+        "TaskFlow",
+        "repuesto"
+      ],
+      [
+        "delete_repuesto",
+        "TaskFlow",
+        "repuesto"
+      ],
+      [
+        "view_repuesto",
+        "TaskFlow",
+        "repuesto"
+      ],
+      [
+        "add_solicitud",
+        "TaskFlow",
+        "solicitud"
+      ],
+      [
+        "change_solicitud",
+        "TaskFlow",
+        "solicitud"
+      ],
+      [
+        "delete_solicitud",
+        "TaskFlow",
+        "solicitud"
+      ],
+      [
+        "view_solicitud",
+        "TaskFlow",
+        "solicitud"
+      ],
+      [
+        "add_tiposervicio",
+        "TaskFlow",
+        "tiposervicio"
+      ],
+      [
+        "change_tiposervicio",
+        "TaskFlow",
+        "tiposervicio"
+      ],
+      [
+        "delete_tiposervicio",
+        "TaskFlow",
+        "tiposervicio"
+      ],
+      [
+        "view_tiposervicio",
+        "TaskFlow",
+        "tiposervicio"
+      ]
+    ]
+  }
+},
+{
+  "model": "auth.group",
+  "fields": {
+    "name": "Tecnicos",
+    "permissions": [
+      [
+        "add_formulario",
+        "TaskFlow",
+        "formulario"
+      ],
+      [
+        "change_formulario",
+        "TaskFlow",
+        "formulario"
+      ],
+      [
+        "delete_formulario",
+        "TaskFlow",
+        "formulario"
+      ],
+      [
+        "view_formulario",
+        "TaskFlow",
+        "formulario"
+      ],
+      [
+        "add_formulariorepuesto",
+        "TaskFlow",
+        "formulariorepuesto"
+      ],
+      [
+        "change_formulariorepuesto",
+        "TaskFlow",
+        "formulariorepuesto"
+      ],
+      [
+        "delete_formulariorepuesto",
+        "TaskFlow",
+        "formulariorepuesto"
+      ],
+      [
+        "view_formulariorepuesto",
+        "TaskFlow",
+        "formulariorepuesto"
+      ],
+      [
+        "add_repuesto",
+        "TaskFlow",
+        "repuesto"
+      ],
+      [
+        "change_repuesto",
+        "TaskFlow",
+        "repuesto"
+      ],
+      [
+        "delete_repuesto",
+        "TaskFlow",
+        "repuesto"
+      ],
+      [
+        "view_repuesto",
+        "TaskFlow",
+        "repuesto"
+      ]
+    ]
+  }
+},
+{
+  "model": "auth.user",
+  "fields": {
+    "password": "pbkdf2_sha256$870000$IVCVTFaNAXEF3KaOhbKSI5$fNOIkyyYjkzg8SP9HzYDkrXYDQyl6HHpJxgSVOJWFUs=",
+    "last_login": "2025-08-07T18:21:52.847Z",
+    "is_superuser": true,
+    "username": "administrador",
+    "first_name": "",
+    "last_name": "",
+    "email": "",
+    "is_staff": true,
+    "is_active": true,
+    "date_joined": "2025-07-27T16:46:55.877Z",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "auth.user",
+  "fields": {
+    "password": "pbkdf2_sha256$870000$ctbAW5pmqMHlV4TTw3F7Of$v+XUu+SPV9Uckcc8B3TsJijDxEqcbyZ5OtBxOCx7Dd4=",
+    "last_login": null,
+    "is_superuser": false,
+    "username": "coordinador1",
+    "first_name": "",
+    "last_name": "",
+    "email": "",
+    "is_staff": true,
+    "is_active": true,
+    "date_joined": "2025-07-27T17:01:08Z",
+    "groups": [
+      [
+        "Coordinadores"
+      ]
+    ],
+    "user_permissions": []
+  }
+},
+{
+  "model": "auth.user",
+  "fields": {
+    "password": "pbkdf2_sha256$870000$U1pB5P2RoeM00dPMUkrwn2$BiwRZoAwUMmOYhQs/A1XMXcsAB8uM+bizB+9gjJB4f4=",
+    "last_login": null,
+    "is_superuser": false,
+    "username": "tecnico1",
+    "first_name": "Jhon Jader",
+    "last_name": "Lopez",
+    "email": "jhonlopez@gmail.com",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2025-07-27T17:02:03Z",
+    "groups": [
+      [
+        "Tecnicos"
+      ]
+    ],
+    "user_permissions": []
+  }
+},
+{
+  "model": "auth.user",
+  "fields": {
+    "password": "pbkdf2_sha256$870000$oRh1uMXlTFbkW55mXcNCQo$1SOT1bdKdV7uRjQ5rzXA3l/WMRzPpGvBmgBFZkstBEI=",
+    "last_login": null,
+    "is_superuser": false,
+    "username": "tecnico2",
+    "first_name": "Juan Manuel",
+    "last_name": "Gonzalez",
+    "email": "juangonzalez@gmail.com",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2025-08-08T19:29:06Z",
+    "groups": [
+      [
+        "Tecnicos"
+      ]
+    ],
+    "user_permissions": []
+  }
+},
+{
+  "model": "auth.user",
+  "fields": {
+    "password": "pbkdf2_sha256$870000$FBwVwVvVxjPfiOaJBeqFnZ$S5IUUVrTBJXZ5dkIB2VM3MvJalgPpoZ6Y/JOM1BiVDs=",
+    "last_login": null,
+    "is_superuser": false,
+    "username": "tecnico3",
+    "first_name": "Juan Felipe",
+    "last_name": "Avila",
+    "email": "juanfe@taskflow.com",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2025-08-08T19:29:51Z",
+    "groups": [
+      [
+        "Tecnicos"
+      ]
+    ],
+    "user_permissions": []
+  }
+},
+{
+  "model": "TaskFlow.cliente",
+  "pk": 1,
+  "fields": {
+    "nombre": "TASKFLOW",
+    "nit": "1000900484",
+    "correo": "..",
+    "telefono": "3023710626",
+    "direccion": "."
+  }
+},
+{
+  "model": "TaskFlow.cliente",
+  "pk": 2,
+  "fields": {
+    "nombre": "JF S.A.S",
+    "nit": "1000900",
+    "correo": "jf@jfsas.com",
+    "telefono": "300210340",
+    "direccion": "LA LOGIA"
+  }
+},
+{
+  "model": "TaskFlow.cliente",
+  "pk": 3,
+  "fields": {
+    "nombre": "TaskFlow SAS",
+    "nit": "9001234561",
+    "correo": "gonzalezjuanm58@gmail.com",
+    "telefono": "3245764276",
+    "direccion": "calle 102 # 84 -67"
+  }
+},
+{
+  "model": "TaskFlow.cliente",
+  "pk": 4,
+  "fields": {
+    "nombre": "TaskFlow SAS",
+    "nit": "9001234561",
+    "correo": "contacto@taskflow.com",
+    "telefono": "3201234567",
+    "direccion": "Calle 102 #84-67"
+  }
+},
+{
+  "model": "TaskFlow.cliente",
+  "pk": 5,
+  "fields": {
+    "nombre": "Logística Global SAS",
+    "nit": "9002234567",
+    "correo": "info@logiglobal.com",
+    "telefono": "3001234567",
+    "direccion": "Carrera 45 #12-34"
+  }
+},
+{
+  "model": "TaskFlow.cliente",
+  "pk": 6,
+  "fields": {
+    "nombre": "Balanzas del Norte",
+    "nit": "9003345678",
+    "correo": "servicio@balanzasnorte.com",
+    "telefono": "3105678901",
+    "direccion": "Avenida 30 #45-10"
+  }
+},
+{
+  "model": "TaskFlow.cliente",
+  "pk": 7,
+  "fields": {
+    "nombre": "Pesos y Medidas LTDA",
+    "nit": "8304567890",
+    "correo": "soporte@pesosmedidas.com",
+    "telefono": "3226547890",
+    "direccion": "Calle 60 # 22-15"
+  }
+},
+{
+  "model": "TaskFlow.cliente",
+  "pk": 8,
+  "fields": {
+    "nombre": "TecniPesajes S.A.",
+    "nit": "9012345678",
+    "correo": "ventas@tecnipesajes.com",
+    "telefono": "3129876543",
+    "direccion": "Diagonal 40 #10-55"
+  }
+},
+{
+  "model": "TaskFlow.cliente",
+  "pk": 9,
+  "fields": {
+    "nombre": "Industrias BalanzaPro",
+    "nit": "9008765432",
+    "correo": "contacto@balanzapro.co",
+    "telefono": "3007894561",
+    "direccion": "Carrera 80 #20-11"
+  }
+},
+{
+  "model": "TaskFlow.cliente",
+  "pk": 10,
+  "fields": {
+    "nombre": "Grupo Exacto",
+    "nit": "9001122334",
+    "correo": "exacto@grupoexacto.com",
+    "telefono": "3112233445",
+    "direccion": "Calle 100 #55-20"
+  }
+},
+{
+  "model": "TaskFlow.cliente",
+  "pk": 11,
+  "fields": {
+    "nombre": "Calibraciones del Valle",
+    "nit": "9005566778",
+    "correo": "calibra@valle.com",
+    "telefono": "3205566778",
+    "direccion": "Carrera 10 #5-60"
+  }
+},
+{
+  "model": "TaskFlow.cliente",
+  "pk": 12,
+  "fields": {
+    "nombre": "Balanzas y Servicios SAS",
+    "nit": "9011987654",
+    "correo": "servicio@bys.com",
+    "telefono": "3001122334",
+    "direccion": "Transversal 30 #25-10"
+  }
+},
+{
+  "model": "TaskFlow.cliente",
+  "pk": 13,
+  "fields": {
+    "nombre": "Pesaje Industrial S.A.S",
+    "nit": "9006677889",
+    "correo": "ventas@pesajeindustrial.com",
+    "telefono": "3012233445",
+    "direccion": "Carrera 15 #8-88"
+  }
+},
+{
+  "model": "TaskFlow.cliente",
+  "pk": 14,
+  "fields": {
+    "nombre": "ACME S.A.",
+    "nit": "900123456",
+    "correo": "contacto@acme.com",
+    "telefono": null,
+    "direccion": null
+  }
+},
+{
+  "model": "TaskFlow.estadoservicios",
+  "pk": 2,
+  "fields": {
+    "nombre": "Abierta"
+  }
+},
+{
+  "model": "TaskFlow.estadoservicios",
+  "pk": 3,
+  "fields": {
+    "nombre": "Asignada"
+  }
+},
+{
+  "model": "TaskFlow.estadoservicios",
+  "pk": 4,
+  "fields": {
+    "nombre": "En curso"
+  }
+},
+{
+  "model": "TaskFlow.estadoservicios",
+  "pk": 5,
+  "fields": {
+    "nombre": "Cerrada"
+  }
+},
+{
+  "model": "TaskFlow.estadoservicios",
+  "pk": 6,
+  "fields": {
+    "nombre": "Finalizada"
+  }
+},
+{
+  "model": "TaskFlow.estadoservicios",
+  "pk": 7,
+  "fields": {
+    "nombre": "Pendiente"
+  }
+},
+{
+  "model": "TaskFlow.tiposervicio",
+  "pk": 4,
+  "fields": {
+    "nombre": "Mantenimiento"
+  }
+},
+{
+  "model": "TaskFlow.tiposervicio",
+  "pk": 5,
+  "fields": {
+    "nombre": "Instalación"
+  }
+},
+{
+  "model": "TaskFlow.tiposervicio",
+  "pk": 6,
+  "fields": {
+    "nombre": "Reparación"
+  }
+},
+{
+  "model": "TaskFlow.tiposervicio",
+  "pk": 7,
+  "fields": {
+    "nombre": "instalacion"
+  }
+},
+{
+  "model": "TaskFlow.solicitud",
+  "pk": 108,
+  "fields": {
+    "cliente": 1,
+    "tipo_servicio": 6,
+    "estado": 4,
+    "descripcion": "Instalación de balanza en zona de despacho (Seed #1)",
+    "direccion": "Av. Las Vegas # 50-15 Envigado",
+    "fecha_creacion": "2025-08-09T02:15:08.045Z",
+    "usuario_creacion": [
+      "administrador"
+    ],
+    "usuario_asociado": [
+      "administrador"
+    ]
+  }
+},
+{
+  "model": "TaskFlow.solicitud",
+  "pk": 109,
+  "fields": {
+    "cliente": 12,
+    "tipo_servicio": 4,
+    "estado": 4,
+    "descripcion": "Ajuste de calibración en balanza de alta precisión (Seed #2)",
+    "direccion": "Parque Industrial La 50, Mz 12 Bodega 4",
+    "fecha_creacion": "2025-08-09T02:15:08.045Z",
+    "usuario_creacion": [
+      "administrador"
+    ],
+    "usuario_asociado": [
+      "tecnico2"
+    ]
+  }
+},
+{
+  "model": "TaskFlow.solicitud",
+  "pk": 110,
+  "fields": {
+    "cliente": 5,
+    "tipo_servicio": 6,
+    "estado": 3,
+    "descripcion": "Mantenimiento preventivo a básculas industriales (Seed #3)",
+    "direccion": "Calle 30A # 65-90 Medellín",
+    "fecha_creacion": "2025-08-09T02:15:08.045Z",
+    "usuario_creacion": [
+      "administrador"
+    ],
+    "usuario_asociado": [
+      "tecnico1"
+    ]
+  }
+},
+{
+  "model": "TaskFlow.solicitud",
+  "pk": 111,
+  "fields": {
+    "cliente": 6,
+    "tipo_servicio": 5,
+    "estado": 3,
+    "descripcion": "Instalación de balanza en zona de despacho (Seed #4)",
+    "direccion": "Transv. 39 # 18-22 Sabaneta",
+    "fecha_creacion": "2025-08-09T02:15:08.045Z",
+    "usuario_creacion": [
+      "administrador"
+    ],
+    "usuario_asociado": [
+      "tecnico1"
+    ]
+  }
+},
+{
+  "model": "TaskFlow.solicitud",
+  "pk": 112,
+  "fields": {
+    "cliente": 12,
+    "tipo_servicio": 5,
+    "estado": 7,
+    "descripcion": "Configuración inicial de balanza conectada por red (Seed #5)",
+    "direccion": "Cl 44 # 67-12 Bello",
+    "fecha_creacion": "2025-08-09T02:15:08.045Z",
+    "usuario_creacion": [
+      "administrador"
+    ],
+    "usuario_asociado": [
+      "administrador"
+    ]
+  }
+},
+{
+  "model": "TaskFlow.solicitud",
+  "pk": 113,
+  "fields": {
+    "cliente": 7,
+    "tipo_servicio": 5,
+    "estado": 2,
+    "descripcion": "Visita técnica para revisión general de equipos (Seed #6)",
+    "direccion": "Calle 30A # 65-90 Medellín",
+    "fecha_creacion": "2025-08-09T02:15:08.045Z",
+    "usuario_creacion": [
+      "administrador"
+    ],
+    "usuario_asociado": [
+      "tecnico2"
+    ]
+  }
+},
+{
+  "model": "TaskFlow.solicitud",
+  "pk": 114,
+  "fields": {
+    "cliente": 5,
+    "tipo_servicio": 6,
+    "estado": 7,
+    "descripcion": "Cambio de tarjeta lógica en sistema de pesaje (Seed #7)",
+    "direccion": "Cra 45 # 12-34 Medellín",
+    "fecha_creacion": "2025-08-09T02:15:08.045Z",
+    "usuario_creacion": [
+      "administrador"
+    ],
+    "usuario_asociado": [
+      "tecnico3"
+    ]
+  }
+},
+{
+  "model": "TaskFlow.solicitud",
+  "pk": 115,
+  "fields": {
+    "cliente": 6,
+    "tipo_servicio": 5,
+    "estado": 2,
+    "descripcion": "Montaje de sistema de pesaje para nuevos productos (Seed #8)",
+    "direccion": "Cl 10 # 20-30 Itagüí",
+    "fecha_creacion": "2025-08-09T02:15:08.045Z",
+    "usuario_creacion": [
+      "administrador"
+    ],
+    "usuario_asociado": [
+      "administrador"
+    ]
+  }
+},
+{
+  "model": "TaskFlow.solicitud",
+  "pk": 116,
+  "fields": {
+    "cliente": 2,
+    "tipo_servicio": 7,
+    "estado": 5,
+    "descripcion": "Visita técnica para revisión general de equipos (Seed #9)",
+    "direccion": "Cra 45 # 12-34 Medellín",
+    "fecha_creacion": "2025-08-09T02:15:08.045Z",
+    "usuario_creacion": [
+      "administrador"
+    ],
+    "usuario_asociado": [
+      "coordinador1"
+    ]
+  }
+},
+{
+  "model": "TaskFlow.solicitud",
+  "pk": 117,
+  "fields": {
+    "cliente": 11,
+    "tipo_servicio": 6,
+    "estado": 4,
+    "descripcion": "Soporte técnico por error en lectura de peso (Seed #10)",
+    "direccion": "Av. Las Vegas # 50-15 Envigado",
+    "fecha_creacion": "2025-08-09T02:15:08.045Z",
+    "usuario_creacion": [
+      "administrador"
+    ],
+    "usuario_asociado": [
+      "administrador"
+    ]
+  }
+},
+{
+  "model": "TaskFlow.solicitud",
+  "pk": 118,
+  "fields": {
+    "cliente": 3,
+    "tipo_servicio": 4,
+    "estado": 2,
+    "descripcion": "Soporte técnico por error en lectura de peso (Seed #11)",
+    "direccion": "Cl 10 # 20-30 Itagüí",
+    "fecha_creacion": "2025-08-09T02:15:08.045Z",
+    "usuario_creacion": [
+      "administrador"
+    ],
+    "usuario_asociado": [
+      "coordinador1"
+    ]
+  }
+},
+{
+  "model": "TaskFlow.solicitud",
+  "pk": 119,
+  "fields": {
+    "cliente": 2,
+    "tipo_servicio": 4,
+    "estado": 3,
+    "descripcion": "Soporte técnico por error en lectura de peso (Seed #12)",
+    "direccion": "Cl 44 # 67-12 Bello",
+    "fecha_creacion": "2025-08-09T02:15:08.045Z",
+    "usuario_creacion": [
+      "administrador"
+    ],
+    "usuario_asociado": [
+      "administrador"
+    ]
+  }
+},
+{
+  "model": "TaskFlow.solicitud",
+  "pk": 120,
+  "fields": {
+    "cliente": 2,
+    "tipo_servicio": 6,
+    "estado": 4,
+    "descripcion": "Visita técnica para revisión general de equipos (Seed #13)",
+    "direccion": "Cl 44 # 67-12 Bello",
+    "fecha_creacion": "2025-08-09T02:15:08.046Z",
+    "usuario_creacion": [
+      "administrador"
+    ],
+    "usuario_asociado": [
+      "tecnico1"
+    ]
+  }
+},
+{
+  "model": "TaskFlow.solicitud",
+  "pk": 121,
+  "fields": {
+    "cliente": 5,
+    "tipo_servicio": 7,
+    "estado": 6,
+    "descripcion": "Configuración inicial de balanza conectada por red (Seed #14)",
+    "direccion": "Cra 45 # 12-34 Medellín",
+    "fecha_creacion": "2025-08-09T02:15:08.046Z",
+    "usuario_creacion": [
+      "administrador"
+    ],
+    "usuario_asociado": [
+      "tecnico3"
+    ]
+  }
+},
+{
+  "model": "TaskFlow.solicitud",
+  "pk": 122,
+  "fields": {
+    "cliente": 12,
+    "tipo_servicio": 5,
+    "estado": 4,
+    "descripcion": "Visita técnica para revisión general de equipos (Seed #15)",
+    "direccion": "Cl 10 # 20-30 Itagüí",
+    "fecha_creacion": "2025-08-09T02:15:08.046Z",
+    "usuario_creacion": [
+      "administrador"
+    ],
+    "usuario_asociado": [
+      "tecnico3"
+    ]
+  }
+},
+{
+  "model": "TaskFlow.solicitud",
+  "pk": 123,
+  "fields": {
+    "cliente": 14,
+    "tipo_servicio": 6,
+    "estado": 4,
+    "descripcion": "Instalación de balanza en zona de despacho (Seed #16)",
+    "direccion": "Parque Industrial La 50, Mz 12 Bodega 4",
+    "fecha_creacion": "2025-08-09T02:15:08.046Z",
+    "usuario_creacion": [
+      "administrador"
+    ],
+    "usuario_asociado": [
+      "tecnico1"
+    ]
+  }
+},
+{
+  "model": "TaskFlow.solicitud",
+  "pk": 124,
+  "fields": {
+    "cliente": 11,
+    "tipo_servicio": 5,
+    "estado": 3,
+    "descripcion": "Visita técnica para revisión general de equipos (Seed #17)",
+    "direccion": "Km 2 Vía al Mar, Bodega 3",
+    "fecha_creacion": "2025-08-09T02:15:08.046Z",
+    "usuario_creacion": [
+      "administrador"
+    ],
+    "usuario_asociado": [
+      "tecnico3"
+    ]
+  }
+},
+{
+  "model": "TaskFlow.solicitud",
+  "pk": 125,
+  "fields": {
+    "cliente": 3,
+    "tipo_servicio": 4,
+    "estado": 4,
+    "descripcion": "Soporte técnico por error en lectura de peso (Seed #18)",
+    "direccion": "Calle 30A # 65-90 Medellín",
+    "fecha_creacion": "2025-08-09T02:15:08.046Z",
+    "usuario_creacion": [
+      "administrador"
+    ],
+    "usuario_asociado": [
+      "administrador"
+    ]
+  }
+},
+{
+  "model": "TaskFlow.solicitud",
+  "pk": 126,
+  "fields": {
+    "cliente": 5,
+    "tipo_servicio": 4,
+    "estado": 3,
+    "descripcion": "Instalación de balanza en zona de despacho (Seed #19)",
+    "direccion": "Cra 45 # 12-34 Medellín",
+    "fecha_creacion": "2025-08-09T02:15:08.046Z",
+    "usuario_creacion": [
+      "administrador"
+    ],
+    "usuario_asociado": [
+      "tecnico2"
+    ]
+  }
+},
+{
+  "model": "TaskFlow.solicitud",
+  "pk": 127,
+  "fields": {
+    "cliente": 1,
+    "tipo_servicio": 7,
+    "estado": 6,
+    "descripcion": "Configuración inicial de balanza conectada por red (Seed #20)",
+    "direccion": "Cl 10 # 20-30 Itagüí",
+    "fecha_creacion": "2025-08-09T02:15:08.046Z",
+    "usuario_creacion": [
+      "administrador"
+    ],
+    "usuario_asociado": [
+      "tecnico2"
+    ]
+  }
+},
+{
+  "model": "TaskFlow.solicitud",
+  "pk": 128,
+  "fields": {
+    "cliente": 5,
+    "tipo_servicio": 6,
+    "estado": 6,
+    "descripcion": "Verificación de integridad estructural de plataforma (Seed #21)",
+    "direccion": "Cl 10 # 20-30 Itagüí",
+    "fecha_creacion": "2025-08-09T02:15:08.046Z",
+    "usuario_creacion": [
+      "administrador"
+    ],
+    "usuario_asociado": [
+      "coordinador1"
+    ]
+  }
+},
+{
+  "model": "TaskFlow.solicitud",
+  "pk": 129,
+  "fields": {
+    "cliente": 12,
+    "tipo_servicio": 5,
+    "estado": 6,
+    "descripcion": "Reparación de sensor de peso defectuoso (Seed #22)",
+    "direccion": "Zona Franca, Módulo 7",
+    "fecha_creacion": "2025-08-09T02:15:08.046Z",
+    "usuario_creacion": [
+      "administrador"
+    ],
+    "usuario_asociado": [
+      "administrador"
+    ]
+  }
+},
+{
+  "model": "TaskFlow.solicitud",
+  "pk": 130,
+  "fields": {
+    "cliente": 8,
+    "tipo_servicio": 4,
+    "estado": 3,
+    "descripcion": "Mantenimiento preventivo a básculas industriales (Seed #23)",
+    "direccion": "Calle 30A # 65-90 Medellín",
+    "fecha_creacion": "2025-08-09T02:15:08.046Z",
+    "usuario_creacion": [
+      "administrador"
+    ],
+    "usuario_asociado": [
+      "administrador"
+    ]
+  }
+},
+{
+  "model": "TaskFlow.solicitud",
+  "pk": 131,
+  "fields": {
+    "cliente": 10,
+    "tipo_servicio": 6,
+    "estado": 7,
+    "descripcion": "Cambio de tarjeta lógica en sistema de pesaje (Seed #24)",
+    "direccion": "Cra 45 # 12-34 Medellín",
+    "fecha_creacion": "2025-08-09T02:15:08.046Z",
+    "usuario_creacion": [
+      "administrador"
+    ],
+    "usuario_asociado": [
+      "tecnico1"
+    ]
+  }
+},
+{
+  "model": "TaskFlow.solicitud",
+  "pk": 132,
+  "fields": {
+    "cliente": 3,
+    "tipo_servicio": 5,
+    "estado": 2,
+    "descripcion": "Soporte técnico por error en lectura de peso (Seed #25)",
+    "direccion": "Cl 44 # 67-12 Bello",
+    "fecha_creacion": "2025-08-09T02:15:08.047Z",
+    "usuario_creacion": [
+      "administrador"
+    ],
+    "usuario_asociado": [
+      "coordinador1"
+    ]
+  }
+},
+{
+  "model": "TaskFlow.solicitud",
+  "pk": 133,
+  "fields": {
+    "cliente": 9,
+    "tipo_servicio": 6,
+    "estado": 6,
+    "descripcion": "Verificación de integridad estructural de plataforma (Seed #26)",
+    "direccion": "Km 2 Vía al Mar, Bodega 3",
+    "fecha_creacion": "2025-08-09T02:15:08.047Z",
+    "usuario_creacion": [
+      "administrador"
+    ],
+    "usuario_asociado": [
+      "coordinador1"
+    ]
+  }
+},
+{
+  "model": "TaskFlow.solicitud",
+  "pk": 134,
+  "fields": {
+    "cliente": 4,
+    "tipo_servicio": 5,
+    "estado": 2,
+    "descripcion": "Visita técnica para revisión general de equipos (Seed #27)",
+    "direccion": "Cra 45 # 12-34 Medellín",
+    "fecha_creacion": "2025-08-09T02:15:08.047Z",
+    "usuario_creacion": [
+      "administrador"
+    ],
+    "usuario_asociado": [
+      "coordinador1"
+    ]
+  }
+},
+{
+  "model": "TaskFlow.solicitud",
+  "pk": 135,
+  "fields": {
+    "cliente": 8,
+    "tipo_servicio": 7,
+    "estado": 4,
+    "descripcion": "Soporte técnico por error en lectura de peso (Seed #28)",
+    "direccion": "Av. Las Vegas # 50-15 Envigado",
+    "fecha_creacion": "2025-08-09T02:15:08.047Z",
+    "usuario_creacion": [
+      "administrador"
+    ],
+    "usuario_asociado": [
+      "tecnico1"
+    ]
+  }
+},
+{
+  "model": "TaskFlow.solicitud",
+  "pk": 136,
+  "fields": {
+    "cliente": 1,
+    "tipo_servicio": 4,
+    "estado": 5,
+    "descripcion": "Instalación de balanza en zona de despacho (Seed #29)",
+    "direccion": "Carrera 80 # 45-60 Medellín",
+    "fecha_creacion": "2025-08-09T02:15:08.047Z",
+    "usuario_creacion": [
+      "administrador"
+    ],
+    "usuario_asociado": [
+      "tecnico3"
+    ]
+  }
+},
+{
+  "model": "TaskFlow.solicitud",
+  "pk": 137,
+  "fields": {
+    "cliente": 14,
+    "tipo_servicio": 5,
+    "estado": 2,
+    "descripcion": "Ajuste de calibración en balanza de alta precisión (Seed #30)",
+    "direccion": "Cl 44 # 67-12 Bello",
+    "fecha_creacion": "2025-08-09T02:15:08.047Z",
+    "usuario_creacion": [
+      "administrador"
+    ],
+    "usuario_asociado": [
+      "administrador"
+    ]
+  }
+},
+{
+  "model": "TaskFlow.solicitud",
+  "pk": 138,
+  "fields": {
+    "cliente": 4,
+    "tipo_servicio": 4,
+    "estado": 5,
+    "descripcion": "Soporte técnico por error en lectura de peso (Seed #31)",
+    "direccion": "Parque Industrial La 50, Mz 12 Bodega 4",
+    "fecha_creacion": "2025-08-09T02:15:08.047Z",
+    "usuario_creacion": [
+      "administrador"
+    ],
+    "usuario_asociado": [
+      "tecnico2"
+    ]
+  }
+},
+{
+  "model": "TaskFlow.solicitud",
+  "pk": 139,
+  "fields": {
+    "cliente": 4,
+    "tipo_servicio": 4,
+    "estado": 6,
+    "descripcion": "Cambio de tarjeta lógica en sistema de pesaje (Seed #32)",
+    "direccion": "Transv. 39 # 18-22 Sabaneta",
+    "fecha_creacion": "2025-08-09T02:15:08.047Z",
+    "usuario_creacion": [
+      "administrador"
+    ],
+    "usuario_asociado": [
+      "tecnico2"
+    ]
+  }
+},
+{
+  "model": "TaskFlow.solicitud",
+  "pk": 140,
+  "fields": {
+    "cliente": 6,
+    "tipo_servicio": 5,
+    "estado": 4,
+    "descripcion": "Mantenimiento preventivo a básculas industriales (Seed #33)",
+    "direccion": "Cra 45 # 12-34 Medellín",
+    "fecha_creacion": "2025-08-09T02:15:08.047Z",
+    "usuario_creacion": [
+      "administrador"
+    ],
+    "usuario_asociado": [
+      "coordinador1"
+    ]
+  }
+},
+{
+  "model": "TaskFlow.solicitud",
+  "pk": 141,
+  "fields": {
+    "cliente": 10,
+    "tipo_servicio": 4,
+    "estado": 4,
+    "descripcion": "Verificación de integridad estructural de plataforma (Seed #34)",
+    "direccion": "Km 2 Vía al Mar, Bodega 3",
+    "fecha_creacion": "2025-08-09T02:15:08.048Z",
+    "usuario_creacion": [
+      "administrador"
+    ],
+    "usuario_asociado": [
+      "tecnico1"
+    ]
+  }
+},
+{
+  "model": "TaskFlow.solicitud",
+  "pk": 142,
+  "fields": {
+    "cliente": 6,
+    "tipo_servicio": 5,
+    "estado": 4,
+    "descripcion": "Reparación de sensor de peso defectuoso (Seed #35)",
+    "direccion": "Cl 44 # 67-12 Bello",
+    "fecha_creacion": "2025-08-09T02:15:08.048Z",
+    "usuario_creacion": [
+      "administrador"
+    ],
+    "usuario_asociado": [
+      "tecnico1"
+    ]
+  }
+},
+{
+  "model": "TaskFlow.solicitud",
+  "pk": 143,
+  "fields": {
+    "cliente": 9,
+    "tipo_servicio": 4,
+    "estado": 6,
+    "descripcion": "Cambio de tarjeta lógica en sistema de pesaje (Seed #36)",
+    "direccion": "Cl 10 # 20-30 Itagüí",
+    "fecha_creacion": "2025-08-09T02:15:08.048Z",
+    "usuario_creacion": [
+      "administrador"
+    ],
+    "usuario_asociado": [
+      "tecnico2"
+    ]
+  }
+},
+{
+  "model": "TaskFlow.solicitud",
+  "pk": 144,
+  "fields": {
+    "cliente": 11,
+    "tipo_servicio": 4,
+    "estado": 5,
+    "descripcion": "Mantenimiento preventivo a básculas industriales (Seed #37)",
+    "direccion": "Av. Las Vegas # 50-15 Envigado",
+    "fecha_creacion": "2025-08-09T02:15:08.048Z",
+    "usuario_creacion": [
+      "administrador"
+    ],
+    "usuario_asociado": [
+      "tecnico1"
+    ]
+  }
+},
+{
+  "model": "TaskFlow.solicitud",
+  "pk": 145,
+  "fields": {
+    "cliente": 3,
+    "tipo_servicio": 6,
+    "estado": 2,
+    "descripcion": "Visita técnica para revisión general de equipos (Seed #38)",
+    "direccion": "Parque Industrial La 50, Mz 12 Bodega 4",
+    "fecha_creacion": "2025-08-09T02:15:08.048Z",
+    "usuario_creacion": [
+      "administrador"
+    ],
+    "usuario_asociado": [
+      "tecnico1"
+    ]
+  }
+},
+{
+  "model": "TaskFlow.solicitud",
+  "pk": 146,
+  "fields": {
+    "cliente": 8,
+    "tipo_servicio": 4,
+    "estado": 7,
+    "descripcion": "Configuración inicial de balanza conectada por red (Seed #39)",
+    "direccion": "Zona Franca, Módulo 7",
+    "fecha_creacion": "2025-08-09T02:15:08.048Z",
+    "usuario_creacion": [
+      "administrador"
+    ],
+    "usuario_asociado": [
+      "coordinador1"
+    ]
+  }
+},
+{
+  "model": "TaskFlow.solicitud",
+  "pk": 147,
+  "fields": {
+    "cliente": 12,
+    "tipo_servicio": 4,
+    "estado": 7,
+    "descripcion": "Mantenimiento preventivo a básculas industriales (Seed #40)",
+    "direccion": "Carrera 80 # 45-60 Medellín",
+    "fecha_creacion": "2025-08-09T02:15:08.049Z",
+    "usuario_creacion": [
+      "administrador"
+    ],
+    "usuario_asociado": [
+      "coordinador1"
+    ]
+  }
+},
+{
+  "model": "TaskFlow.solicitud",
+  "pk": 148,
+  "fields": {
+    "cliente": 5,
+    "tipo_servicio": 5,
+    "estado": 3,
+    "descripcion": "Cambio de tarjeta lógica en sistema de pesaje (Seed #41)",
+    "direccion": "Cl 10 # 20-30 Itagüí",
+    "fecha_creacion": "2025-08-09T02:15:08.049Z",
+    "usuario_creacion": [
+      "administrador"
+    ],
+    "usuario_asociado": [
+      "coordinador1"
+    ]
+  }
+},
+{
+  "model": "TaskFlow.solicitud",
+  "pk": 149,
+  "fields": {
+    "cliente": 1,
+    "tipo_servicio": 4,
+    "estado": 5,
+    "descripcion": "Instalación de balanza en zona de despacho (Seed #42)",
+    "direccion": "Carrera 80 # 45-60 Medellín",
+    "fecha_creacion": "2025-08-09T02:15:08.049Z",
+    "usuario_creacion": [
+      "administrador"
+    ],
+    "usuario_asociado": [
+      "tecnico3"
+    ]
+  }
+},
+{
+  "model": "TaskFlow.solicitud",
+  "pk": 150,
+  "fields": {
+    "cliente": 5,
+    "tipo_servicio": 5,
+    "estado": 7,
+    "descripcion": "Montaje de sistema de pesaje para nuevos productos (Seed #43)",
+    "direccion": "Cl 44 # 67-12 Bello",
+    "fecha_creacion": "2025-08-09T02:15:08.049Z",
+    "usuario_creacion": [
+      "administrador"
+    ],
+    "usuario_asociado": [
+      "tecnico2"
+    ]
+  }
+},
+{
+  "model": "TaskFlow.solicitud",
+  "pk": 151,
+  "fields": {
+    "cliente": 3,
+    "tipo_servicio": 6,
+    "estado": 3,
+    "descripcion": "Reparación de sensor de peso defectuoso (Seed #44)",
+    "direccion": "Calle 30A # 65-90 Medellín",
+    "fecha_creacion": "2025-08-09T02:15:08.049Z",
+    "usuario_creacion": [
+      "administrador"
+    ],
+    "usuario_asociado": [
+      "tecnico2"
+    ]
+  }
+},
+{
+  "model": "TaskFlow.solicitud",
+  "pk": 152,
+  "fields": {
+    "cliente": 9,
+    "tipo_servicio": 6,
+    "estado": 4,
+    "descripcion": "Ajuste de calibración en balanza de alta precisión (Seed #45)",
+    "direccion": "Km 2 Vía al Mar, Bodega 3",
+    "fecha_creacion": "2025-08-09T02:15:08.049Z",
+    "usuario_creacion": [
+      "administrador"
+    ],
+    "usuario_asociado": [
+      "tecnico1"
+    ]
+  }
+},
+{
+  "model": "TaskFlow.solicitud",
+  "pk": 153,
+  "fields": {
+    "cliente": 1,
+    "tipo_servicio": 4,
+    "estado": 4,
+    "descripcion": "Montaje de sistema de pesaje para nuevos productos (Seed #46)",
+    "direccion": "Carrera 80 # 45-60 Medellín",
+    "fecha_creacion": "2025-08-09T02:15:08.049Z",
+    "usuario_creacion": [
+      "administrador"
+    ],
+    "usuario_asociado": [
+      "tecnico3"
+    ]
+  }
+},
+{
+  "model": "TaskFlow.solicitud",
+  "pk": 154,
+  "fields": {
+    "cliente": 4,
+    "tipo_servicio": 7,
+    "estado": 5,
+    "descripcion": "Visita técnica para revisión general de equipos (Seed #47)",
+    "direccion": "Av. Las Vegas # 50-15 Envigado",
+    "fecha_creacion": "2025-08-09T02:15:08.049Z",
+    "usuario_creacion": [
+      "administrador"
+    ],
+    "usuario_asociado": [
+      "coordinador1"
+    ]
+  }
+},
+{
+  "model": "TaskFlow.solicitud",
+  "pk": 155,
+  "fields": {
+    "cliente": 6,
+    "tipo_servicio": 4,
+    "estado": 4,
+    "descripcion": "Mantenimiento preventivo a básculas industriales (Seed #48)",
+    "direccion": "Parque Industrial La 50, Mz 12 Bodega 4",
+    "fecha_creacion": "2025-08-09T02:15:08.049Z",
+    "usuario_creacion": [
+      "administrador"
+    ],
+    "usuario_asociado": [
+      "tecnico3"
+    ]
+  }
+},
+{
+  "model": "TaskFlow.solicitud",
+  "pk": 156,
+  "fields": {
+    "cliente": 6,
+    "tipo_servicio": 6,
+    "estado": 2,
+    "descripcion": "Cambio de tarjeta lógica en sistema de pesaje (Seed #49)",
+    "direccion": "Transv. 39 # 18-22 Sabaneta",
+    "fecha_creacion": "2025-08-09T02:15:08.049Z",
+    "usuario_creacion": [
+      "administrador"
+    ],
+    "usuario_asociado": [
+      "tecnico3"
+    ]
+  }
+},
+{
+  "model": "TaskFlow.solicitud",
+  "pk": 157,
+  "fields": {
+    "cliente": 8,
+    "tipo_servicio": 7,
+    "estado": 5,
+    "descripcion": "Soporte técnico por error en lectura de peso (Seed #50)",
+    "direccion": "Calle 30A # 65-90 Medellín",
+    "fecha_creacion": "2025-08-09T02:15:08.049Z",
+    "usuario_creacion": [
+      "administrador"
+    ],
+    "usuario_asociado": [
+      "administrador"
+    ]
+  }
+},
+{
+  "model": "TaskFlow.solicitud",
+  "pk": 158,
+  "fields": {
+    "cliente": 11,
+    "tipo_servicio": 5,
+    "estado": 7,
+    "descripcion": "Verificación de integridad estructural de plataforma (Seed #51)",
+    "direccion": "Parque Industrial La 50, Mz 12 Bodega 4",
+    "fecha_creacion": "2025-08-09T02:15:08.067Z",
+    "usuario_creacion": [
+      "administrador"
+    ],
+    "usuario_asociado": [
+      "tecnico1"
+    ]
+  }
+},
+{
+  "model": "TaskFlow.solicitud",
+  "pk": 159,
+  "fields": {
+    "cliente": 7,
+    "tipo_servicio": 4,
+    "estado": 6,
+    "descripcion": "Mantenimiento preventivo a básculas industriales (Seed #52)",
+    "direccion": "Calle 30A # 65-90 Medellín",
+    "fecha_creacion": "2025-08-09T02:15:08.067Z",
+    "usuario_creacion": [
+      "administrador"
+    ],
+    "usuario_asociado": [
+      "tecnico2"
+    ]
+  }
+},
+{
+  "model": "TaskFlow.solicitud",
+  "pk": 160,
+  "fields": {
+    "cliente": 5,
+    "tipo_servicio": 4,
+    "estado": 6,
+    "descripcion": "Cambio de tarjeta lógica en sistema de pesaje (Seed #53)",
+    "direccion": "Av. Las Vegas # 50-15 Envigado",
+    "fecha_creacion": "2025-08-09T02:15:08.067Z",
+    "usuario_creacion": [
+      "administrador"
+    ],
+    "usuario_asociado": [
+      "coordinador1"
+    ]
+  }
+},
+{
+  "model": "TaskFlow.solicitud",
+  "pk": 161,
+  "fields": {
+    "cliente": 13,
+    "tipo_servicio": 6,
+    "estado": 3,
+    "descripcion": "Ajuste de calibración en balanza de alta precisión (Seed #54)",
+    "direccion": "Cl 44 # 67-12 Bello",
+    "fecha_creacion": "2025-08-09T02:15:08.067Z",
+    "usuario_creacion": [
+      "administrador"
+    ],
+    "usuario_asociado": [
+      "coordinador1"
+    ]
+  }
+},
+{
+  "model": "TaskFlow.solicitud",
+  "pk": 162,
+  "fields": {
+    "cliente": 5,
+    "tipo_servicio": 5,
+    "estado": 7,
+    "descripcion": "Visita técnica para revisión general de equipos (Seed #55)",
+    "direccion": "Cra 45 # 12-34 Medellín",
+    "fecha_creacion": "2025-08-09T02:15:08.067Z",
+    "usuario_creacion": [
+      "administrador"
+    ],
+    "usuario_asociado": [
+      "administrador"
+    ]
+  }
+},
+{
+  "model": "TaskFlow.solicitud",
+  "pk": 163,
+  "fields": {
+    "cliente": 7,
+    "tipo_servicio": 5,
+    "estado": 2,
+    "descripcion": "Montaje de sistema de pesaje para nuevos productos (Seed #56)",
+    "direccion": "Carrera 80 # 45-60 Medellín",
+    "fecha_creacion": "2025-08-09T02:15:08.067Z",
+    "usuario_creacion": [
+      "administrador"
+    ],
+    "usuario_asociado": [
+      "tecnico3"
+    ]
+  }
+},
+{
+  "model": "TaskFlow.solicitud",
+  "pk": 164,
+  "fields": {
+    "cliente": 9,
+    "tipo_servicio": 4,
+    "estado": 4,
+    "descripcion": "Mantenimiento preventivo a básculas industriales (Seed #57)",
+    "direccion": "Transv. 39 # 18-22 Sabaneta",
+    "fecha_creacion": "2025-08-09T02:15:08.067Z",
+    "usuario_creacion": [
+      "administrador"
+    ],
+    "usuario_asociado": [
+      "tecnico1"
+    ]
+  }
+},
+{
+  "model": "TaskFlow.solicitud",
+  "pk": 165,
+  "fields": {
+    "cliente": 3,
+    "tipo_servicio": 6,
+    "estado": 2,
+    "descripcion": "Soporte técnico por error en lectura de peso (Seed #58)",
+    "direccion": "Cl 44 # 67-12 Bello",
+    "fecha_creacion": "2025-08-09T02:15:08.067Z",
+    "usuario_creacion": [
+      "administrador"
+    ],
+    "usuario_asociado": [
+      "administrador"
+    ]
+  }
+},
+{
+  "model": "TaskFlow.solicitud",
+  "pk": 166,
+  "fields": {
+    "cliente": 4,
+    "tipo_servicio": 6,
+    "estado": 6,
+    "descripcion": "Montaje de sistema de pesaje para nuevos productos (Seed #59)",
+    "direccion": "Transv. 39 # 18-22 Sabaneta",
+    "fecha_creacion": "2025-08-09T02:15:08.067Z",
+    "usuario_creacion": [
+      "administrador"
+    ],
+    "usuario_asociado": [
+      "administrador"
+    ]
+  }
+},
+{
+  "model": "TaskFlow.solicitud",
+  "pk": 167,
+  "fields": {
+    "cliente": 2,
+    "tipo_servicio": 5,
+    "estado": 7,
+    "descripcion": "Mantenimiento preventivo a básculas industriales (Seed #60)",
+    "direccion": "Km 2 Vía al Mar, Bodega 3",
+    "fecha_creacion": "2025-08-09T02:15:08.067Z",
+    "usuario_creacion": [
+      "administrador"
+    ],
+    "usuario_asociado": [
+      "administrador"
+    ]
+  }
+},
+{
+  "model": "TaskFlow.solicitud",
+  "pk": 168,
+  "fields": {
+    "cliente": 14,
+    "tipo_servicio": 5,
+    "estado": 4,
+    "descripcion": "Ajuste de calibración en balanza de alta precisión (Seed #61)",
+    "direccion": "Parque Industrial La 50, Mz 12 Bodega 4",
+    "fecha_creacion": "2025-08-09T02:15:08.067Z",
+    "usuario_creacion": [
+      "administrador"
+    ],
+    "usuario_asociado": [
+      "tecnico2"
+    ]
+  }
+},
+{
+  "model": "TaskFlow.solicitud",
+  "pk": 169,
+  "fields": {
+    "cliente": 5,
+    "tipo_servicio": 7,
+    "estado": 4,
+    "descripcion": "Verificación de integridad estructural de plataforma (Seed #62)",
+    "direccion": "Av. Las Vegas # 50-15 Envigado",
+    "fecha_creacion": "2025-08-09T02:15:08.067Z",
+    "usuario_creacion": [
+      "administrador"
+    ],
+    "usuario_asociado": [
+      "tecnico1"
+    ]
+  }
+},
+{
+  "model": "TaskFlow.solicitud",
+  "pk": 170,
+  "fields": {
+    "cliente": 14,
+    "tipo_servicio": 7,
+    "estado": 3,
+    "descripcion": "Mantenimiento preventivo a básculas industriales (Seed #63)",
+    "direccion": "Av. Las Vegas # 50-15 Envigado",
+    "fecha_creacion": "2025-08-09T02:15:08.067Z",
+    "usuario_creacion": [
+      "administrador"
+    ],
+    "usuario_asociado": [
+      "tecnico2"
+    ]
+  }
+},
+{
+  "model": "TaskFlow.solicitud",
+  "pk": 171,
+  "fields": {
+    "cliente": 13,
+    "tipo_servicio": 5,
+    "estado": 5,
+    "descripcion": "Verificación de integridad estructural de plataforma (Seed #64)",
+    "direccion": "Cra 45 # 12-34 Medellín",
+    "fecha_creacion": "2025-08-09T02:15:08.067Z",
+    "usuario_creacion": [
+      "administrador"
+    ],
+    "usuario_asociado": [
+      "administrador"
+    ]
+  }
+},
+{
+  "model": "TaskFlow.solicitud",
+  "pk": 172,
+  "fields": {
+    "cliente": 11,
+    "tipo_servicio": 5,
+    "estado": 5,
+    "descripcion": "Configuración inicial de balanza conectada por red (Seed #65)",
+    "direccion": "Cl 10 # 20-30 Itagüí",
+    "fecha_creacion": "2025-08-09T02:15:08.067Z",
+    "usuario_creacion": [
+      "administrador"
+    ],
+    "usuario_asociado": [
+      "tecnico1"
+    ]
+  }
+},
+{
+  "model": "TaskFlow.solicitud",
+  "pk": 173,
+  "fields": {
+    "cliente": 7,
+    "tipo_servicio": 5,
+    "estado": 4,
+    "descripcion": "Cambio de tarjeta lógica en sistema de pesaje (Seed #66)",
+    "direccion": "Cl 10 # 20-30 Itagüí",
+    "fecha_creacion": "2025-08-09T02:15:08.067Z",
+    "usuario_creacion": [
+      "administrador"
+    ],
+    "usuario_asociado": [
+      "tecnico1"
+    ]
+  }
+},
+{
+  "model": "TaskFlow.solicitud",
+  "pk": 174,
+  "fields": {
+    "cliente": 5,
+    "tipo_servicio": 5,
+    "estado": 2,
+    "descripcion": "Verificación de integridad estructural de plataforma (Seed #67)",
+    "direccion": "Calle 30A # 65-90 Medellín",
+    "fecha_creacion": "2025-08-09T02:15:08.067Z",
+    "usuario_creacion": [
+      "administrador"
+    ],
+    "usuario_asociado": [
+      "tecnico1"
+    ]
+  }
+},
+{
+  "model": "TaskFlow.solicitud",
+  "pk": 175,
+  "fields": {
+    "cliente": 10,
+    "tipo_servicio": 6,
+    "estado": 4,
+    "descripcion": "Instalación de balanza en zona de despacho (Seed #68)",
+    "direccion": "Calle 30A # 65-90 Medellín",
+    "fecha_creacion": "2025-08-09T02:15:08.067Z",
+    "usuario_creacion": [
+      "administrador"
+    ],
+    "usuario_asociado": [
+      "tecnico2"
+    ]
+  }
+},
+{
+  "model": "TaskFlow.solicitud",
+  "pk": 176,
+  "fields": {
+    "cliente": 11,
+    "tipo_servicio": 5,
+    "estado": 3,
+    "descripcion": "Visita técnica para revisión general de equipos (Seed #69)",
+    "direccion": "Calle 30A # 65-90 Medellín",
+    "fecha_creacion": "2025-08-09T02:15:08.067Z",
+    "usuario_creacion": [
+      "administrador"
+    ],
+    "usuario_asociado": [
+      "tecnico3"
+    ]
+  }
+},
+{
+  "model": "TaskFlow.solicitud",
+  "pk": 177,
+  "fields": {
+    "cliente": 5,
+    "tipo_servicio": 4,
+    "estado": 5,
+    "descripcion": "Configuración inicial de balanza conectada por red (Seed #70)",
+    "direccion": "Cl 44 # 67-12 Bello",
+    "fecha_creacion": "2025-08-09T02:15:08.067Z",
+    "usuario_creacion": [
+      "administrador"
+    ],
+    "usuario_asociado": [
+      "tecnico1"
+    ]
+  }
+},
+{
+  "model": "TaskFlow.solicitud",
+  "pk": 178,
+  "fields": {
+    "cliente": 5,
+    "tipo_servicio": 7,
+    "estado": 2,
+    "descripcion": "Ajuste de calibración en balanza de alta precisión (Seed #71)",
+    "direccion": "Zona Franca, Módulo 7",
+    "fecha_creacion": "2025-08-09T02:15:08.067Z",
+    "usuario_creacion": [
+      "administrador"
+    ],
+    "usuario_asociado": [
+      "administrador"
+    ]
+  }
+},
+{
+  "model": "TaskFlow.solicitud",
+  "pk": 179,
+  "fields": {
+    "cliente": 9,
+    "tipo_servicio": 7,
+    "estado": 6,
+    "descripcion": "Reparación de sensor de peso defectuoso (Seed #72)",
+    "direccion": "Km 2 Vía al Mar, Bodega 3",
+    "fecha_creacion": "2025-08-09T02:15:08.067Z",
+    "usuario_creacion": [
+      "administrador"
+    ],
+    "usuario_asociado": [
+      "coordinador1"
+    ]
+  }
+},
+{
+  "model": "TaskFlow.solicitud",
+  "pk": 180,
+  "fields": {
+    "cliente": 5,
+    "tipo_servicio": 6,
+    "estado": 4,
+    "descripcion": "Mantenimiento preventivo a básculas industriales (Seed #73)",
+    "direccion": "Cl 44 # 67-12 Bello",
+    "fecha_creacion": "2025-08-09T02:15:08.067Z",
+    "usuario_creacion": [
+      "administrador"
+    ],
+    "usuario_asociado": [
+      "coordinador1"
+    ]
+  }
+},
+{
+  "model": "TaskFlow.solicitud",
+  "pk": 181,
+  "fields": {
+    "cliente": 2,
+    "tipo_servicio": 7,
+    "estado": 4,
+    "descripcion": "Instalación de balanza en zona de despacho (Seed #74)",
+    "direccion": "Calle 30A # 65-90 Medellín",
+    "fecha_creacion": "2025-08-09T02:15:08.068Z",
+    "usuario_creacion": [
+      "administrador"
+    ],
+    "usuario_asociado": [
+      "administrador"
+    ]
+  }
+},
+{
+  "model": "TaskFlow.solicitud",
+  "pk": 182,
+  "fields": {
+    "cliente": 2,
+    "tipo_servicio": 7,
+    "estado": 6,
+    "descripcion": "Soporte técnico por error en lectura de peso (Seed #75)",
+    "direccion": "Carrera 80 # 45-60 Medellín",
+    "fecha_creacion": "2025-08-09T02:15:08.068Z",
+    "usuario_creacion": [
+      "administrador"
+    ],
+    "usuario_asociado": [
+      "tecnico2"
+    ]
+  }
+},
+{
+  "model": "TaskFlow.solicitud",
+  "pk": 183,
+  "fields": {
+    "cliente": 4,
+    "tipo_servicio": 5,
+    "estado": 7,
+    "descripcion": "Visita técnica para revisión general de equipos (Seed #76)",
+    "direccion": "Transv. 39 # 18-22 Sabaneta",
+    "fecha_creacion": "2025-08-09T02:15:08.068Z",
+    "usuario_creacion": [
+      "administrador"
+    ],
+    "usuario_asociado": [
+      "tecnico2"
+    ]
+  }
+},
+{
+  "model": "TaskFlow.solicitud",
+  "pk": 184,
+  "fields": {
+    "cliente": 14,
+    "tipo_servicio": 4,
+    "estado": 6,
+    "descripcion": "Reparación de sensor de peso defectuoso (Seed #77)",
+    "direccion": "Cra 45 # 12-34 Medellín",
+    "fecha_creacion": "2025-08-09T02:15:08.068Z",
+    "usuario_creacion": [
+      "administrador"
+    ],
+    "usuario_asociado": [
+      "tecnico3"
+    ]
+  }
+},
+{
+  "model": "TaskFlow.solicitud",
+  "pk": 185,
+  "fields": {
+    "cliente": 6,
+    "tipo_servicio": 4,
+    "estado": 5,
+    "descripcion": "Montaje de sistema de pesaje para nuevos productos (Seed #78)",
+    "direccion": "Transv. 39 # 18-22 Sabaneta",
+    "fecha_creacion": "2025-08-09T02:15:08.068Z",
+    "usuario_creacion": [
+      "administrador"
+    ],
+    "usuario_asociado": [
+      "administrador"
+    ]
+  }
+},
+{
+  "model": "TaskFlow.solicitud",
+  "pk": 186,
+  "fields": {
+    "cliente": 11,
+    "tipo_servicio": 6,
+    "estado": 7,
+    "descripcion": "Configuración inicial de balanza conectada por red (Seed #79)",
+    "direccion": "Cl 10 # 20-30 Itagüí",
+    "fecha_creacion": "2025-08-09T02:15:08.068Z",
+    "usuario_creacion": [
+      "administrador"
+    ],
+    "usuario_asociado": [
+      "tecnico1"
+    ]
+  }
+},
+{
+  "model": "TaskFlow.solicitud",
+  "pk": 187,
+  "fields": {
+    "cliente": 7,
+    "tipo_servicio": 4,
+    "estado": 2,
+    "descripcion": "Visita técnica para revisión general de equipos (Seed #80)",
+    "direccion": "Cl 10 # 20-30 Itagüí",
+    "fecha_creacion": "2025-08-09T02:15:08.068Z",
+    "usuario_creacion": [
+      "administrador"
+    ],
+    "usuario_asociado": [
+      "tecnico2"
+    ]
+  }
+},
+{
+  "model": "TaskFlow.solicitud",
+  "pk": 188,
+  "fields": {
+    "cliente": 13,
+    "tipo_servicio": 7,
+    "estado": 5,
+    "descripcion": "Reparación de sensor de peso defectuoso (Seed #81)",
+    "direccion": "Carrera 80 # 45-60 Medellín",
+    "fecha_creacion": "2025-08-09T02:15:08.068Z",
+    "usuario_creacion": [
+      "administrador"
+    ],
+    "usuario_asociado": [
+      "tecnico1"
+    ]
+  }
+},
+{
+  "model": "TaskFlow.solicitud",
+  "pk": 189,
+  "fields": {
+    "cliente": 7,
+    "tipo_servicio": 7,
+    "estado": 3,
+    "descripcion": "Ajuste de calibración en balanza de alta precisión (Seed #82)",
+    "direccion": "Cl 44 # 67-12 Bello",
+    "fecha_creacion": "2025-08-09T02:15:08.068Z",
+    "usuario_creacion": [
+      "administrador"
+    ],
+    "usuario_asociado": [
+      "coordinador1"
+    ]
+  }
+},
+{
+  "model": "TaskFlow.solicitud",
+  "pk": 190,
+  "fields": {
+    "cliente": 11,
+    "tipo_servicio": 7,
+    "estado": 7,
+    "descripcion": "Soporte técnico por error en lectura de peso (Seed #83)",
+    "direccion": "Cl 10 # 20-30 Itagüí",
+    "fecha_creacion": "2025-08-09T02:15:08.068Z",
+    "usuario_creacion": [
+      "administrador"
+    ],
+    "usuario_asociado": [
+      "administrador"
+    ]
+  }
+},
+{
+  "model": "TaskFlow.solicitud",
+  "pk": 191,
+  "fields": {
+    "cliente": 5,
+    "tipo_servicio": 7,
+    "estado": 5,
+    "descripcion": "Ajuste de calibración en balanza de alta precisión (Seed #84)",
+    "direccion": "Cl 10 # 20-30 Itagüí",
+    "fecha_creacion": "2025-08-09T02:15:08.068Z",
+    "usuario_creacion": [
+      "administrador"
+    ],
+    "usuario_asociado": [
+      "tecnico2"
+    ]
+  }
+},
+{
+  "model": "TaskFlow.solicitud",
+  "pk": 192,
+  "fields": {
+    "cliente": 5,
+    "tipo_servicio": 6,
+    "estado": 5,
+    "descripcion": "Mantenimiento preventivo a básculas industriales (Seed #85)",
+    "direccion": "Av. Las Vegas # 50-15 Envigado",
+    "fecha_creacion": "2025-08-09T02:15:08.068Z",
+    "usuario_creacion": [
+      "administrador"
+    ],
+    "usuario_asociado": [
+      "tecnico3"
+    ]
+  }
+},
+{
+  "model": "TaskFlow.solicitud",
+  "pk": 193,
+  "fields": {
+    "cliente": 13,
+    "tipo_servicio": 6,
+    "estado": 6,
+    "descripcion": "Configuración inicial de balanza conectada por red (Seed #86)",
+    "direccion": "Parque Industrial La 50, Mz 12 Bodega 4",
+    "fecha_creacion": "2025-08-09T02:15:08.068Z",
+    "usuario_creacion": [
+      "administrador"
+    ],
+    "usuario_asociado": [
+      "tecnico1"
+    ]
+  }
+},
+{
+  "model": "TaskFlow.solicitud",
+  "pk": 194,
+  "fields": {
+    "cliente": 14,
+    "tipo_servicio": 7,
+    "estado": 4,
+    "descripcion": "Configuración inicial de balanza conectada por red (Seed #87)",
+    "direccion": "Km 2 Vía al Mar, Bodega 3",
+    "fecha_creacion": "2025-08-09T02:15:08.068Z",
+    "usuario_creacion": [
+      "administrador"
+    ],
+    "usuario_asociado": [
+      "tecnico2"
+    ]
+  }
+},
+{
+  "model": "TaskFlow.solicitud",
+  "pk": 195,
+  "fields": {
+    "cliente": 4,
+    "tipo_servicio": 5,
+    "estado": 3,
+    "descripcion": "Visita técnica para revisión general de equipos (Seed #88)",
+    "direccion": "Parque Industrial La 50, Mz 12 Bodega 4",
+    "fecha_creacion": "2025-08-09T02:15:08.068Z",
+    "usuario_creacion": [
+      "administrador"
+    ],
+    "usuario_asociado": [
+      "coordinador1"
+    ]
+  }
+},
+{
+  "model": "TaskFlow.solicitud",
+  "pk": 196,
+  "fields": {
+    "cliente": 8,
+    "tipo_servicio": 5,
+    "estado": 7,
+    "descripcion": "Ajuste de calibración en balanza de alta precisión (Seed #89)",
+    "direccion": "Cra 45 # 12-34 Medellín",
+    "fecha_creacion": "2025-08-09T02:15:08.068Z",
+    "usuario_creacion": [
+      "administrador"
+    ],
+    "usuario_asociado": [
+      "administrador"
+    ]
+  }
+},
+{
+  "model": "TaskFlow.solicitud",
+  "pk": 197,
+  "fields": {
+    "cliente": 8,
+    "tipo_servicio": 5,
+    "estado": 7,
+    "descripcion": "Configuración inicial de balanza conectada por red (Seed #90)",
+    "direccion": "Transv. 39 # 18-22 Sabaneta",
+    "fecha_creacion": "2025-08-09T02:15:08.068Z",
+    "usuario_creacion": [
+      "administrador"
+    ],
+    "usuario_asociado": [
+      "coordinador1"
+    ]
+  }
+},
+{
+  "model": "TaskFlow.solicitud",
+  "pk": 198,
+  "fields": {
+    "cliente": 10,
+    "tipo_servicio": 5,
+    "estado": 2,
+    "descripcion": "Cambio de tarjeta lógica en sistema de pesaje (Seed #91)",
+    "direccion": "Km 2 Vía al Mar, Bodega 3",
+    "fecha_creacion": "2025-08-09T02:15:08.068Z",
+    "usuario_creacion": [
+      "administrador"
+    ],
+    "usuario_asociado": [
+      "tecnico3"
+    ]
+  }
+},
+{
+  "model": "TaskFlow.solicitud",
+  "pk": 199,
+  "fields": {
+    "cliente": 8,
+    "tipo_servicio": 5,
+    "estado": 2,
+    "descripcion": "Cambio de tarjeta lógica en sistema de pesaje (Seed #92)",
+    "direccion": "Cl 44 # 67-12 Bello",
+    "fecha_creacion": "2025-08-09T02:15:08.068Z",
+    "usuario_creacion": [
+      "administrador"
+    ],
+    "usuario_asociado": [
+      "tecnico1"
+    ]
+  }
+},
+{
+  "model": "TaskFlow.solicitud",
+  "pk": 200,
+  "fields": {
+    "cliente": 9,
+    "tipo_servicio": 5,
+    "estado": 2,
+    "descripcion": "Cambio de tarjeta lógica en sistema de pesaje (Seed #93)",
+    "direccion": "Av. Las Vegas # 50-15 Envigado",
+    "fecha_creacion": "2025-08-09T02:15:08.068Z",
+    "usuario_creacion": [
+      "administrador"
+    ],
+    "usuario_asociado": [
+      "tecnico2"
+    ]
+  }
+},
+{
+  "model": "TaskFlow.solicitud",
+  "pk": 201,
+  "fields": {
+    "cliente": 14,
+    "tipo_servicio": 7,
+    "estado": 6,
+    "descripcion": "Mantenimiento preventivo a básculas industriales (Seed #94)",
+    "direccion": "Cl 44 # 67-12 Bello",
+    "fecha_creacion": "2025-08-09T02:15:08.068Z",
+    "usuario_creacion": [
+      "administrador"
+    ],
+    "usuario_asociado": [
+      "administrador"
+    ]
+  }
+},
+{
+  "model": "TaskFlow.solicitud",
+  "pk": 202,
+  "fields": {
+    "cliente": 4,
+    "tipo_servicio": 6,
+    "estado": 3,
+    "descripcion": "Cambio de tarjeta lógica en sistema de pesaje (Seed #95)",
+    "direccion": "Cra 45 # 12-34 Medellín",
+    "fecha_creacion": "2025-08-09T02:15:08.068Z",
+    "usuario_creacion": [
+      "administrador"
+    ],
+    "usuario_asociado": [
+      "tecnico1"
+    ]
+  }
+},
+{
+  "model": "TaskFlow.solicitud",
+  "pk": 203,
+  "fields": {
+    "cliente": 8,
+    "tipo_servicio": 4,
+    "estado": 4,
+    "descripcion": "Cambio de tarjeta lógica en sistema de pesaje (Seed #96)",
+    "direccion": "Transv. 39 # 18-22 Sabaneta",
+    "fecha_creacion": "2025-08-09T02:15:08.068Z",
+    "usuario_creacion": [
+      "administrador"
+    ],
+    "usuario_asociado": [
+      "tecnico1"
+    ]
+  }
+},
+{
+  "model": "TaskFlow.solicitud",
+  "pk": 204,
+  "fields": {
+    "cliente": 13,
+    "tipo_servicio": 6,
+    "estado": 4,
+    "descripcion": "Mantenimiento preventivo a básculas industriales (Seed #97)",
+    "direccion": "Zona Franca, Módulo 7",
+    "fecha_creacion": "2025-08-09T02:15:08.068Z",
+    "usuario_creacion": [
+      "administrador"
+    ],
+    "usuario_asociado": [
+      "tecnico1"
+    ]
+  }
+},
+{
+  "model": "TaskFlow.solicitud",
+  "pk": 205,
+  "fields": {
+    "cliente": 14,
+    "tipo_servicio": 4,
+    "estado": 3,
+    "descripcion": "Cambio de tarjeta lógica en sistema de pesaje (Seed #98)",
+    "direccion": "Av. Las Vegas # 50-15 Envigado",
+    "fecha_creacion": "2025-08-09T02:15:08.068Z",
+    "usuario_creacion": [
+      "administrador"
+    ],
+    "usuario_asociado": [
+      "tecnico2"
+    ]
+  }
+},
+{
+  "model": "TaskFlow.solicitud",
+  "pk": 206,
+  "fields": {
+    "cliente": 4,
+    "tipo_servicio": 4,
+    "estado": 5,
+    "descripcion": "Verificación de integridad estructural de plataforma (Seed #99)",
+    "direccion": "Cra 45 # 12-34 Medellín",
+    "fecha_creacion": "2025-08-09T02:15:08.069Z",
+    "usuario_creacion": [
+      "administrador"
+    ],
+    "usuario_asociado": [
+      "tecnico2"
+    ]
+  }
+},
+{
+  "model": "TaskFlow.solicitud",
+  "pk": 207,
+  "fields": {
+    "cliente": 14,
+    "tipo_servicio": 6,
+    "estado": 3,
+    "descripcion": "Reparación de sensor de peso defectuoso (Seed #100)",
+    "direccion": "Zona Franca, Módulo 7",
+    "fecha_creacion": "2025-08-09T02:15:08.069Z",
+    "usuario_creacion": [
+      "administrador"
+    ],
+    "usuario_asociado": [
+      "tecnico3"
+    ]
+  }
+}
+]
