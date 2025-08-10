@@ -163,11 +163,20 @@ STATIC_URL = 'static/'
 
 CORS_ALLOW_CREDENTIALS = True
 
-CORS_ALLOWED_ORIGINS = ['http://localhost:5173']
+CORS_ALLOWED_ORIGINS = ['http://localhost:5173',"https://taskflow-1-3mhv.onrender.com"]
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-CSRF_TRUSTED_ORIGINS = ['http://localhost:5173']
+CSRF_TRUSTED_ORIGINS = [
+    "https://taskflow-3wi0.onrender.com",     # BACKEND Render
+    "https://taskflow-1-3mhv.onrender.com",   # FRONTEND Render
+    "http://localhost:5173",                  # dev local (opcional)
+]
+# Cookies seguras en prod
+SESSION_COOKIE_SECURE = not DEBUG
+CSRF_COOKIE_SECURE = not DEBUG
+SESSION_COOKIE_SAMESITE = "None" if not DEBUG else "Lax"
+CSRF_COOKIE_SAMESITE   = "None" if not DEBUG else "Lax"

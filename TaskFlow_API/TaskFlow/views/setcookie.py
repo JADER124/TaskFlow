@@ -18,20 +18,26 @@ def setcookie(request):
     
     try:
         response = JsonResponse({'mensaje': 'Las cookies fueron creadas exitosamente.'}, status=200)
+        
+        
+        # Solo lo necesario: en prod (DEBUG=False) => cross-site requiere SameSite=None y Secure=True
+        secure = not settings.DEBUG
+        same_site = 'None' if secure else 'Lax'
+
 
         response.set_cookie(
             key='access_token',
             value=access,
             httponly=True,
-            secure=False,  # Cambia a True si usas HTTPS
-            samesite='Lax'
+            secure=secure,  # Cambia a True si usas HTTPS
+            samesite=same_site
         )
         response.set_cookie(
             key='refresh_token',
             value=refresh,
             httponly=True,
-            secure=False,
-            samesite='Lax'
+            secure=secure,
+            samesite=same_site
         )
 
         return response
