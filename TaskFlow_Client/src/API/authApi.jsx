@@ -1,67 +1,47 @@
-// src/api/userAPI.js
+import { api } from "./global/environments";
 
-import axios from "axios";
+// Prefijo común de autenticación (rutas relativas respecto al BASE_URL global)
+const URL = "/auth/api";
 
-// URL base de tu API Django para las rutas de autenticación
-const BASE_URL = "http://localhost:8000/auth/api";
-
-// Crea una instancia de Axios con una base común, para evitar repetir la URL
-const api = axios.create({
-  baseURL: BASE_URL,
-  // Si necesitas enviar cookies en cada solicitud (como tokens HttpOnly), activa esto:
-  // withCredentials: true,
-});
-
-// Función para iniciar sesión (obtener tokens)
+// Iniciar sesión (obtener tokens)
 export const loginUser = async (username, password) => {
   try {
-    // Realiza una petición POST al endpoint de login
-    const response = await api.post("/token/", {
-      username,
-      password,
-    });
-
-    // Retorna los tokens recibidos (access y refresh)
-    return response.data;
+    const response = await api.post(`${URL}/token/`, { username, password });
+    return response.data; // { access, refresh, ... }
   } catch (error) {
-    // Si hay error (credenciales inválidas, por ejemplo), lo muestra en consola
     console.error("Error en login:", error.response?.data || error.message);
-    throw error; // Vuelve a lanzar el error para manejarlo donde se llame
+    throw error;
   }
 };
 
-// Función para enviar los tokens al backend y crear cookies HttpOnly
+// Enviar tokens al backend para crear cookies HttpOnly
 export const setCookie = async (access, refresh) => {
   try {
-    // Hace una petición POST al endpoint /setcookie/ enviando access y refresh tokens
     const response = await api.post(
-      "/token/setcookie/",
+      `${URL}/token/setcookie/`,
       { access, refresh },
       {
-        withCredentials: true, // Importante: permite enviar cookies (usado en Django)
+        // Hereda withCredentials de la instancia global,
+        // pero lo dejamos explícito por claridad
+        withCredentials: true,
       }
     );
-
-    // Devuelve la respuesta completa (puedes acceder a status, headers, etc.)
     return response;
   } catch (error) {
-    // Imprime el error si ocurre durante el proceso
-    console.log("Error" + error.response.data);
+    console.error("Error al fijar cookie:", error.response?.data || error.message);
+    throw error;
   }
 };
 
-// Función para verificar si la cookie HttpOnly es válida
+// Verificar si la cookie HttpOnly es válida
 export const verifyCookie = async () => {
   try {
-    // Realiza una petición GET para verificar la sesión usando la cookie
-    const res = await api.get("/token/verifycookie/", {
-      withCredentials: true, // Esencial para enviar cookies en la solicitud
+    const res = await api.get(`${URL}/token/verifycookie/`, {
+      withCredentials: true,
     });
-
-    // Si el token en cookie es válido, retorna la respuesta
-    return res;
+    return res; // o res.data si prefieres solo el payload
   } catch (error) {
-    // Imprime el error en consola si la verificación falla
-    console.log(error);
+    console.error("Error al verificar cookie:", error.response?.data || error.message);
+    throw error;
   }
 };
