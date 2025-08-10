@@ -9,9 +9,13 @@ https://docs.djangoproject.com/en/5.1/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.1/ref/settings/
 """
-
+import os
 from pathlib import Path
+import dj_database_url
+from dotenv import load_dotenv
 
+# Cargar .env en local
+load_dotenv()
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -57,9 +61,26 @@ MIDDLEWARE = [
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
+        "TaskFlow.authentication.CookieJWTAuthentication",
         'rest_framework_simplejwt.authentication.JWTAuthentication',
     ),
+    
+    'DEFAULT_PERMISSION_CLASSES': (
+        
+        'rest_framework.permissions.IsAuthenticated',
+    )
 }
+# configuracion del tiempo de vida del token jwt. 
+from datetime import timedelta
+
+SIMPLE_JWT = {
+    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=60),   # Cambia 30 por lo que necesites
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=1),      # El refresh dura más
+    'ROTATE_REFRESH_TOKENS': False,
+    'BLACKLIST_AFTER_ROTATION': False,
+    'AUTH_HEADER_TYPES': ('Bearer',),
+}
+
 
 ROOT_URLCONF = 'TaskFlow_API.urls'
 
@@ -85,11 +106,12 @@ WSGI_APPLICATION = 'TaskFlow_API.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
+# Base de datos (Postgres por defecto, SQLite si no hay DATABASE_URL)
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
+    "default": dj_database_url.parse(
+        os.getenv("DATABASE_URL", f"sqlite:///{BASE_DIR / 'db.sqlite3'}"),
+        conn_max_age=600
+    )
 }
 
 
@@ -129,9 +151,13 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 
+CORS_ALLOW_CREDENTIALS = True
+
 CORS_ALLOWED_ORIGINS = ['http://localhost:5173']
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+CSRF_TRUSTED_ORIGINS = ['http://localhost:5173']

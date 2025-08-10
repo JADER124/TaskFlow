@@ -1,90 +1,175 @@
-import React, { useEffect, useState } from "react";
-import { loginUser } from "../API/user_API";
-import { useApi } from "../Context/UserAuth";
-import { useNavigate } from "react-router-dom";
+import React from "react";
+import { useForm } from "react-hook-form"; // Esto es para manejar formularios más fácil
+import { yupResolver } from "@hookform/resolvers/yup"; // Para conectar Yup con React Hook Form
+import * as yup from "yup"; // Yup lo usamos para validar datos
+import { loginUser, setCookie } from "../API/authApi"; // Funciones que hablan con el backend para hacer login y guardar cookies
+import { useAuth } from "../context/authContext"; // Nuestro contexto global que sabe si el usuario está logueado
+import { useNavigate } from "react-router-dom"; // Para movernos entre páginas sin recargar
+import logo from "../assets/taskFlow.png"; // El logo de la app
+import { useAlert, Alert } from "../components/shared/alert"; // Para mostrar mensajes al usuario (errores, éxito, etc.)
+
+// Aquí definimos cómo queremos que se valide el formulario
+// Básicamente: usuario y contraseña son obligatorios
+const schema = yup.object().shape({
+  username: yup.string().required("El correo es obligatorio"),
+  password: yup.string().required("La contraseña es obligatoria"),
+});
+
+// Este es nuestro componente de Login
 const Login = () => {
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
-  const [disable, setDisable] = useState(false);
-  const { loginUser } = useApi();
+  // Con esto podemos lanzar alertas en la pantalla
+  const {
+    currentAlert,
+    hideAlert,
+    showError,
+    showSuccess,
+    showWarning,
+    showInfo,
+  } = useAlert();
+
+  // Configuramos el formulario
+  // `register` sirve para decirle a React Hook Form qué inputs va a controlar
+  // `handleSubmit` es la función que se ejecuta al enviar el form
+  // `errors` son los errores de validación
+  // `reset` para limpiar el formulario
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isSubmitting },
+    reset,
+  } = useForm({
+    resolver: yupResolver(schema), // Aquí le decimos: "valida usando este esquema de Yup"
+  });
+
+  // Sacamos funciones del contexto de autenticación
+  const { loginFromComponent, setUser } = useAuth();
+
+  // Esto lo usamos para redirigir a otra ruta
   const navigate = useNavigate();
-  const handleLogin = async (e) => {
-    e.preventDefault();
-    setDisable(true);
-    const userData = await loginUser(username, password);
 
-    if (userData) {
-      setDisable(false);
+  // Esta función se ejecuta cuando el usuario le da al botón de "Iniciar sesión"
+  const onSubmit = async ({ username, password }) => {
+    try {
+      // Paso 1: Mandamos usuario y contraseña al backend
+      const userData = await loginUser(username, password);
 
-      if (userData.groups.includes(1)) {
-        navigate("/admin-dashboard");
-      } else if (userData.groups.includes(2)) {
-        navigate("/user-dashboard");
-      } else {
-        navigate("/"); // Ruta por defecto si no pertenece a ningún grupo específico
+      // Si no nos devuelve datos, las credenciales son malas
+      if (!userData) {
+        showError("Error", "Credenciales inválidas");
+        return;
       }
-    } else {
-      alert("Error al iniciar sesión");
-      setDisable(false);
+
+      // Paso 2: Guardamos en el backend las cookies con los tokens
+      const cookieRes = await setCookie(userData.access, userData.refresh);
+      if (cookieRes?.status !== 200) {
+        showError("Error", "No se pudo establecer la sesión");
+        return;
+      }
+
+      // Paso 3: Guardamos algo básico en el sessionStorage (solo para UI, no para autorizar)
+      sessionStorage.setItem("isLoggedIn", "true");
+      sessionStorage.setItem("username", username);
+
+      // Paso 4: Guardamos en el contexto los grupos de este usuario
+      setUser({ groups: userData.groups || [] });
+
+      // Paso 5: Le decimos al contexto: "sí, el usuario está logueado"
+      loginFromComponent();
+
+      // Paso 6: Según su grupo, lo mandamos a su sección
+      const groups = userData.groups || [];
+      if (groups.includes("Coordinadores")) {
+        navigate("/admin");
+      } else if (groups.includes("Tecnicos")) {
+        navigate("/tecnico");
+      } else {
+        navigate("/");
+      }
+    } catch (error) {
+      // Si algo falla, mostramos un error
+      showError(
+        "Error",
+        error?.response?.data?.detail || "No se pudo iniciar sesión"
+      );
+      // Limpiamos el formulario para que el usuario lo vuelva a llenar
+      reset();
     }
   };
 
+
   return (
-    <div class="bg-gray-100">
-      <div class="min-h-screen flex items-center justify-center">
-        <div class="max-w-md w-full p-6 bg-white rounded-lg shadow-lg">
-          <div class="flex justify-center mb-8">
+    <div className="bg-gray-100">
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="max-w-md w-full p-6 bg-white rounded-lg shadow-lg">
+          <div className="flex justify-center">
             <img
-              src="https://www.emprenderconactitud.com/img/POC%20WCS%20(1).png"
+              src={logo}
               alt="Logo"
-              class="w-30 h-20"
+              className="w-full max-w-[300px] h-auto my-3"
             />
           </div>
-          <h1 class="text-2xl font-semibold text-center text-gray-500 mt-8 mb-6">
+          <h1 className="text-2xl font-semibold text-center text-gray-500 mt-8 mb-6">
             Iniciar sesión
           </h1>
-          <form onSubmit={handleLogin}>
-            <div class="mb-6">
-              <label for="email" class="block mb-2 text-sm text-gray-600">
-                Correo electrónico
+
+          <form onSubmit={handleSubmit(onSubmit)} noValidate>
+            <div className="mb-6">
+              <label
+                htmlFor="username"
+                className="block mb-2 text-sm text-gray-600"
+              >
+                Usuario
               </label>
               <input
                 type="text"
-                placeholder="Usuario"
-                value={username}
-                onChange={(e) => setUsername(e.target.value)}
-                class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-500"
-                required
+                id="username"
+                placeholder="Ingrese el usuario"
+                {...register("username")}
+                className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600"
               />
+              {errors.username && (
+                <p className="text-sm text-red-600 mt-1">
+                  {errors.username.message}
+                </p>
+              )}
             </div>
-            <div class="mb-6">
-              <label for="password" class="block mb-2 text-sm text-gray-600">
+
+            <div className="mb-6">
+              <label
+                htmlFor="password"
+                className="block mb-2 text-sm text-gray-600"
+              >
                 Contraseña
               </label>
               <input
                 type="password"
-                placeholder="Contraseña"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-500"
-                required
+                id="password"
+                placeholder="Ingrese la contraseña"
+                {...register("password")}
+                className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600"
               />
-              <a href="#" class="block text-right text-xs text-cyan-600 mt-2">
-                ¿Olvidaste tu contraseña?
-              </a>
+              {errors.password && (
+                <p className="text-sm text-red-600 mt-1">
+                  {errors.password.message}
+                </p>
+              )}
             </div>
+
             <button
-              disabled={disable}
+              disabled={isSubmitting}
               type="submit"
-              class="w-32 bg-gradient-to-r from-cyan-400 to-cyan-600 text-white py-2 rounded-lg mx-auto block focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-cyan-500 mt-4 mb-6"
+              className="w-32 bg-blue-600 hover:bg-blue-500 text-white py-2 rounded-lg mx-auto block focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-cyan-500 mt-4 mb-6"
             >
-              {disable ? "Validando..." : "Acceso"}
+              {isSubmitting ? "Validando..." : "Acceso"}
             </button>
           </form>
-          <p class="text-xs text-gray-600 text-center mt-10">
-            &copy; 2025 TFW LAT
+
+          <p className="text-xs text-gray-600 text-center mt-10">
+            &copy; 2025 TASTFLOW TEAM
           </p>
         </div>
+        {/* Render Alert */}
+        {currentAlert && <Alert {...currentAlert} onClose={hideAlert} />}
       </div>
     </div>
   );
