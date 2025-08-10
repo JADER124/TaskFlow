@@ -3,7 +3,7 @@
 import axios from "axios";
 
 // URL base de tu API Django para las rutas de autenticación
-const BASE_URL = "http://localhost:8000/auth/api";
+const BASE_URL = "https://taskflow-3wi0.onrender.com/auth/api";
 
 // Crea una instancia de Axios con una base común, para evitar repetir la URL
 const api = axios.create({
