@@ -23,13 +23,19 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-5d++*g=g_ifa8he=l^vmu4l#g8_a-j%$8(iho#j3%mc4xzwf=^'
+# Usa variables de entorno para no exponer secretos en el repo
+SECRET_KEY = os.getenv("DJANGO_SECRET_KEY", "dev-insecure-key")
+# Permite activar/desactivar debug por ENV (True/False)
+DEBUG = os.getenv("DJANGO_DEBUG", "False").lower() in ("1", "true", "yes", "on")
 
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
 
-ALLOWED_HOSTS = ['taskflow-3wi0.onrender.com', 'localhost', '127.0.0.1']
+
+# Lista separada por comas, ej: "taskflow-3wi0.onrender.com,localhost,127.0.0.1"
+ALLOWED_HOSTS = [h.strip() for h in os.getenv(
+    "DJANGO_ALLOWED_HOSTS",
+    "localhost,127.0.0.1"  # default local
+).split(",") if h.strip()]
+
 
 
 
@@ -62,9 +68,8 @@ MIDDLEWARE = [
 ]
 
 # Static files para producción
-STATIC_URL = "/static/"
 STATIC_ROOT = BASE_DIR / "staticfiles"
-STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
+
 
 # Detrás de proxy (Render)
 SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
@@ -161,20 +166,25 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 
-CORS_ALLOW_CREDENTIALS = True
+STATIC_ROOT = BASE_DIR / "staticfiles"
 
-CORS_ALLOWED_ORIGINS = ['http://localhost:5173',"https://taskflow-1-3mhv.onrender.com"]
+CORS_ALLOW_CREDENTIALS = True
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-CSRF_TRUSTED_ORIGINS = [
-    "https://taskflow-3wi0.onrender.com",     # BACKEND Render
-    "https://taskflow-1-3mhv.onrender.com",   # FRONTEND Render
-    "http://localhost:5173",                  # dev local (opcional)
-]
+# Lista separada por comas, ej: "http://localhost:5173,https://taskflow-1-3mhv.onrender.com"
+CORS_ALLOWED_ORIGINS = [o.strip() for o in os.getenv(
+    "CORS_ALLOWED_ORIGINS",
+    "http://localhost:5173"  # default local
+).split(",") if o.strip()]
+
+CSRF_TRUSTED_ORIGINS = [o.strip() for o in os.getenv(
+    "CSRF_TRUSTED_ORIGINS",
+    "http://localhost:5173"  # default local
+).split(",") if o.strip()]
 # Cookies seguras en prod
 SESSION_COOKIE_SECURE = not DEBUG
 CSRF_COOKIE_SECURE = not DEBUG
