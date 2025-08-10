@@ -11,7 +11,7 @@ from ..serializers.solicitud_detail_serializer import SolicitudDetailSerializer
 # Esta vista acepta solo el método GET (leer datos)
 @api_view(['GET'])
 
-@permission_classes([AllowAny])
+@permission_classes([IsAuthenticated])
 def solicitud_detail(request, id):
     """
     Vista de detalle de una Solicitud.

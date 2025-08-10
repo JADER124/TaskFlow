@@ -8,7 +8,7 @@ from ..serializers.list_user_serializer import listUserSerializer
 User = get_user_model()
 
 @api_view(['GET'])
-@permission_classes([AllowAny])  # Solo usuarios autenticados pueden consultar la lista
+@permission_classes([IsAuthenticated])  # Solo usuarios autenticados pueden consultar la lista
 def list_user(request):
     """
     Devuelve todos los usuarios activos que pertenecen al grupo 'Tecnicos'.

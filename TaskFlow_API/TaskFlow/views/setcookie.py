@@ -14,7 +14,7 @@ def setcookie(request):
     refresh = request.data.get('refresh')
 
     if not access or not refresh:
-        return Response({'error': 'No se encontró un token en la solicitud.'}, status=400)
+        return JsonResponse({'error': 'No se encontró un token en la solicitud.'}, status=400)
     
     try:
         response = JsonResponse({'mensaje': 'Las cookies fueron creadas exitosamente.'}, status=200)

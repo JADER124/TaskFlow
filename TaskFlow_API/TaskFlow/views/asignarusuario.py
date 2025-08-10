@@ -9,7 +9,7 @@ from rest_framework import status
 from ..models import Solicitud, EstadoServicios
 
 @api_view(['PATCH'])
-@permission_classes([AllowAny])  # recomendado
+@permission_classes([IsAuthenticated])  # recomendado
 def asignarusuario(request, solicitud_id):
     id_tecnico = request.data.get('id_tecnico')
     if not id_tecnico:
