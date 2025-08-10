@@ -7,7 +7,9 @@ import NewTasks from "./pages/admin/newTasks";
 import ClientForm from "./pages/client/clientForm";
 import CreateRequest from "./pages/client/createRequest";
 import { AdminLayout } from "./components/layouts/adminLayout";
-import RequestDetail from "./pages/admin/requestDetail"
+import RequestDetail from "./pages/admin/requestDetail";
+import TechHome from "./pages/technical/TechHome";
+import TechLayout from "./components/layouts/techLayout";
 
 function App() {
   return (
@@ -23,6 +25,15 @@ function App() {
             <Route index element={<AdminHome />} /> {/* /admin */}
             <Route path="tasks" element={<NewTasks />} /> {/* /admin/tasks */}
             <Route path="request/:id" element={<RequestDetail />} />
+          </Route>
+        </Route>
+
+        {/* Agrupar todas las rutas privadas bajo /tecnico */}
+        <Route element={<PrivateRoutes/>}>
+          <Route path="/tecnico" element={<TechLayout/>}>
+            <Route index element={<TechHome/>} /> {/* /tecnico */}
+            {/*<Route path="tasks" element={<TechTasks />} /> /tecnico/tasks */}
+            {/*<Route path="request/:id" element={<TechRequestDetail />} /> /tecnico/request/:id */}
           </Route>
         </Route>
         {/* Ruta comodín para rutas no encontradas */}

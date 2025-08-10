@@ -1,80 +1,97 @@
-import React,{uses} from "react";
-import { useForm } from "react-hook-form";
-import { yupResolver } from "@hookform/resolvers/yup";
-import * as yup from "yup";
-import { loginUser, setCookie } from "../API/authApi";
-// Contexto global de autenticación
-import { useAuth } from "../context/authContext";
-// Hook de navegación de React Router
-import { useNavigate } from "react-router-dom";
-import logo from "../assets/taskFlow.png";
-import { useAlert, Alert } from "../components/shared/alert";
+import React from "react";
+import { useForm } from "react-hook-form"; // Esto es para manejar formularios más fácil
+import { yupResolver } from "@hookform/resolvers/yup"; // Para conectar Yup con React Hook Form
+import * as yup from "yup"; // Yup lo usamos para validar datos
+import { loginUser, setCookie } from "../API/authApi"; // Funciones que hablan con el backend para hacer login y guardar cookies
+import { useAuth } from "../context/authContext"; // Nuestro contexto global que sabe si el usuario está logueado
+import { useNavigate } from "react-router-dom"; // Para movernos entre páginas sin recargar
+import logo from "../assets/taskFlow.png"; // El logo de la app
+import { useAlert, Alert } from "../components/shared/alert"; // Para mostrar mensajes al usuario (errores, éxito, etc.)
 
-// Esquema de validación con Yup
+// Aquí definimos cómo queremos que se valide el formulario
+// Básicamente: usuario y contraseña son obligatorios
 const schema = yup.object().shape({
   username: yup.string().required("El correo es obligatorio"),
   password: yup.string().required("La contraseña es obligatoria"),
 });
 
-// Componente Login
+// Este es nuestro componente de Login
 const Login = () => {
-  //hooks para utilizar alertas
-   const { currentAlert, hideAlert, showError, showSuccess, showWarning, showInfo } = useAlert();
-  // Hook de React Hook Form con Yup como validador
+  // Con esto podemos lanzar alertas en la pantalla
   const {
-    register, // Asigna campos del formulario
-    handleSubmit, // Función para manejar envío del formulario
-    formState: { errors, isSubmitting }, // Errores y estado de envío
-    reset, // Reinicia el formulario
+    currentAlert,
+    hideAlert,
+    showError,
+    showSuccess,
+    showWarning,
+    showInfo,
+  } = useAlert();
+
+  // Configuramos el formulario
+  // `register` sirve para decirle a React Hook Form qué inputs va a controlar
+  // `handleSubmit` es la función que se ejecuta al enviar el form
+  // `errors` son los errores de validación
+  // `reset` para limpiar el formulario
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isSubmitting },
+    reset,
   } = useForm({
-    resolver: yupResolver(schema), // Usa el esquema de Yup
+    resolver: yupResolver(schema), // Aquí le decimos: "valida usando este esquema de Yup"
   });
 
-  // Función del contexto de autenticación
-  const { loginFromComponent, setGroup } = useAuth();
+  // Sacamos funciones del contexto de autenticación
+  const { loginFromComponent, setUser } = useAuth();
 
-  // Hook para redireccionar rutas
+  // Esto lo usamos para redirigir a otra ruta
   const navigate = useNavigate();
 
-  // Función que se ejecuta al enviar el formulario
+  // Esta función se ejecuta cuando el usuario le da al botón de "Iniciar sesión"
   const onSubmit = async ({ username, password }) => {
     try {
-      // Llama al backend para hacer login
+      // Paso 1: Mandamos usuario y contraseña al backend
       const userData = await loginUser(username, password);
 
-      if (userData) {
-        // Marca al usuario como autenticado en el contexto global
-        loginFromComponent();
+      // Si no nos devuelve datos, las credenciales son malas
+      if (!userData) {
+        showError("Error", "Credenciales inválidas");
+        return;
+      }
 
-        // (Opcional) Guarda el grupo del usuario en contexto
-        // setGroup(userData.groups[0]);
+      // Paso 2: Guardamos en el backend las cookies con los tokens
+      const cookieRes = await setCookie(userData.access, userData.refresh);
+      if (cookieRes?.status !== 200) {
+        showError("Error", "No se pudo establecer la sesión");
+        return;
+      }
 
-        // Establece cookies HttpOnly con los tokens
-        const secureCookie = await setCookie(userData.access, userData.refresh);
+      // Paso 3: Guardamos algo básico en el sessionStorage (solo para UI, no para autorizar)
+      sessionStorage.setItem("isLoggedIn", "true");
+      sessionStorage.setItem("username", username);
 
-        // Si pertenece al grupo correcto y se creó la cookie:
-        if (
-          userData.groups.includes("Coordinadores") &&
-          secureCookie?.status === 200
-        ) {
-          // guardar usuario en el sessionstorage para mostrar en dashboard
-          sessionStorage.setItem("username",username)
-          // Marca la sesión como activa localmente
-          sessionStorage.setItem("isLoggedIn", "true");
+      // Paso 4: Guardamos en el contexto los grupos de este usuario
+      setUser({ groups: userData.groups || [] });
 
-          // Redirige al panel admin
-          navigate("/admin");
-        } else {
-          // Redirige al home u otra ruta para usuarios normales
-          navigate("/");
-        }
+      // Paso 5: Le decimos al contexto: "sí, el usuario está logueado"
+      loginFromComponent();
+
+      // Paso 6: Según su grupo, lo mandamos a su sección
+      const groups = userData.groups || [];
+      if (groups.includes("Coordinadores")) {
+        navigate("/admin");
+      } else if (groups.includes("Tecnicos")) {
+        navigate("/tecnico");
       } else {
-        // Login fallido: muestra alerta
-        alert("Error al iniciar sesión");
+        navigate("/");
       }
     } catch (error) {
-      // Error normal (se cierra solo)
-      showError("Error", error.response?.data?.detail);
+      // Si algo falla, mostramos un error
+      showError(
+        "Error",
+        error?.response?.data?.detail || "No se pudo iniciar sesión"
+      );
+      // Limpiamos el formulario para que el usuario lo vuelva a llenar
       reset();
     }
   };
@@ -97,58 +114,62 @@ const Login = () => {
 
           <form onSubmit={handleSubmit(onSubmit)} noValidate>
             <div className="mb-6">
-              <label htmlFor="username" className="block mb-2 text-sm text-gray-600">
-                Correo electrónico
+              <label
+                htmlFor="username"
+                className="block mb-2 text-sm text-gray-600"
+              >
+                Usuario
               </label>
               <input
                 type="text"
                 id="username"
-                placeholder="Usuario"
+                placeholder="Ingrese el usuario"
                 {...register("username")}
-                className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-500"
+                className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600"
               />
               {errors.username && (
-                <p className="text-sm text-red-600 mt-1">{errors.username.message}</p>
+                <p className="text-sm text-red-600 mt-1">
+                  {errors.username.message}
+                </p>
               )}
             </div>
 
             <div className="mb-6">
-              <label htmlFor="password" className="block mb-2 text-sm text-gray-600">
+              <label
+                htmlFor="password"
+                className="block mb-2 text-sm text-gray-600"
+              >
                 Contraseña
               </label>
               <input
                 type="password"
                 id="password"
-                placeholder="Contraseña"
+                placeholder="Ingrese la contraseña"
                 {...register("password")}
-                className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-500"
+                className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600"
               />
               {errors.password && (
-                <p className="text-sm text-red-600 mt-1">{errors.password.message}</p>
+                <p className="text-sm text-red-600 mt-1">
+                  {errors.password.message}
+                </p>
               )}
-              <a href="#" className="block text-right text-xs text-cyan-600 mt-2">
-                ¿Olvidaste tu contraseña?
-              </a>
             </div>
 
             <button
               disabled={isSubmitting}
               type="submit"
-              className="w-32 bg-gradient-to-r from-cyan-400 to-cyan-600 text-white py-2 rounded-lg mx-auto block focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-cyan-500 mt-4 mb-6"
+              className="w-32 bg-blue-600 hover:bg-blue-500 text-white py-2 rounded-lg mx-auto block focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-cyan-500 mt-4 mb-6"
             >
               {isSubmitting ? "Validando..." : "Acceso"}
             </button>
           </form>
 
-          <p className="text-xs text-gray-600 text-center mt-10">&copy; 2025 TASTFLOW TEAM</p>
+          <p className="text-xs text-gray-600 text-center mt-10">
+            &copy; 2025 TASTFLOW TEAM
+          </p>
         </div>
         {/* Render Alert */}
-      {currentAlert && (
-        <Alert
-          {...currentAlert}
-          onClose={hideAlert}
-        />
-      )}
+        {currentAlert && <Alert {...currentAlert} onClose={hideAlert} />}
       </div>
     </div>
   );

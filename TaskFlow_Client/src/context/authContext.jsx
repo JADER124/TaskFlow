@@ -34,10 +34,11 @@ export const ApiProvider = ({ children }) => {
 
       try {
         const res = await verifyCookie();
-        
+        console.log(res.data)
         // Si la cookie es válida, establece autenticado
-        if (res?.status === 200) {
+        if (res?.status === 200 && res.data) {
           setIsAuth(true);
+          setUser({ groups: res.data.groups || [] })
         } else {
           setIsAuth(false);
         }
@@ -58,7 +59,7 @@ export const ApiProvider = ({ children }) => {
 
   // Devuelve el proveedor del contexto con los valores necesarios
   return (
-    <UserAuthContext.Provider value={{ user, isAuth, loading, loginFromComponent, setGroup, group }}>
+    <UserAuthContext.Provider value={{ user, setUser, isAuth, loading, loginFromComponent, setGroup, group }}>
       {children}
     </UserAuthContext.Provider>
   );

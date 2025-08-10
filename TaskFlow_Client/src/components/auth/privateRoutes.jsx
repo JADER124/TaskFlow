@@ -1,22 +1,31 @@
 import React from 'react';
 import { useAuth } from "../../context/authContext"; // Importa el contexto de autenticación
-import { Navigate, Outlet } from "react-router-dom"; // Componente para redirigir a otra ruta
+import { Navigate, Outlet,useLocation } from "react-router-dom"; // Componente para redirigir a otra ruta
 import Loader from "../shared/loader"
 
 // Componente que protege las rutas privadas de la aplicación
 // Solo permite el acceso si el usuario está autenticado
-const privateRoutes = ({ children }) => {
-  // Extrae del contexto si el usuario está autenticado y si aún se está verificando
-  const { isAuth, loading } = useAuth();
+const privateRoutes = () => {
+  const { isAuth, loading, user } = useAuth();
+  const groups = user?.groups || [];
+  const location = useLocation(); // Obtiene la ruta actual
 
-  // Mientras se verifica la sesión (ej. al recargar), muestra un mensaje o loader
-  if (loading) return <Loader/>;
+  if (loading) return <Loader />;
 
-  // Si el usuario no está autenticado, redirige al login ("/")
-  if (!isAuth) return <Navigate to="/" />;
+  // No autenticado -> login
+  if (!isAuth) return <Navigate to="/" replace />;
 
-  // Si está autenticado, permite el acceso al contenido de la ruta protegida
-  return <Outlet />;
+  // Validar acceso según grupo y ruta
+  if (groups.includes("Coordinadores") && location.pathname.startsWith("/admin")) {
+    return <Outlet />;
+  }
+
+  if (groups.includes("Tecnicos") && location.pathname.startsWith("/tecnico")) {
+    return <Outlet />;
+  }
+
+  // Si el grupo no tiene permiso para esta ruta → redirige
+  return <Navigate to="/" replace />;
 };
 
 export default privateRoutes;

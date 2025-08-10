@@ -18,7 +18,6 @@ export const assignTechToRequest = async (id_solicitud, id_tecnico) => {
     });
     return res;
   } catch (error) {
-    console.error("Error asignando técnico:", error);
     throw error.response?.data || error;
   }
 };

@@ -1,8 +1,10 @@
 import { useState, useMemo } from "react";
 import { User, MapPin, X, Search, CheckCircle, Wrench } from "lucide-react";
 import { assignTechToRequest } from "../../API/updateData";
+import { useAlert, Alert } from "../shared/alert";
 
-const ModalAllUsers = ({ tecnicos, onClose, id_solicitud }) => {
+const ModalAllUsers = ({ tecnicos, onClose, id_solicitud, onAssigned }) => {
+  const { showInfo, currentAlert, hideAlert } = useAlert();
   const [searchTech, setSearchTech] = useState("");
   const [selectedTech, setSelectedTech] = useState(null);
 
@@ -21,22 +23,20 @@ const ModalAllUsers = ({ tecnicos, onClose, id_solicitud }) => {
     if (!selectedTech) return;
 
     try {
-      console.log("Asignando técnico:", {
-        id_tecnico: selectedTech.id,
-        id_solicitud,
-      });
-
       // Llamada al backend
       const response = await assignTechToRequest(id_solicitud, selectedTech.id);
-
-      console.log("Respuesta del backend:", response);
-
-      // Si todo sale bien, cierras el modal
-      onClose()
+      if (response?.status === 200) {
+        onAssigned?.();
+        onClose();
+        setSelectedTech(null);
+        setSearchTech("");
+      }else{
+        onClose();
+      }
+    } catch (error) {
+      showInfo("Info: " + error.detail);
       setSelectedTech(null);
       setSearchTech("");
-    } catch (error) {
-      console.error("Error al asignar técnico:", error);
     }
   };
 
@@ -147,6 +147,8 @@ const ModalAllUsers = ({ tecnicos, onClose, id_solicitud }) => {
             </button>
           </div>
         </div>
+        {/* Render Alert */}
+        {currentAlert && <Alert {...currentAlert} onClose={hideAlert} />}
       </div>
     </div>
   );

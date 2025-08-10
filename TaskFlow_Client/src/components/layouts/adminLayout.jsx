@@ -54,8 +54,8 @@ export const AdminLayout = () => {
 
         <div className="absolute bottom-0 w-64 p-6 border-t border-gray-700">
           <div className="flex items-center">
-            <div className="w-8 h-8 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full flex items-center justify-center">
-              <User className="w-4 h-4 text-white" />
+            <div className="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center">
+              <User className="w-4 h-4 text-gray-900" />
             </div>
             <div className="ml-3">
               <p className="text-sm font-medium text-gray-200">{userLogged}</p>

@@ -95,6 +95,7 @@ export const AdminHome = () => {
                   <option value="en curso">En curso</option>
                   <option value="cerrada">Cerradas</option>
                   <option value="finalizada">Finalizadas</option>
+                  <option value="pendiente">Pendientes</option>
                 </select>
               </div>
             </div>

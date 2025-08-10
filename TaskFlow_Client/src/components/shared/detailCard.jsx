@@ -17,11 +17,12 @@ import {
   Send,
   ChevronDown,
   ChevronRight,
+  Camera,Download,Edit,Calendar
 } from "lucide-react";
 import { getAllUsers } from "../../API/allRequests";
 import ModalAllUsers from "../admin/modalAllUsers";
 
-const DetailRequest = ({ solicitud }) => {
+const DetailRequest = ({ solicitud, onRefresh }) => {
   const navigate = useNavigate();
 
   const [expandedSections, setExpandedSections] = useState({
@@ -118,14 +119,6 @@ const DetailRequest = ({ solicitud }) => {
               <button className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm flex items-center space-x-2">
                 <FileText className="h-4 w-4" />
                 <span>Ver Formulario</span>
-              </button>
-              <button className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg text-sm flex items-center space-x-2">
-                <Play className="h-4 w-4" />
-                <span>Iniciar</span>
-              </button>
-              <button className="bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded-lg text-sm flex items-center space-x-2">
-                <Send className="h-4 w-4" />
-                <span>Reportar</span>
               </button>
             </div>
           </div>
@@ -295,7 +288,7 @@ const DetailRequest = ({ solicitud }) => {
                   CM
                 </div>
                 <div>
-                  <p className="font-medium text-sm">Carlos Mendoza</p>
+                  <p className="font-medium text-sm">{solicitud?.usuario_asociado_nombre}</p>
                   <p className="text-xs text-gray-500 flex items-center">
                     <Star className="h-3 w-3 text-yellow-500 mr-1" /> 4.8 • 127
                     servicios
@@ -313,6 +306,31 @@ const DetailRequest = ({ solicitud }) => {
                 </button>
               </div>
             </div>
+
+              {/* Acciones rápidas compactas */}
+            <div className="bg-white rounded-lg shadow-sm border p-4">
+              <h3 className="font-medium text-gray-900 mb-3">Acciones Rápidas</h3>
+              
+              <div className="space-y-2">
+                <button className="w-full flex items-center space-x-2 text-sm text-gray-700 hover:bg-gray-50 py-2 px-3 rounded transition-colors">
+                  <Camera className="h-4 w-4" />
+                  <span>Tomar fotos</span>
+                </button>
+                <button className="w-full flex items-center space-x-2 text-sm text-gray-700 hover:bg-gray-50 py-2 px-3 rounded transition-colors">
+                  <Download className="h-4 w-4" />
+                  <span>Generar PDF</span>
+                </button>
+                <button className="w-full flex items-center space-x-2 text-sm text-gray-700 hover:bg-gray-50 py-2 px-3 rounded transition-colors">
+                  <Edit className="h-4 w-4" />
+                  <span>Editar solicitud</span>
+                </button>
+                <button className="w-full flex items-center space-x-2 text-sm text-gray-700 hover:bg-gray-50 py-2 px-3 rounded transition-colors">
+                  <Calendar className="h-4 w-4" />
+                  <span>Reagendar</span>
+                </button>
+              </div>
+            </div>     
+
           </div>
         </div>
       </div>
@@ -323,6 +341,7 @@ const DetailRequest = ({ solicitud }) => {
           <ModalAllUsers
             tecnicos={tecnicos}
             onClose={() => setShowTechSelector(false)}
+            onAssigned={onRefresh}
             id_solicitud={solicitud?.id}
           />
         </>

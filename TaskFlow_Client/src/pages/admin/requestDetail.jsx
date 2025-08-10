@@ -1,13 +1,20 @@
-import { useState,useEffect } from "react";
+import { useState,useEffect,useCallback } from "react";
 import DetailRequest from "../../components/shared/detailCard";
 import { useParams } from "react-router-dom";
 import { getDetailRequest } from "../../API/allRequests";
+import Loader from "../../components/shared/loader"
 const RequestDetail = () => {
   const { id } = useParams();
 
   const [solicitud, setSolicitud] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [refreshUser, setRefreshUser] = useState(false);
+
+  // Define una FUNCIÓN estable que invierte el estado
+  const forceRefresh = useCallback(() => {
+    setRefreshUser(v => !v);   // functional updater evita “stale state”
+  }, []);
 
   useEffect(() => {
     const fetchRequest = async () => {
@@ -22,14 +29,21 @@ const RequestDetail = () => {
     };
 
     fetchRequest();
-  }, [id]);
+  }, [id,refreshUser]);
 
-  if (loading) return <p className="p-4">Cargando solicitud...</p>;
-  if (error) return <p className="p-4 text-red-500">{error}</p>;
+  if (loading) return (
+  <div className="p-4">
+    <Loader />
+  </div>
+  );
+  if (error) return (
+    <div><p className="p-4 text-red-500">{error}</p></div>
+  );
   if (!solicitud) return null;
+  
 
   
-  return <DetailRequest solicitud={solicitud}/>;
+  return <DetailRequest solicitud={solicitud} onRefresh={forceRefresh}/>;
 };
 
 export default RequestDetail;
