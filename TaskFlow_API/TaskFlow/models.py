@@ -2,69 +2,91 @@ from django.db import models
 from django.contrib.auth.models import User  
 
 
-class Formulario(models.Model):
-   
-    nombre = models.CharField(max_length=100, verbose_name="Nombre del formulario")
-    descripcion = models.TextField(verbose_name="Descripción", blank=True, null=True)
-    fecha_creacion = models.DateTimeField(auto_now_add=True, verbose_name="Fecha de creación")
-    usuario = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name="Usuario asociado")
 
-    def __str__(self):
-        return self.nombre
-
-
-class Referencia(models.Model):
-
-    codigo = models.CharField(max_length=50, unique=True, verbose_name="Código de referencia")
-    marca = models.CharField(max_length=100, verbose_name="Marca")
-    modelo = models.CharField(max_length=100, verbose_name="Modelo")
-    serie = models.CharField(max_length=100, verbose_name="Serie")
-    capacidad = models.CharField(max_length=100, verbose_name="Capacidad")
-    division_escala = models.CharField(max_length=100, verbose_name="División de escala")
-    formulario = models.ForeignKey(Formulario, on_delete=models.CASCADE, related_name="referencias", verbose_name="Formulario asociado")
-
-    def __str__(self):
-        return f"{self.marca} {self.modelo} - {self.codigo}"
-
+# =========================
+# MAESTROS / CATÁLOGOS
+# =========================
 
 class Cliente(models.Model):
-
-    nit = models.IntegerField(blank=True, null=True, verbose_name="NIT")
-    nombre = models.CharField(max_length=100, verbose_name="Nombre del cliente")
-    email = models.EmailField(verbose_name="Correo electrónico")
-    telefono = models.CharField(max_length=15, blank=True, null=True, verbose_name="Teléfono")
-    direccion = models.CharField(max_length=200, blank=True, null=True, verbose_name="Dirección")
-    firma = models.CharField(max_length=100, blank=True, null=True, verbose_name="Firma")
-    formulario = models.ForeignKey(Formulario, on_delete=models.CASCADE, related_name="clientes", verbose_name="Formulario asociado")
+    nombre = models.CharField(max_length=150)
+    nit = models.CharField(max_length=50, blank=True, null=True)
+    correo = models.EmailField(max_length=150, blank=True, null=True)
+    telefono = models.CharField(max_length=20, blank=True, null=True)
+    direccion = models.CharField(max_length=100, blank=True, null=True)
 
     def __str__(self):
         return self.nombre
 
+class ClienteSede(models.Model):
+    cliente = models.ForeignKey(Cliente, on_delete=models.CASCADE)
+    nombre_sede = models.CharField(max_length=150)
+    direccion = models.CharField(max_length=255, blank=True, null=True)
+    ciudad = models.CharField(max_length=100, blank=True, null=True)
+    telefono = models.CharField(max_length=20, blank=True, null=True)
+    correo = models.EmailField(max_length=150, blank=True, null=True)
 
-class Repuesto(models.Model):
-
-    codigo = models.CharField(max_length=50, unique=True, verbose_name="Código del repuesto")
-    descripcion = models.CharField(max_length=200, verbose_name="Descripción del repuesto")
-    precio = models.DecimalField(max_digits=10, decimal_places=2, verbose_name="Precio")
-    formulario = models.ForeignKey(Formulario, on_delete=models.CASCADE, related_name="repuestos", verbose_name="Formulario asociado")
-
-    def __str__(self):
-        return f"{self.codigo} - {self.descripcion}"
-
-
-class FormularioDetalle(models.Model):
- 
-    formulario = models.OneToOneField(Formulario, on_delete=models.CASCADE, related_name="detalle", verbose_name="Formulario asociado")
-    comentarios = models.TextField(verbose_name="Comentarios", blank=True, null=True)
+    class Meta:
+        unique_together = ('cliente', 'nombre_sede')
 
     def __str__(self):
-        return f"Detalle del Formulario: {self.formulario.nombre}"
+        return f"{self.nombre_sede} - {self.cliente.nombre}"
 
+class EstadoServicios(models.Model):
+    nombre = models.CharField(max_length=50)
+
+    def __str__(self):
+        return self.nombre
 
 class TipoServicio(models.Model):
-
-    nombre_servicio = models.CharField(max_length=50, unique=True, verbose_name="Nombre del servicio")
-    formulario = models.OneToOneField(Formulario, on_delete=models.CASCADE, related_name="tipo_servicio", verbose_name="Formulario asociado")
+    nombre = models.CharField(max_length=100)
 
     def __str__(self):
-        return self.nombre_servicio
+        return self.nombre
+
+# =========================
+# OPERACIÓN
+# =========================
+
+class Solicitud(models.Model):
+    cliente = models.ForeignKey(Cliente, on_delete=models.CASCADE)
+    tipo_servicio = models.ForeignKey(TipoServicio, on_delete=models.CASCADE)
+    estado = models.ForeignKey(EstadoServicios, on_delete=models.CASCADE)
+    descripcion = models.TextField(blank=True, null=True)
+    direccion = models.TextField(blank=True, null=True)
+    fecha_creacion = models.DateTimeField(auto_now_add=True)
+    usuario_creacion = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True, related_name='solicitudes_creadas')
+    usuario_asociado = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True, related_name='solicitudes_asiganadas')
+    def __str__(self):
+        return f"Solicitud #{self.id} - {self.cliente.nit}"
+
+class Formulario(models.Model):
+    solicitud = models.ForeignKey(Solicitud, on_delete=models.CASCADE)
+    usuario_soporte = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True, related_name='formularios_soporte')
+    hora_inicio = models.DateTimeField(blank=True, null=True)
+    hora_fin = models.DateTimeField(blank=True, null=True)
+    observaciones = models.TextField(blank=True, null=True)
+    firma_tecnico = models.BinaryField(blank=True, null=True)
+    firma_cliente = models.BinaryField(blank=True, null=True)
+
+    def __str__(self):
+        return f"Formulario #{self.id} - Solicitud #{self.solicitud.id}"
+
+# =========================
+# REPUESTOS
+# =========================
+
+class Repuesto(models.Model):
+    nombre = models.CharField(max_length=150)
+    descripcion = models.CharField(max_length=255, blank=True, null=True)
+    stock = models.IntegerField(default=0)
+
+    def __str__(self):
+        return self.nombre
+
+class FormularioRepuesto(models.Model):
+    formulario = models.ForeignKey(Formulario, on_delete=models.CASCADE)
+    repuesto = models.ForeignKey(Repuesto, on_delete=models.CASCADE)
+    cantidad_utilizada = models.IntegerField()
+
+    def __str__(self):
+        return f"{self.cantidad_utilizada} x {self.repuesto.nombre} en Formulario #{self.formulario.id}"
