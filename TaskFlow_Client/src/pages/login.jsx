@@ -96,24 +96,27 @@ const Login = () => {
     }
   };
 
-
   return (
     <div className="bg-gray-100">
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="max-w-md w-full p-6 bg-white rounded-lg shadow-lg">
+      <div className="min-h-screen flex items-center justify-center px-4 sm:px-6 lg:px-8">
+        <div className="max-w-md w-full p-4 sm:p-6 bg-white rounded-lg shadow-lg">
+          {/* Logo responsivo */}
           <div className="flex justify-center">
             <img
               src={logo}
               alt="Logo"
-              className="w-full max-w-[300px] h-auto my-3"
+              className="w-full max-w-[250px] sm:max-w-[300px] h-auto my-2 sm:my-3"
             />
           </div>
-          <h1 className="text-2xl font-semibold text-center text-gray-500 mt-8 mb-6">
+
+          {/* Título responsivo */}
+          <h1 className="text-xl sm:text-2xl font-semibold text-center text-gray-500 mt-6 sm:mt-8 mb-4 sm:mb-6">
             Iniciar sesión
           </h1>
 
           <form onSubmit={handleSubmit(onSubmit)} noValidate>
-            <div className="mb-6">
+            {/* Campo Usuario */}
+            <div className="mb-4 sm:mb-6">
               <label
                 htmlFor="username"
                 className="block mb-2 text-sm text-gray-600"
@@ -125,7 +128,7 @@ const Login = () => {
                 id="username"
                 placeholder="Ingrese el usuario"
                 {...register("username")}
-                className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600"
+                className="w-full px-3 sm:px-4 py-2 sm:py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600 text-sm sm:text-base"
               />
               {errors.username && (
                 <p className="text-sm text-red-600 mt-1">
@@ -134,7 +137,8 @@ const Login = () => {
               )}
             </div>
 
-            <div className="mb-6">
+            {/* Campo Contraseña */}
+            <div className="mb-4 sm:mb-6">
               <label
                 htmlFor="password"
                 className="block mb-2 text-sm text-gray-600"
@@ -146,7 +150,7 @@ const Login = () => {
                 id="password"
                 placeholder="Ingrese la contraseña"
                 {...register("password")}
-                className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600"
+                className="w-full px-3 sm:px-4 py-2 sm:py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600 text-sm sm:text-base"
               />
               {errors.password && (
                 <p className="text-sm text-red-600 mt-1">
@@ -155,21 +159,28 @@ const Login = () => {
               )}
             </div>
 
+            {/* Botón responsivo */}
             <button
               disabled={isSubmitting}
               type="submit"
-              className="w-32 bg-blue-600 hover:bg-blue-500 text-white py-2 rounded-lg mx-auto block focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-cyan-500 mt-4 mb-6"
+              className="w-full sm:w-32 bg-blue-600 hover:bg-blue-500 disabled:opacity-50 disabled:cursor-not-allowed text-white py-2 sm:py-2 rounded-lg sm:mx-auto sm:block focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-cyan-500 mt-4 mb-4 sm:mb-6 text-sm sm:text-base"
             >
               {isSubmitting ? "Validando..." : "Acceso"}
             </button>
           </form>
 
-          <p className="text-xs text-gray-600 text-center mt-10">
-            &copy; 2025 TASTFLOW TEAM
+          {/* Copyright */}
+          <p className="text-xs text-gray-600 text-center mt-6 sm:mt-10">
+            &copy; 2025 TASKFLOW TEAM
           </p>
         </div>
-        {/* Render Alert */}
-        {currentAlert && <Alert {...currentAlert} onClose={hideAlert} />}
+        
+        {/* Alert responsivo */}
+        {currentAlert && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+            <Alert {...currentAlert} onClose={hideAlert} />
+          </div>
+        )}
       </div>
     </div>
   );
