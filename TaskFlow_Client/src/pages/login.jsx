@@ -7,6 +7,9 @@ import { useAuth } from "../context/authContext"; // Nuestro contexto global que
 import { useNavigate } from "react-router-dom"; // Para movernos entre páginas sin recargar
 import logo from "../assets/taskFlow.png"; // El logo de la app
 import { useAlert, Alert } from "../components/shared/alert"; // Para mostrar mensajes al usuario (errores, éxito, etc.)
+import { useConfirmationModal, ConfirmationModal } from "../components/shared/buttonsModal";
+import { User, KeyRound } from "lucide-react";
+
 
 // Aquí definimos cómo queremos que se valide el formulario
 // Básicamente: usuario y contraseña son obligatorios
@@ -43,57 +46,67 @@ const Login = () => {
 
   // Sacamos funciones del contexto de autenticación
   const { loginFromComponent, setUser } = useAuth();
+  const { modalConfig, showConfirmation, hideConfirmation } = useConfirmationModal();
+
+
 
   // Esto lo usamos para redirigir a otra ruta
   const navigate = useNavigate();
 
   // Esta función se ejecuta cuando el usuario le da al botón de "Iniciar sesión"
   const onSubmit = async ({ username, password }) => {
-    try {
-      // Paso 1: Mandamos usuario y contraseña al backend
-      const userData = await loginUser(username, password);
+        try {
+              // Paso 1: Mandamos usuario y contraseña al backend
+              const userData = await loginUser(username, password);
 
-      // Si no nos devuelve datos, las credenciales son malas
-      if (!userData) {
-        showError("Error", "Credenciales inválidas");
-        return;
-      }
+              // Si no nos devuelve datos, las credenciales son malas
+              if (!userData) {
+                showError("Error", "Credenciales inválidas");
+                return;
+              }
 
-      // Paso 2: Guardamos en el backend las cookies con los tokens
-      const cookieRes = await setCookie(userData.access, userData.refresh);
-      if (cookieRes?.status !== 200) {
-        showError("Error", "No se pudo establecer la sesión");
-        return;
-      }
+              // Paso 2: Guardamos en el backend las cookies con los tokens
+              const cookieRes = await setCookie(userData.access, userData.refresh);
+              if (cookieRes?.status !== 200) {
+                showError("Error", "No se pudo establecer la sesión");
+                return;
+              }
 
-      // Paso 3: Guardamos algo básico en el sessionStorage (solo para UI, no para autorizar)
-      sessionStorage.setItem("isLoggedIn", "true");
-      sessionStorage.setItem("username", username);
+              // Paso 3: Guardamos algo básico en el sessionStorage (solo para UI, no para autorizar)
+              sessionStorage.setItem("isLoggedIn", "true");
+              sessionStorage.setItem("username", username);
 
-      // Paso 4: Guardamos en el contexto los grupos de este usuario
-      setUser({ groups: userData.groups || [] });
+              // Paso 4: Guardamos en el contexto los grupos de este usuario
+              setUser({ groups: userData.groups || [] });
 
-      // Paso 5: Le decimos al contexto: "sí, el usuario está logueado"
-      loginFromComponent();
+              // Paso 5: Le decimos al contexto: "sí, el usuario está logueado"
+              loginFromComponent();
 
-      // Paso 6: Según su grupo, lo mandamos a su sección
-      const groups = userData.groups || [];
-      if (groups.includes("Coordinadores")) {
-        navigate("/admin");
-      } else if (groups.includes("Tecnicos")) {
-        navigate("/tecnico");
-      } else {
-        navigate("/");
-      }
-    } catch (error) {
-      // Si algo falla, mostramos un error
-      showError(
-        "Error",
-        error?.response?.data?.detail || "No se pudo iniciar sesión"
-      );
-      // Limpiamos el formulario para que el usuario lo vuelva a llenar
-      reset();
+              // Paso 6: Según su grupo, lo mandamos a su sección
+              const groups = userData.groups || [];
+              if (groups.includes("Coordinadores")) {
+                navigate("/admin");
+              } else if (groups.includes("Tecnicos")) {
+                navigate("/tecnico");
+              } else {
+                navigate("/");
+              }
+            } catch (error) {
+              // Si algo falla, mostramos un error
+              const backendMessage =
+              error.response?.data?.detail || '❌ Error al iniciar sesión';
+              showConfirmation({
+                title: "Error al enviar los datos",
+                message: backendMessage,
+                type: "danger",
+                confirmText: null, // Sin botón de confirmar
+                cancelText: "Cerrar",
+                onConfirm: () => {}, // No hace nada
+              });
+              // Limpiamos el formulario para que el usuario lo vuelva a llenar
+              reset();
     }
+
   };
 
   return (
@@ -123,13 +136,21 @@ const Login = () => {
               >
                 Usuario
               </label>
-              <input
+              <div className="relative">
+                <User className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
+                <input
                 type="text"
                 id="username"
-                placeholder="Ingrese el usuario"
                 {...register("username")}
-                className="w-full px-3 sm:px-4 py-2 sm:py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600 text-sm sm:text-base"
+                className={`w-full pl-10 pr-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600 text-sm sm:text-base ${
+                  errors.username
+                    ? "border-red-500 bg-red-50 focus:ring-red-500"
+                    : "border-white-300 bg-white-50 focus:ring-blue-500"
+                }`}
+                placeholder="Ingrese su usuario"
               />
+              </div>
+              
               {errors.username && (
                 <p className="text-sm text-red-600 mt-1">
                   {errors.username.message}
@@ -145,13 +166,19 @@ const Login = () => {
               >
                 Contraseña
               </label>
-              <input
+              <div className="relative">
+                <KeyRound className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
+                <input
                 type="password"
                 id="password"
-                placeholder="Ingrese la contraseña"
                 {...register("password")}
-                className="w-full px-3 sm:px-4 py-2 sm:py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600 text-sm sm:text-base"
+                className={`w-full pl-10 pr-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600 text-sm sm:text-base ${
+                  errors.username
+                    ? "border-red-500 bg-red-50 focus:ring-red-500"
+                    : "border-white-300 bg-white-50 focus:ring-blue-500"
+                }`}
               />
+              </div>
               {errors.password && (
                 <p className="text-sm text-red-600 mt-1">
                   {errors.password.message}
@@ -176,10 +203,8 @@ const Login = () => {
         </div>
         
         {/* Alert responsivo */}
-        {currentAlert && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-            <Alert {...currentAlert} onClose={hideAlert} />
-          </div>
+        {modalConfig.isOpen && (
+          <ConfirmationModal {...modalConfig} onClose={hideConfirmation} />
         )}
       </div>
     </div>
