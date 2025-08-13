@@ -32,14 +32,16 @@ def setcookie(request):
             value=access,
             httponly=True,
             secure=secure,  # Cambia a True si usas HTTPS
-            samesite=same_site
+            samesite=same_site,
+            path='/'
         )
         response.set_cookie(
             key='refresh_token',
             value=refresh,
             httponly=True,
             secure=secure,
-            samesite=same_site
+            samesite=same_site,
+            path='/'
         )
 
         return response

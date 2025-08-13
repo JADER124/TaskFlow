@@ -13,6 +13,7 @@ class CookieJWTAuthentication(JWTAuthentication):
             return super().authenticate(request)
 
         # 2) Si no hay header, intento por cookie
+        
         raw_token = request.COOKIES.get("access_token")
         if not raw_token:
             return None
