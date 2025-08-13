@@ -18,6 +18,6 @@ const BASE_URL = USE_MANUAL ? MANUAL_BASE_URL : autoBaseURL();
 // --- Config global de Axios ---
 export const api = axios.create({
   baseURL: BASE_URL,
-  withCredentials: true, // deja true si usas cookies HttpOnly
+  withCredentials: false, // deja true si usas cookies HttpOnly
 });
 

@@ -52,7 +52,8 @@ INSTALLED_APPS = [
     'corsheaders',
     'TaskFlow',
     'rest_framework',
-    'rest_framework_simplejwt'
+    'rest_framework_simplejwt',
+    'drf_spectacular'
 ]
 
 MIDDLEWARE = [
@@ -190,3 +191,21 @@ SESSION_COOKIE_SECURE = not DEBUG
 CSRF_COOKIE_SECURE = not DEBUG
 SESSION_COOKIE_SAMESITE = "None" if not DEBUG else "Lax"
 CSRF_COOKIE_SAMESITE   = "None" if not DEBUG else "Lax"
+#Documentacion de las apis automatica. 
+REST_FRAMEWORK.update({
+    'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
+})
+
+SPECTACULAR_SETTINGS = {
+    'TITLE': 'TaskFlow API',
+    'DESCRIPTION': 'API para la gestión de tareas y flujos de trabajo en TaskFlow.',
+    'VERSION': '1.0.0',
+    'SERVE_INCLUDE_SCHEMA': False,
+    'CONTACT': {
+        'name': 'Soporte TaskFlow',
+        'email': 'soporte@taskflow.com',
+    },
+    'LICENSE': {
+        'name': 'MIT License',
+    },
+}
