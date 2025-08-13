@@ -2,12 +2,15 @@ import React from "react";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
-import { FileText, User, Settings } from "lucide-react";
+import { FileText, User, Settings, AlertCircle, MapPin } from "lucide-react";
 import { clientRequest } from "../../API/saveClient";
+import { useConfirmationModal, ConfirmationModal } from "../../components/shared/buttonsModal";
 
 // Validaciones con Yup
 const schema = yup.object().shape({
-  nit: yup.string().required("El NIT es requerido"),
+  nit: yup.string().required("El NIT es requerido")
+  .min(7, "Debe tener al menos 7 digitos")
+  .matches(/^[0-9]+$/, "Solo se permiten números"),
   direccion: yup.string().required("La dirección es requerida"),
   motivoSolicitud: yup
     .string()
@@ -15,32 +18,76 @@ const schema = yup.object().shape({
   tipoServicio: yup.string().required("Debe seleccionar un tipo de servicio"),
 });
 
-const createRequest = () => {
+const CreateRequest = () => {
   const {
     register,
     handleSubmit,
     reset,
     formState: { errors },
+    getValues, // Para obtener valores sin hacer submit aún
   } = useForm({
     resolver: yupResolver(schema),
   });
 
-  const onSubmit = async (data) => {
-    console.log("Datos de la solicitud:", data);
-    try {
-      // Llama a la función saveClient (probablemente una función que hace una solicitud POST al backend)
-      // y espera a que se complete la respuesta
-      const result = await clientRequest(data);
-      console.log(result);
-      // Si la petición fue exitosa, se muestra un mensaje al usuario con el contenido del campo 'mensaje' recibido en la respuesta
-      alert(result.mensaje);
+//Invoco mi componente para traer la plantilla de los modales
+  const { modalConfig, showConfirmation, hideConfirmation } = useConfirmationModal();
 
-      // Se limpia el formulario llamando a reset (probablemente proporcionado por React Hook Form)
-      reset();
-    } catch (e) {
-      // Si ocurre un error (por ejemplo, fallo de conexión o error en el backend), se muestra un mensaje de error al usuario
-      alert("Error al registrar cliente");
+
+  const handleSuccessfulSubmit = () => {
+  showConfirmation({
+    title: '¡Solicitud creada!',
+    message: 'Tu solicitud ha sido registrada exitosamente.',
+    type: 'success',
+    confirmText: 'Entendido',
+    cancelText: null, // Oculta el botón cancelar
+    onConfirm: () => hideConfirmation() // Cierra el modal al hacer clic
+  });
+};
+
+  const handleFormSubmit = () => {
+    const formValues = getValues(); // Obtener valores actuales del formulario
+
+    const isValid = Object.keys(schema.fields).every((key) => {
+      try {
+        schema.fields[key].validateSync(formValues[key]);
+        return true;
+          } catch {
+            return false;
+      }
+    });
+
+    if (!isValid) {
+      handleSubmit(() => {})(new Event("submit")); // Dispara validación visual
+      return;
     }
+
+    showConfirmation({
+      title: "¿Confirmar solicitud?",
+      message: "¿Deseas enviar esta solicitud de servicio con los datos ingresados?",
+      type: "success",
+      confirmText: "Sí, enviar",
+      cancelText: "Cancelar",
+      icon: () => <AlertCircle size={28} />,
+      onConfirm: async () => {
+        try {
+          const data = getValues();
+          const result = await clientRequest(data);
+          handleSuccessfulSubmit();
+          reset();
+        } catch (error) {
+          const backendMessage =
+          error.response?.data?.error || '❌ Error al realizar la solicitud';
+          showConfirmation({
+              title: "Error en la solicitud",
+              message: backendMessage,
+              type: "danger",
+              confirmText: null, // Sin botón de confirmar
+              cancelText: "Cerrar",
+              onConfirm: () => {}, // No hace nada
+            });
+          }
+        },
+    });
   };
 
   return (
@@ -60,12 +107,12 @@ const createRequest = () => {
         </div>
 
         {/* Formulario */}
-        <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+        <form onSubmit={(e) => e.preventDefault()} className="space-y-6">
           {/* NIT */}
           <div>
-            <label
-              htmlFor="nit"
-              className="block text-sm font-medium text-gray-700 mb-2"
+            <label 
+            htmlFor="nit" 
+            className="block text-sm font-medium text-gray-700 mb-2"
             >
               NIT
             </label>
@@ -76,7 +123,7 @@ const createRequest = () => {
                 id="nit"
                 {...register("nit")}
                 className={`w-full pl-10 pr-4 py-3 border rounded-lg focus:ring-2 transition-colors ${
-                  errors.nit
+                  errors.nit 
                     ? "border-red-500 bg-red-50 focus:ring-red-500"
                     : "border-gray-300 bg-gray-50 focus:ring-blue-500"
                 }`}
@@ -84,19 +131,20 @@ const createRequest = () => {
               />
             </div>
             {errors.nit && (
-              <p className="mt-1 text-sm text-red-600">{errors.nit.message}</p>
+            <p className="mt-1 text-sm text-red-600">{errors.nit.message}</p>
             )}
           </div>
+
           {/* DIRECCIÓN */}
           <div>
-            <label
-              htmlFor="direccion"
-              className="block text-sm font-medium text-gray-700 mb-2"
+            <label 
+            htmlFor="direccion" 
+            className="block text-sm font-medium text-gray-700 mb-2"
             >
               DIRECCIÓN
             </label>
             <div className="relative">
-              <User className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
+              <MapPin className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
               <input
                 type="text"
                 id="direccion"
@@ -116,9 +164,9 @@ const createRequest = () => {
 
           {/* Motivo de la solicitud */}
           <div>
-            <label
-              htmlFor="motivoSolicitud"
-              className="block text-sm font-medium text-gray-700 mb-2"
+            <label 
+            htmlFor="motivoSolicitud" 
+            className="block text-sm font-medium text-gray-700 mb-2"
             >
               Motivo de la solicitud
             </label>
@@ -139,7 +187,7 @@ const createRequest = () => {
             {errors.motivoSolicitud && (
               <p className="mt-1 text-sm text-red-600">
                 {errors.motivoSolicitud.message}
-              </p>
+                </p>
             )}
           </div>
 
@@ -148,14 +196,14 @@ const createRequest = () => {
             <label className="block text-sm font-medium text-gray-700 mb-3">
               Tipo de servicio
             </label>
-            <div
+            <div 
               className={`border rounded-lg p-4 space-y-3 ${
-                errors.tipoServicio
-                  ? "border-red-500 bg-red-50"
-                  : "border-gray-300 bg-gray-50"
-              }`}
+              errors.tipoServicio
+                ? "border-red-500 bg-red-50"
+                : "border-gray-300 bg-gray-50"
+            }`}
             >
-              {["instalacion", "mantenimiento", "reparacion"].map((tipo) => (
+              {["instalación", "mantenimiento", "reparación"].map((tipo) => (
                 <div className="flex items-center" key={tipo}>
                   <input
                     type="radio"
@@ -164,27 +212,28 @@ const createRequest = () => {
                     {...register("tipoServicio")}
                     className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 focus:ring-2"
                   />
-                  <label
+                  <label 
                     htmlFor={tipo}
                     className="ml-3 text-sm font-medium text-gray-700 cursor-pointer flex items-center"
-                  >
-                    <Settings className="w-4 h-4 mr-2 text-gray-500" />
-                    {tipo.charAt(0).toUpperCase() + tipo.slice(1)}
+                    >
+                      <Settings className="w-4 h-4 mr-2 text-gray-500" />
+                      {tipo.charAt(0).toUpperCase() + tipo.slice(1)}
                   </label>
                 </div>
               ))}
             </div>
             {errors.tipoServicio && (
               <p className="mt-1 text-sm text-red-600">
-                {errors.tipoServicio.message}
+                  {errors.tipoServicio.message}
               </p>
-            )}
+              )}
           </div>
 
           {/* Botón */}
           <div className="pt-4">
             <button
-              type="submit"
+              type="button"
+              onClick={handleFormSubmit}
               className="w-full bg-gradient-to-r from-blue-500 to-indigo-600 text-white py-3 px-6 rounded-lg font-medium text-lg hover:from-blue-600 hover:to-indigo-700 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-all duration-200 transform hover:scale-[1.02] active:scale-[0.98] shadow-lg"
             >
               Enviar Solicitud
@@ -196,17 +245,22 @@ const createRequest = () => {
         <div className="mt-8 text-center text-sm text-gray-500">
           <p>
             ¿Necesita actualizar sus datos?{" "}
-            <a
-              href="#"
-              className="text-blue-600 hover:text-blue-800 font-medium"
+            <a 
+            href="https://api.whatsapp.com/send?phone=573012511449&text=%20Hola%20me%20interesa%20realizar%20una%20%20solicitud%20y%20no%20me%20esta%20dejando%20hacerla%20en%20la%20app" 
+            className="text-blue-600 hover:text-blue-800 font-medium"
             >
               Contactar soporte
             </a>
           </p>
         </div>
       </div>
+
+      {/* Modal de confirmación */}
+      {modalConfig.isOpen && (
+      <ConfirmationModal {...modalConfig} onClose={hideConfirmation} />
+      )}
     </div>
   );
 };
 
-export default createRequest;
+export default CreateRequest;

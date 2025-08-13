@@ -2,10 +2,11 @@ import React, { useState } from 'react';
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
-import { User, Phone, Building2, MapPin, Mail,File, AlertTriangle } from 'lucide-react';
+import { User, Phone, Building2, MapPin, Mail,File, AlertTriangle, AlertCircle } from 'lucide-react';
 import { saveClient } from '../../API/saveClient';
-import ConfirmationModal from '../../components/shared/modalConfirmation'
 import { useAlert, Alert } from "../../components/shared/alert";
+import { useConfirmationModal, ConfirmationModal } from "../../components/shared/buttonsModal";
+
 
 const schema = yup.object().shape({
   nit: yup.string().required("El NIT es requerido")
@@ -24,46 +25,88 @@ const schema = yup.object().shape({
 
 const clientForm = () => {
 
-  // Validar errores con los hooks de errores
-  const { currentAlert, hideAlert, showError, showSuccess, showWarning, showInfo } = useAlert();
-
-  const {register,handleSubmit,reset, formState: { errors }} = useForm({
+  const {
+    register,
+    handleSubmit,
+    reset, 
+    formState: { errors },
+    getValues,
+    } = useForm({
     resolver: yupResolver(schema)
   });
-  const [mostrarModal, setMostrarModal] = useState(false);
-  const [formData, setFormData] = useState(null);
 
-  
-  const handleFormSubmit = (data) => {
-  setFormData(data);          // Guarda los datos temporalmente
-  setMostrarModal(true);      // Abre el modal de confirmación
+
+  const { modalConfig, showConfirmation, hideConfirmation } = useConfirmationModal();
+
+
+  const handleSuccessfulSubmit = () => {
+  showConfirmation({
+    title: '¡Solicitud creada!',
+    message: 'Tu solicitud ha sido registrada exitosamente.',
+    type: 'success',
+    confirmText: 'Entendido',
+    cancelText: null, // Oculta el botón cancelar
+    onConfirm: () => hideConfirmation() // Cierra el modal al hacer clic
+  });
+  setTimeout(() => {
+    hideConfirmation();
+  }, 6000);
 };
+
+const handleFormSubmit = () => {
+    const formValues = getValues(); // Obtener valores actuales del formulario
+
+    const isValid = Object.keys(schema.fields).every((key) => {
+      try {
+        schema.fields[key].validateSync(formValues[key]);
+        return true;
+      } catch {
+        return false;
+      }
+    });
+
+    if (!isValid) {
+      handleSubmit(() => {})(new Event("submit")); // Dispara validación visual
+      return;
+    }
+
+    showConfirmation({
+      title: "¿Confirmar solicitud?",
+      message: "¿Deseas enviar esta solicitud de servicio con los datos ingresados?",
+      type: "success",
+      confirmText: "Sí, enviar",
+      cancelText: "Cancelar",
+      icon: () => <AlertCircle size={28} />,
+      onConfirm: async () => {
+        try {
+            // Llama a la función saveClient (probablemente una función que hace una solicitud POST al backend)
+            // y espera a que se complete la respuesta
+            const result = await saveClient(formValues);
+
+                // Si la petición fue exitosa, se muestra un mensaje al usuario con el contenido del campo 'mensaje' recibido en la respuesta
+            handleSuccessfulSubmit();
+
+                // Se limpia el formulario llamando a reset (probablemente proporcionado por React Hook Form)
+            reset();
+
+            } catch (error) {
+                // Si ocurre un error (por ejemplo, fallo de conexión o error en el backend), se muestra un mensaje de error al usuario
+                const backendMessage =
+                error.response?.data?.message || '❌ Error al registrar el cliente';
+                showConfirmation({
+                    title: "Error en la solicitud",
+                    message: backendMessage,
+                    type: "danger",
+                    confirmText: null, // Sin botón de confirmar
+                    cancelText: "Cerrar",
+                    onConfirm: () => {}, // No hace nada
+                  });
+                } 
+        }
+      });
+  }
 
   // Función asíncrona que se ejecuta cuando se envía el formulario
-  const onSubmit = async () => {
-
-  try {
-    
-    // Llama a la función saveClient (probablemente una función que hace una solicitud POST al backend)
-    // y espera a que se complete la respuesta
-    const result = await saveClient(formData);
-
-    // Si la petición fue exitosa, se muestra un mensaje al usuario con el contenido del campo 'mensaje' recibido en la respuesta
-    alert(result.mensaje);
-
-    // Se limpia el formulario llamando a reset (probablemente proporcionado por React Hook Form)
-    reset();
-
-  } catch (error) {
-    // Si ocurre un error (por ejemplo, fallo de conexión o error en el backend), se muestra un mensaje de error al usuario
-    showError("Error: ", error.response?.data?.message);
-  } finally {
-    setMostrarModal(false)
-    setFormData(null)
-  }
-};
-
-    
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 p-4 flex items-center justify-center">
@@ -78,7 +121,7 @@ const clientForm = () => {
         </div>
 
         {/* Formulario */}
-        <form onSubmit={handleSubmit(handleFormSubmit)} className="space-y-6">
+        <form onSubmit={(e) => e.preventDefault()} className="space-y-6">
           {/* Fila 1 */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {/* NIT */}
@@ -180,10 +223,11 @@ const clientForm = () => {
           {/* Botón */}
           <div className="pt-4">
             <button
-              type = "submit"
+              type="button"
+              onClick={handleFormSubmit}
               className="w-full bg-gradient-to-r from-blue-500 to-indigo-600 text-white py-3 px-6 rounded-lg font-medium text-lg hover:from-blue-600 hover:to-indigo-700 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-all duration-200 transform hover:scale-[1.02] active:scale-[0.98] shadow-lg"
             >
-              Registrarme
+              Enviar Solicitud
             </button>
           </div>
         </form>
@@ -193,22 +237,10 @@ const clientForm = () => {
           <p>¿Ya tienes una cuenta? <a href="/createRequest" className="text-blue-600 hover:text-blue-800 font-medium">Crea una solicitud</a></p>
         </div>
       </div>
-      {mostrarModal && (
-        <ConfirmationModal
-          title="¿Estás seguro?"
-          message="Esta acción no se puede deshacer."
-          onConfirm={onSubmit}
-          onClose={() => setMostrarModal(false)}
-          confirmText="Sí, continuar"
-          cancelText="Cancelar"
-              />
-            )}
-        {currentAlert && (
-                <Alert
-                  {...currentAlert}
-                  onClose={hideAlert}
-                />
-              )}    
+      {/* Modal de confirmación */}
+      {modalConfig.isOpen && (
+      <ConfirmationModal {...modalConfig} onClose={hideConfirmation} />
+      )}
     </div>
   )
 }
