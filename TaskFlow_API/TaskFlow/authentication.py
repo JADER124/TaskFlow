@@ -15,7 +15,6 @@ class CookieJWTAuthentication(JWTAuthentication):
         # 2) Si no hay header, intento por cookie
         
         raw_token = request.COOKIES.get("access_token")
-        print("DEBUG iPhone - cookie presente?", bool(raw_token), "valor:", raw_token[:20] if raw_token else None)
         if not raw_token:
             return None
 
