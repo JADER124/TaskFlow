@@ -7,6 +7,7 @@ from ..serializers.getsolicitudes_serializer import getsolicitudes_serializer
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
 def getsolicitudes(request):
+    print("iPhone: access_token cookie recibida?", bool(request.COOKIES.get('access_token')))
     solicitudes = Solicitud.objects.all().order_by('-fecha_creacion')
     serializer = getsolicitudes_serializer(solicitudes, many=True)
     return Response(serializer.data)
