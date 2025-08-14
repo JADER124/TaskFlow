@@ -6,6 +6,7 @@ import { User, Phone, Building2, MapPin, Mail,File, AlertTriangle, AlertCircle }
 import { saveClient } from '../../API/saveClient';
 import { useAlert, Alert } from "../../components/shared/alert";
 import { useConfirmationModal, ConfirmationModal } from "../../components/shared/buttonsModal";
+import Loader from '../../components/shared/loader';
 
 
 const schema = yup.object().shape({
@@ -24,6 +25,7 @@ const schema = yup.object().shape({
 });
 
 const clientForm = () => {
+    const {currentAlert,hideAlert,showError,showSuccess} = useAlert()
 
   const {
     register,
@@ -40,14 +42,7 @@ const clientForm = () => {
 
 
   const handleSuccessfulSubmit = () => {
-  showConfirmation({
-    title: '¡Solicitud creada!',
-    message: 'Tu solicitud ha sido registrada exitosamente.',
-    type: 'success',
-    confirmText: 'Entendido',
-    cancelText: null, // Oculta el botón cancelar
-    onConfirm: () => hideConfirmation() // Cierra el modal al hacer clic
-  });
+  showSuccess("Registro: "+ "El cliente se ha creado exitosamente")
   setTimeout(() => {
     hideConfirmation();
   }, 6000);
@@ -93,14 +88,7 @@ const handleFormSubmit = () => {
                 // Si ocurre un error (por ejemplo, fallo de conexión o error en el backend), se muestra un mensaje de error al usuario
                 const backendMessage =
                 error.response?.data?.message || '❌ Error al registrar el cliente';
-                showConfirmation({
-                    title: "Error en la solicitud",
-                    message: backendMessage,
-                    type: "danger",
-                    confirmText: null, // Sin botón de confirmar
-                    cancelText: "Cerrar",
-                    onConfirm: () => {}, // No hace nada
-                  });
+                showError("Error: "+ backendMessage)
                 } 
         }
       });
@@ -237,6 +225,8 @@ const handleFormSubmit = () => {
           <p>¿Ya tienes una cuenta? <a href="/createRequest" className="text-blue-600 hover:text-blue-800 font-medium">Crea una solicitud</a></p>
         </div>
       </div>
+      {/* Render Alert */}
+            {currentAlert && <Alert {...currentAlert} onClose={hideAlert} />}
       {/* Modal de confirmación */}
       {modalConfig.isOpen && (
       <ConfirmationModal {...modalConfig} onClose={hideConfirmation} />

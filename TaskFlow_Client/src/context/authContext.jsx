@@ -34,7 +34,6 @@ export const ApiProvider = ({ children }) => {
 
       try {
         const res = await verifyCookie();
-        console.log(res.data)
         // Si la cookie es válida, establece autenticado
         if (res?.status === 200 && res.data) {
           setIsAuth(true);

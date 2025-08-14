@@ -88,10 +88,7 @@ const ModalAllUsers = ({ tecnicos, onClose, id_solicitud, onAssigned }) => {
               <div className="flex items-center space-x-4">
                 <div className="relative flex-shrink-0">
                   <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center text-white font-bold">
-                    {tecnico.nombre
-                      .split(" ")
-                      .map((n) => n[0])
-                      .join("")}
+                    {tecnico.nombre.trim().split(/\s+/).reduce((a,w,i,arr)=> i===0 ? w[0] : (i===arr.length-1 ? a+w[0] : a), '').toUpperCase()}
                   </div>
                   <div className="absolute -bottom-1 -right-1 w-4 h-4 rounded-full border-2 border-white bg-green-500" />
                 </div>

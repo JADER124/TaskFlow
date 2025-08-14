@@ -7,17 +7,17 @@ import {
   User,
   MapPin,
   Clock,
-  AlertTriangle,
-  Play,
   UserCheck,
   Phone,
   Building,
   Wrench,
   Star,
-  Send,
   ChevronDown,
   ChevronRight,
-  Camera,Download,Edit,Calendar
+  Camera,
+  Download,
+  Edit,
+  Calendar,
 } from "lucide-react";
 import { getAllUsers } from "../../API/allRequests";
 import ModalAllUsers from "../admin/modalAllUsers";
@@ -33,6 +33,7 @@ const DetailRequest = ({ solicitud, onRefresh }) => {
   const [tecnicos, setTecnicos] = useState([]);
   const [loading, setLoading] = useState(false);
   const [showTechSelector, setShowTechSelector] = useState(false);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     const fetchSolicitud = async () => {
@@ -46,7 +47,6 @@ const DetailRequest = ({ solicitud, onRefresh }) => {
         setLoading(false);
       }
     };
-
     fetchSolicitud();
   }, []);
 
@@ -55,120 +55,187 @@ const DetailRequest = ({ solicitud, onRefresh }) => {
     setExpandedSections((prev) => ({ ...prev, [section]: !prev[section] }));
   };
 
-  const getStatusConfig = (estado) => {
-    switch (estado) {
-      case "Abierta":
-        return { textColor: "text-blue-700", bgColor: "bg-blue-50" };
-      case "Asignada":
-        return { textColor: "text-orange-700", bgColor: "bg-orange-50" };
-      case "Finalizada":
-        return { textColor: "text-green-700", bgColor: "bg-green-50" };
-      default:
-        return { textColor: "text-gray-700", bgColor: "bg-gray-50" };
-    }
-  };
+// Badge fino (texto + fondo suave)
+const getStatusConfig = (estado) => {
+  const name = (estado || "").toLowerCase();
+  switch (name) {
+    case "abierta":
+      return { textColor: "text-cyan-700",    bgColor: "bg-cyan-50" };
+    case "asignada":
+      return { textColor: "text-blue-700",    bgColor: "bg-blue-50" };
+    case "en curso":
+      return { textColor: "text-yellow-700",  bgColor: "bg-yellow-50" };
+    case "pendiente":
+      return { textColor: "text-orange-700",  bgColor: "bg-orange-50" };
+    case "cerrada":
+      return { textColor: "text-red-700",     bgColor: "bg-red-50" };
+    case "finalizada":
+      return { textColor: "text-green-700",   bgColor: "bg-green-50" };
+    default:
+      return { textColor: "text-gray-700",    bgColor: "bg-gray-50" };
+  }
+};
 
-  const getStatusColor = (estado_nombre) => {
-    switch (estado_nombre.toLowerCase()) {
-      case "finalizada":
-        return "bg-green-100 text-green-700";
-      case "asignada":
-        return "bg-blue-100 text-blue-700";
-      case "en curso":
-        return "bg-yellow-100 text-yellow-700";
-      case "cerrada":
-        return "bg-purple-100 text-purple-700";
-      default:
-        return "bg-gray-100 text-gray-700";
-    }
-  };
+// Chip relleno (fondo más marcado)
+const getStatusColor = (estado_nombre) => {
+  const name = (estado_nombre || "").toLowerCase();
+  switch (name) {
+    case "finalizada":
+      return "bg-green-100 text-green-700";
+    case "asignada":
+      return "bg-blue-100 text-blue-700";
+    case "en curso":
+      return "bg-yellow-100 text-yellow-700";
+    case "cerrada":
+      return "bg-red-100 text-red-700";
+    case "pendiente":
+      return "bg-orange-100 text-orange-700";
+    case "abierta":
+      return "bg-cyan-100 text-cyan-700";
+    default:
+      return "bg-gray-100 text-gray-600";
+  }
+};
+
 
   const statusConfig = getStatusConfig(solicitud?.estado_nombre || "");
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      {/* Header */}
-      <div className="bg-white shadow-sm border-b sticky top-0 z-40">
-        <div className="max-w-7xl mx-auto px-6 py-3">
+    // 👇 Este contenedor es el ÚNICO que scrollea en esta vista
+    <div className="h-full min-h-0 bg-gray-50 overflow-y-auto overflow-x-hidden overscroll-contain touch-pan-y">
+      {/* Header - Responsive (sticky sobre el root que scrollea) */}
+      <div className="bg-white shadow-sm border-b sticky top-0 z-10">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 py-3">
           <div className="flex items-center justify-between">
-            <div className="flex items-center space-x-4">
+            <div className="flex items-center space-x-2 sm:space-x-4 flex-1 min-w-0">
               <button
                 onClick={() => navigate("/admin")}
-                className="text-gray-400 hover:text-gray-600"
+                className="text-gray-400 hover:text-gray-600 flex-shrink-0"
               >
                 <ArrowLeft className="h-5 w-5" />
               </button>
-              <div className="flex items-center space-x-3">
-                <h1 className="text-lg font-bold text-gray-900">
-                  {solicitud?.cliente_nombre || "Cliente"} #
-                  {solicitud?.id ?? "—"}
+              <div className="flex flex-col sm:flex-row sm:items-center sm:space-x-3 min-w-0 flex-1">
+                <h1 className="text-base sm:text-lg font-bold text-gray-900 truncate">
+                  {solicitud?.cliente_nombre || "Cliente"} #{solicitud?.id ?? "—"}
                 </h1>
-                <span className={`text-sm ${statusConfig.textColor}`}>
-                  • {solicitud?.tipo_servicio_nombre || "Servicio"}
-                </span>
-                <span
-                  className={`px-2 py-1 rounded-full text-xs font-medium flex items-center space-x-1 $${getStatusColor(
-                    solicitud?.estado_nombre
-                  )}`}
-                >
-                  {solicitud?.estado_nombre || "—"}
-                </span>
+                <div className="flex flex-wrap items-center gap-2 mt-1 sm:mt-0">
+                  <span className={`text-xs sm:text-sm ${statusConfig.textColor} truncate`}>
+                    • {solicitud?.tipo_servicio_nombre || "Servicio"}
+                  </span>
+                  <span
+                    className={`px-2 py-1 rounded-full text-xs font-medium flex items-center space-x-1 ${getStatusColor(
+                      solicitud?.estado_nombre
+                    )} whitespace-nowrap`}
+                  >
+                    {solicitud?.estado_nombre || "—"}
+                  </span>
+                </div>
               </div>
             </div>
-            <div className="flex items-center space-x-2">
-              <button className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm flex items-center space-x-2">
-                <FileText className="h-4 w-4" />
-                <span>Ver Formulario</span>
+
+            {/* Botón responsive */}
+            <div className="flex items-center space-x-2 ml-2 flex-shrink-0">
+              <button className="bg-blue-600 hover:bg-blue-700 text-white px-2 sm:px-4 py-2 rounded-lg text-xs sm:text-sm flex items-center space-x-1 sm:space-x-2">
+                <FileText className="h-3 w-3 sm:h-4 sm:w-4" />
+                <span className="hidden sm:inline">Ver Formulario</span>
+                <span className="sm:hidden">Ver</span>
               </button>
             </div>
           </div>
         </div>
       </div>
 
-      {/* Contenido */}
-      <div className="max-w-7xl mx-auto px-6 py-6">
-        <div className="grid grid-cols-12 gap-6">
-          {/* Principal */}
-          <div className="col-span-12 lg:col-span-8">
-            <div className="bg-white rounded-lg shadow-sm border">
+      {/* Contenido - Layout responsive */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 py-4 sm:py-6 pb-20">
+        {!!error && (
+          <div className="mb-4 rounded-md border border-red-200 bg-red-50 px-3 py-2 text-sm text-red-700">
+            {error}
+          </div>
+        )}
+
+        <div className="flex flex-col lg:grid lg:grid-cols-12 lg:gap-6 space-y-4 lg:space-y-0">
+          {/* En mobile: Técnico asignado aparece primero */}
+          <div className="lg:hidden">
+            <div className="bg-white rounded-lg shadow-sm border p-4">
+              <div className="flex justify-between items-center mb-3">
+                <h3 className="font-medium flex items-center text-sm">
+                  <UserCheck className="h-4 w-4 mr-2 text-blue-600" />
+                  Técnico Asignado
+                </h3>
+                <button
+                  onClick={() => setShowTechSelector(true)}
+                  className="text-blue-600 hover:text-blue-700 text-sm font-medium flex items-center space-x-1"
+                >
+                  <User className="h-4 w-4" />
+                  <span className="hidden xs:inline">Cambiar</span>
+                </button>
+              </div>
+              <div className="flex items-center space-x-3 mb-3">
+                <div className="w-10 h-10 bg-blue-600 rounded-full flex items-center justify-center text-white text-sm font-semibold flex-shrink-0">
+                  CM
+                </div>
+                <div className="flex-1 min-w-0">
+                  <p className="font-medium text-sm truncate">
+                    {solicitud?.usuario_asociado_nombre}
+                  </p>
+                  <p className="text-xs text-gray-500 flex items-center">
+                    <Star className="h-3 w-3 text-yellow-500 mr-1" /> 4.8 • 127 servicios
+                  </p>
+                </div>
+              </div>
+              <div className="grid grid-cols-2 gap-2 text-xs">
+                <button className="bg-green-50 text-green-700 px-2 py-2 rounded flex items-center justify-center space-x-1">
+                  <Phone className="w-3 h-3" />
+                  <span>Llamar</span>
+                </button>
+                <button className="bg-blue-50 text-blue-700 px-2 py-2 rounded flex items-center justify-center space-x-1">
+                  <MessageCircle className="w-3 h-3" />
+                  <span>Mensaje</span>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          {/* Contenido Principal */}
+          <div className="lg:col-span-8">
+            <div className="bg-white rounded-lg shadow-sm border overflow-hidden">
               {/* Descripción */}
-              <div className="p-6 border-b">
-                <h2 className="text-xl font-semibold text-gray-900 mb-2">
+              <div className="p-4 sm:p-6 border-b">
+                <h2 className="text-lg sm:text-xl font-semibold text-gray-900 mb-2">
                   Solicitud #{solicitud?.id ?? "—"}
                 </h2>
-                <p className="text-gray-600 leading-relaxed">
+                <p className="text-gray-600 leading-relaxed text-sm sm:text-base">
                   {solicitud?.descripcion || "Sin descripción"}
                 </p>
-                <div className="mt-4 text-sm text-gray-500">
+                <div className="mt-4 text-xs sm:text-sm text-gray-500">
                   <Clock className="inline w-4 h-4 mr-1" />
                   Fecha de creación:{" "}
                   {solicitud?.fecha_creacion
-                    ? new Date(solicitud.fecha_creacion).toLocaleString(
-                        "es-CO",
-                        {
-                          timeZone: "America/Bogota",
-                          day: "2-digit",
-                          month: "2-digit",
-                          year: "numeric",
-                          hour: "2-digit",
-                          minute: "2-digit",
-                          hour12: true,
-                        }
-                      )
+                    ? new Date(solicitud.fecha_creacion).toLocaleString("es-CO", {
+                        timeZone: "America/Bogota",
+                        day: "2-digit",
+                        month: "2-digit",
+                        year: "numeric",
+                        hour: "2-digit",
+                        minute: "2-digit",
+                        hour12: true,
+                      })
                     : "—"}
                 </div>
               </div>
 
-              {/* Info rápida */}
-              <div className="p-6 border-b">
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-6 text-sm">
+              {/* Info rápida - Grid responsive */}
+              <div className="p-4 sm:p-6 border-b">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 text-sm">
                   <div>
                     <h4 className="font-semibold mb-2 flex items-center">
                       <User className="w-4 h-4 mr-2 text-blue-600" /> Personal
                     </h4>
-                    <p>
+                    <p className="truncate">
                       <strong>Técnico:</strong>{" "}
-                      {solicitud?.usuario_asociado_nombre || "—"}
+                      <span className="block sm:inline">
+                        {solicitud?.usuario_asociado_nombre || "—"}
+                      </span>
                     </p>
                   </div>
                   <div>
@@ -177,18 +244,20 @@ const DetailRequest = ({ solicitud, onRefresh }) => {
                       Ubicación
                     </h4>
                     <p>Medellín, Antioquia</p>
-                    <p className="text-gray-500">
+                    <p className="text-gray-500 text-xs sm:text-sm break-words">
                       {solicitud?.direccion}
                     </p>
                   </div>
-                  <div>
+                  <div className="sm:col-span-2 lg:col-span-1">
                     <h4 className="font-semibold mb-2 flex items-center">
                       <Wrench className="w-4 h-4 mr-2 text-purple-600" />
                       Servicio
                     </h4>
                     <p>
                       <strong>Tipo:</strong>{" "}
-                      {solicitud?.tipo_servicio_nombre || "—"}
+                      <span className="block sm:inline">
+                        {solicitud?.tipo_servicio_nombre || "—"}
+                      </span>
                     </p>
                   </div>
                 </div>
@@ -196,36 +265,33 @@ const DetailRequest = ({ solicitud, onRefresh }) => {
 
               {/* Secciones colapsables */}
               <div>
+                {/* Equipos */}
                 <div className="border-b">
                   <button
                     onClick={() => toggleSection("equipments")}
-                    className="w-full px-6 py-4 flex items-center justify-between hover:bg-gray-50 transition"
+                    className="w-full px-4 sm:px-6 py-4 flex items-center justify-between hover:bg-gray-50 transition text-left"
                   >
-                    <span className="flex items-center font-medium">
-                      <Building className="h-4 w-4 mr-2 text-orange-600" />
-                      Equipos Involucrados (2)
+                    <span className="flex items-center font-medium text-sm sm:text-base">
+                      <Building className="h-4 w-4 mr-2 text-orange-600 flex-shrink-0" />
+                      <span>Equipos Involucrados (2)</span>
                     </span>
                     {expandedSections.equipments ? (
-                      <ChevronDown />
+                      <ChevronDown className="flex-shrink-0" />
                     ) : (
-                      <ChevronRight />
+                      <ChevronRight className="flex-shrink-0" />
                     )}
                   </button>
                   {expandedSections.equipments && (
-                    <div className="px-6 pb-4">
+                    <div className="px-4 sm:px-6 pb-4">
                       <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                         <div className="bg-gray-50 rounded-lg p-3">
-                          <p className="font-medium">XYZ-2000</p>
-                          <p className="text-xs text-gray-500">
-                            ID: BAL-001 • Serie: 2024-001
-                          </p>
+                          <p className="font-medium text-sm">XYZ-2000</p>
+                          <p className="text-xs text-gray-500">ID: BAL-001 • Serie: 2024-001</p>
                           <p className="text-xs text-gray-500">Lab A</p>
                         </div>
                         <div className="bg-gray-50 rounded-lg p-3">
-                          <p className="font-medium">XYZ-2000</p>
-                          <p className="text-xs text-gray-500">
-                            ID: BAL-002 • Serie: 2024-002
-                          </p>
+                          <p className="font-medium text-sm">XYZ-2000</p>
+                          <p className="text-xs text-gray-500">ID: BAL-002 • Serie: 2024-002</p>
                           <p className="text-xs text-gray-500">Lab B</p>
                         </div>
                       </div>
@@ -233,31 +299,30 @@ const DetailRequest = ({ solicitud, onRefresh }) => {
                   )}
                 </div>
 
+                {/* Timeline */}
                 <div>
                   <button
                     onClick={() => toggleSection("timeline")}
-                    className="w-full px-6 py-4 flex items-center justify-between hover:bg-gray-50 transition"
+                    className="w-full px-4 sm:px-6 py-4 flex items-center justify-between hover:bg-gray-50 transition text-left"
                   >
-                    <span className="flex items-center font-medium">
-                      <Clock className="h-4 w-4 mr-2 text-blue-600" />
-                      Cronología (2)
+                    <span className="flex items-center font-medium text-sm sm:text-base">
+                      <Clock className="h-4 w-4 mr-2 text-blue-600 flex-shrink-0" />
+                      <span>Cronología (2)</span>
                     </span>
                     {expandedSections.timeline ? (
-                      <ChevronDown />
+                      <ChevronDown className="flex-shrink-0" />
                     ) : (
-                      <ChevronRight />
+                      <ChevronRight className="flex-shrink-0" />
                     )}
                   </button>
                   {expandedSections.timeline && (
-                    <div className="px-6 pb-4">
+                    <div className="px-4 sm:px-6 pb-4">
                       <div className="space-y-3 text-sm">
                         <p>
-                          <strong>03/08 13:10</strong> • Solicitud asignada por
-                          A. García
+                          <strong>03/08 13:10</strong> • Solicitud asignada por A. García
                         </p>
                         <p>
-                          <strong>03/08 13:00</strong> • Solicitud creada por
-                          Sistema
+                          <strong>03/08 13:00</strong> • Solicitud creada por Sistema
                         </p>
                       </div>
                     </div>
@@ -267,9 +332,10 @@ const DetailRequest = ({ solicitud, onRefresh }) => {
             </div>
           </div>
 
-          {/* Sidebar */}
-          <div className="col-span-12 lg:col-span-4 space-y-4">
-            <div className="bg-white rounded-lg shadow-sm border p-4">
+          {/* Sidebar - Desktop a la derecha; en mobile abajo y SIN scroll propio */}
+          <div className="lg:col-span-4 space-y-4 lg:max-h-full lg:overflow-y-auto">
+            {/* Técnico asignado - Solo desktop */}
+            <div className="hidden lg:block bg-white rounded-lg shadow-sm border p-4">
               <div className="flex justify-between items-center mb-3">
                 <h3 className="font-medium flex items-center">
                   <UserCheck className="h-4 w-4 mr-2 text-blue-600" />
@@ -285,66 +351,58 @@ const DetailRequest = ({ solicitud, onRefresh }) => {
               </div>
               <div className="flex items-center space-x-3 mb-3">
                 <div className="w-10 h-10 bg-blue-600 rounded-full flex items-center justify-center text-white text-sm font-semibold">
-                  CM
+                  {solicitud?.usuario_asociado_nombre.trim().split(/\s+/).reduce((a,w,i,arr)=> i===0 ? w[0] : (i===arr.length-1 ? a+w[0] : a), '').toUpperCase()}
                 </div>
                 <div>
                   <p className="font-medium text-sm">{solicitud?.usuario_asociado_nombre}</p>
                   <p className="text-xs text-gray-500 flex items-center">
-                    <Star className="h-3 w-3 text-yellow-500 mr-1" /> 4.8 • 127
-                    servicios
+                    <Star className="h-3 w-3 text-yellow-500 mr-1" /> Correo
                   </p>
                 </div>
               </div>
-              <div className="grid grid-cols-2 gap-2 text-xs">
-                <button className="bg-green-50 text-green-700 px-2 py-1 rounded flex items-center justify-center space-x-1">
-                  <Phone className="w-3 h-3" />
-                  <span>Llamar</span>
+            </div>
+
+            {/* Acciones rápidas */}
+            <div className="bg-white rounded-lg shadow-sm border p-4">
+              <h3 className="font-medium text-gray-900 mb-3 text-sm sm:text-base">
+                Acciones Rápidas
+              </h3>
+
+              <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-1 gap-2">
+                <button className="flex items-center space-x-2 text-xs sm:text-sm text-gray-700 hover:bg-gray-50 py-2 px-3 rounded transition-colors justify-center lg:justify-start">
+                  <Camera className="h-4 w-4 flex-shrink-0" />
+                  <span className="hidden sm:inline lg:inline">Tomar fotos</span>
+                  <span className="sm:hidden lg:hidden">Fotos</span>
                 </button>
-                <button className="bg-blue-50 text-blue-700 px-2 py-1 rounded flex items-center justify-center space-x-1">
-                  <MessageCircle className="w-3 h-3" />
-                  <span>Mensaje</span>
+                <button className="flex items-center space-x-2 text-xs sm:text-sm text-gray-700 hover:bg-gray-50 py-2 px-3 rounded transition-colors justify-center lg:justify-start">
+                  <Download className="h-4 w-4 flex-shrink-0" />
+                  <span className="hidden sm:inline lg:inline">Generar PDF</span>
+                  <span className="sm:hidden lg:hidden">PDF</span>
+                </button>
+                <button className="flex items-center space-x-2 text-xs sm:text-sm text-gray-700 hover:bg-gray-50 py-2 px-3 rounded transition-colors justify-center lg:justify-start">
+                  <Edit className="h-4 w-4 flex-shrink-0" />
+                  <span className="hidden sm:inline lg:inline">Editar solicitud</span>
+                  <span className="sm:hidden lg:hidden">Editar</span>
+                </button>
+                <button className="flex items-center space-x-2 text-xs sm:text-sm text-gray-700 hover:bg-gray-50 py-2 px-3 rounded transition-colors justify-center lg:justify-start">
+                  <Calendar className="h-4 w-4 flex-shrink-0" />
+                  <span className="hidden sm:inline lg:inline">Reagendar</span>
+                  <span className="sm:hidden lg:hidden">Fecha</span>
                 </button>
               </div>
             </div>
-
-              {/* Acciones rápidas compactas */}
-            <div className="bg-white rounded-lg shadow-sm border p-4">
-              <h3 className="font-medium text-gray-900 mb-3">Acciones Rápidas</h3>
-              
-              <div className="space-y-2">
-                <button className="w-full flex items-center space-x-2 text-sm text-gray-700 hover:bg-gray-50 py-2 px-3 rounded transition-colors">
-                  <Camera className="h-4 w-4" />
-                  <span>Tomar fotos</span>
-                </button>
-                <button className="w-full flex items-center space-x-2 text-sm text-gray-700 hover:bg-gray-50 py-2 px-3 rounded transition-colors">
-                  <Download className="h-4 w-4" />
-                  <span>Generar PDF</span>
-                </button>
-                <button className="w-full flex items-center space-x-2 text-sm text-gray-700 hover:bg-gray-50 py-2 px-3 rounded transition-colors">
-                  <Edit className="h-4 w-4" />
-                  <span>Editar solicitud</span>
-                </button>
-                <button className="w-full flex items-center space-x-2 text-sm text-gray-700 hover:bg-gray-50 py-2 px-3 rounded transition-colors">
-                  <Calendar className="h-4 w-4" />
-                  <span>Reagendar</span>
-                </button>
-              </div>
-            </div>     
-
           </div>
         </div>
       </div>
 
       {/* Modal de selección de técnico */}
       {showTechSelector && (
-        <>
-          <ModalAllUsers
-            tecnicos={tecnicos}
-            onClose={() => setShowTechSelector(false)}
-            onAssigned={onRefresh}
-            id_solicitud={solicitud?.id}
-          />
-        </>
+        <ModalAllUsers
+          tecnicos={tecnicos}
+          onClose={() => setShowTechSelector(false)}
+          onAssigned={onRefresh}
+          id_solicitud={solicitud?.id}
+        />
       )}
     </div>
   );

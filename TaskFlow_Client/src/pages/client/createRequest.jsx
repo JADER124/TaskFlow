@@ -2,15 +2,30 @@ import React from "react";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
-import { FileText, User, Settings, AlertCircle, MapPin } from "lucide-react";
+import {
+  FileText,
+  User,
+  Settings,
+  AlertCircle,
+  MapPin,
+  Plug,
+  Wrench,
+  Hammer,
+} from "lucide-react";
 import { clientRequest } from "../../API/saveClient";
-import { useConfirmationModal, ConfirmationModal } from "../../components/shared/buttonsModal";
+import {
+  useConfirmationModal,
+  ConfirmationModal,
+} from "../../components/shared/buttonsModal";
+import { useAlert, Alert } from "../../components/shared/alert";
 
 // Validaciones con Yup
 const schema = yup.object().shape({
-  nit: yup.string().required("El NIT es requerido")
-  .min(7, "Debe tener al menos 7 digitos")
-  .matches(/^[0-9]+$/, "Solo se permiten números"),
+  nit: yup
+    .string()
+    .required("El NIT es requerido")
+    .min(7, "Debe tener al menos 7 digitos")
+    .matches(/^[0-9]+$/, "Solo se permiten números"),
   direccion: yup.string().required("La dirección es requerida"),
   motivoSolicitud: yup
     .string()
@@ -19,6 +34,7 @@ const schema = yup.object().shape({
 });
 
 const CreateRequest = () => {
+  const { currentAlert, hideAlert, showSuccess, showError } = useAlert();
   const {
     register,
     handleSubmit,
@@ -29,20 +45,13 @@ const CreateRequest = () => {
     resolver: yupResolver(schema),
   });
 
-//Invoco mi componente para traer la plantilla de los modales
-  const { modalConfig, showConfirmation, hideConfirmation } = useConfirmationModal();
-
+  //Invoco mi componente para traer la plantilla de los modales
+  const { modalConfig, showConfirmation, hideConfirmation } =
+    useConfirmationModal();
 
   const handleSuccessfulSubmit = () => {
-  showConfirmation({
-    title: '¡Solicitud creada!',
-    message: 'Tu solicitud ha sido registrada exitosamente.',
-    type: 'success',
-    confirmText: 'Entendido',
-    cancelText: null, // Oculta el botón cancelar
-    onConfirm: () => hideConfirmation() // Cierra el modal al hacer clic
-  });
-};
+    showSuccess("Solicitud creada exitosamente");
+  };
 
   const handleFormSubmit = () => {
     const formValues = getValues(); // Obtener valores actuales del formulario
@@ -51,8 +60,8 @@ const CreateRequest = () => {
       try {
         schema.fields[key].validateSync(formValues[key]);
         return true;
-          } catch {
-            return false;
+      } catch {
+        return false;
       }
     });
 
@@ -63,7 +72,8 @@ const CreateRequest = () => {
 
     showConfirmation({
       title: "¿Confirmar solicitud?",
-      message: "¿Deseas enviar esta solicitud de servicio con los datos ingresados?",
+      message:
+        "¿Deseas enviar esta solicitud de servicio con los datos ingresados?",
       type: "success",
       confirmText: "Sí, enviar",
       cancelText: "Cancelar",
@@ -76,17 +86,10 @@ const CreateRequest = () => {
           reset();
         } catch (error) {
           const backendMessage =
-          error.response?.data?.error || '❌ Error al realizar la solicitud';
-          showConfirmation({
-              title: "Error en la solicitud",
-              message: backendMessage,
-              type: "danger",
-              confirmText: null, // Sin botón de confirmar
-              cancelText: "Cerrar",
-              onConfirm: () => {}, // No hace nada
-            });
-          }
-        },
+            error.response?.data?.error || "❌ Error al realizar la solicitud";
+          showError("Error: " + backendMessage);
+        }
+      },
     });
   };
 
@@ -110,9 +113,9 @@ const CreateRequest = () => {
         <form onSubmit={(e) => e.preventDefault()} className="space-y-6">
           {/* NIT */}
           <div>
-            <label 
-            htmlFor="nit" 
-            className="block text-sm font-medium text-gray-700 mb-2"
+            <label
+              htmlFor="nit"
+              className="block text-sm font-medium text-gray-700 mb-2"
             >
               NIT
             </label>
@@ -123,7 +126,7 @@ const CreateRequest = () => {
                 id="nit"
                 {...register("nit")}
                 className={`w-full pl-10 pr-4 py-3 border rounded-lg focus:ring-2 transition-colors ${
-                  errors.nit 
+                  errors.nit
                     ? "border-red-500 bg-red-50 focus:ring-red-500"
                     : "border-gray-300 bg-gray-50 focus:ring-blue-500"
                 }`}
@@ -131,15 +134,15 @@ const CreateRequest = () => {
               />
             </div>
             {errors.nit && (
-            <p className="mt-1 text-sm text-red-600">{errors.nit.message}</p>
+              <p className="mt-1 text-sm text-red-600">{errors.nit.message}</p>
             )}
           </div>
 
           {/* DIRECCIÓN */}
           <div>
-            <label 
-            htmlFor="direccion" 
-            className="block text-sm font-medium text-gray-700 mb-2"
+            <label
+              htmlFor="direccion"
+              className="block text-sm font-medium text-gray-700 mb-2"
             >
               DIRECCIÓN
             </label>
@@ -158,15 +161,17 @@ const CreateRequest = () => {
               />
             </div>
             {errors.direccion && (
-              <p className="mt-1 text-sm text-red-600">{errors.direccion.message}</p>
+              <p className="mt-1 text-sm text-red-600">
+                {errors.direccion.message}
+              </p>
             )}
           </div>
 
           {/* Motivo de la solicitud */}
           <div>
-            <label 
-            htmlFor="motivoSolicitud" 
-            className="block text-sm font-medium text-gray-700 mb-2"
+            <label
+              htmlFor="motivoSolicitud"
+              className="block text-sm font-medium text-gray-700 mb-2"
             >
               Motivo de la solicitud
             </label>
@@ -187,7 +192,7 @@ const CreateRequest = () => {
             {errors.motivoSolicitud && (
               <p className="mt-1 text-sm text-red-600">
                 {errors.motivoSolicitud.message}
-                </p>
+              </p>
             )}
           </div>
 
@@ -196,12 +201,12 @@ const CreateRequest = () => {
             <label className="block text-sm font-medium text-gray-700 mb-3">
               Tipo de servicio
             </label>
-            <div 
+            <div
               className={`border rounded-lg p-4 space-y-3 ${
-              errors.tipoServicio
-                ? "border-red-500 bg-red-50"
-                : "border-gray-300 bg-gray-50"
-            }`}
+                errors.tipoServicio
+                  ? "border-red-500 bg-red-50"
+                  : "border-gray-300 bg-gray-50"
+              }`}
             >
               {["instalación", "mantenimiento", "reparación"].map((tipo) => (
                 <div className="flex items-center" key={tipo}>
@@ -212,21 +217,31 @@ const CreateRequest = () => {
                     {...register("tipoServicio")}
                     className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 focus:ring-2"
                   />
-                  <label 
+                  <label
                     htmlFor={tipo}
                     className="ml-3 text-sm font-medium text-gray-700 cursor-pointer flex items-center"
-                    >
+                  >
+                    {/* reemplaza <Settings ... /> por esto */}
+                    {tipo === "instalación" ? (
+                      <Plug className="w-4 h-4 mr-2 text-gray-500" />
+                    ) : tipo === "mantenimiento" ? (
+                      <Wrench className="w-4 h-4 mr-2 text-gray-500" />
+                    ) : tipo === "reparación" ? (
+                      <Hammer className="w-4 h-4 mr-2 text-gray-500" />
+                    ) : (
                       <Settings className="w-4 h-4 mr-2 text-gray-500" />
-                      {tipo.charAt(0).toUpperCase() + tipo.slice(1)}
+                    )}
+
+                    {tipo.charAt(0).toUpperCase() + tipo.slice(1)}
                   </label>
                 </div>
               ))}
             </div>
             {errors.tipoServicio && (
               <p className="mt-1 text-sm text-red-600">
-                  {errors.tipoServicio.message}
+                {errors.tipoServicio.message}
               </p>
-              )}
+            )}
           </div>
 
           {/* Botón */}
@@ -245,19 +260,20 @@ const CreateRequest = () => {
         <div className="mt-8 text-center text-sm text-gray-500">
           <p>
             ¿Necesita actualizar sus datos?{" "}
-            <a 
-            href="https://api.whatsapp.com/send?phone=573012511449&text=%20Hola%20me%20interesa%20realizar%20una%20%20solicitud%20y%20no%20me%20esta%20dejando%20hacerla%20en%20la%20app" 
-            className="text-blue-600 hover:text-blue-800 font-medium"
+            <a
+              href="https://api.whatsapp.com/send?phone=573012511449&text=%20Hola%20me%20interesa%20realizar%20una%20%20solicitud%20y%20no%20me%20esta%20dejando%20hacerla%20en%20la%20app"
+              className="text-blue-600 hover:text-blue-800 font-medium"
             >
               Contactar soporte
             </a>
           </p>
         </div>
       </div>
-
+      {/* Render Alert */}
+      {currentAlert && <Alert {...currentAlert} onClose={hideAlert} />}
       {/* Modal de confirmación */}
       {modalConfig.isOpen && (
-      <ConfirmationModal {...modalConfig} onClose={hideConfirmation} />
+        <ConfirmationModal {...modalConfig} onClose={hideConfirmation} />
       )}
     </div>
   );

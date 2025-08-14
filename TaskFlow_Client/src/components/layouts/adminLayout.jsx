@@ -10,6 +10,7 @@ import {
   X,
 } from "lucide-react";
 import { Outlet, NavLink } from "react-router-dom";
+import logo from "../../assets/taskflow_bg-black.png";
 
 export const AdminLayout = () => {
   const [activeSection, setActiveSection] = useState("inicio");
@@ -40,31 +41,45 @@ export const AdminLayout = () => {
   };
 
   return (
-    <div className="flex h-screen bg-gray-50">
+    <div className="flex h-screen bg-gray-50 overflow-hidden">
       {/* Overlay para móvil */}
       {isSidebarOpen && (
-        <div 
+        <div
           className="fixed inset-0 bg-black bg-opacity-50 z-20 lg:hidden"
           onClick={closeSidebar}
         ></div>
       )}
 
       {/* Sidebar */}
-      <div className={`
+      <div
+        className={`
         fixed lg:static inset-y-0 left-0 z-30
         w-64 bg-gray-900 shadow-lg transform transition-transform duration-300 ease-in-out
-        ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}
-      `}>
-        {/* Header del sidebar */}
-        <div className="p-4 lg:p-6 border-b border-gray-700 flex items-center justify-between">
-          <h1 className="text-lg lg:text-xl font-bold text-white">Mi Dashboard</h1>
-          {/* Botón cerrar solo en móvil */}
-          <button
-            onClick={closeSidebar}
-            className="lg:hidden p-1 rounded-md text-gray-400 hover:text-white hover:bg-gray-800"
-          >
-            <X className="w-5 h-5" />
-          </button>
+        ${
+          isSidebarOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0"
+        }
+      `}
+      >
+        {/* Header del sidebar - Layout mejorado */}
+        <div className="p-3 lg:p-4 border-b border-gray-700">
+          <div className="flex items-center justify-between">
+            {/* Logo con tamaño responsivo optimizado */}
+            <div className="flex-1 min-w-0 mr-2">
+              <img
+                src={logo}
+                alt="TaskFlow Logo"
+                className="w-full max-w-[140px] sm:max-w-[160px] lg:max-w-[180px] h-auto object-contain"
+              />
+            </div>
+            
+            {/* Botón cerrar solo en móvil - Posición fija */}
+            <button
+              onClick={closeSidebar}
+              className="lg:hidden p-2 rounded-md text-gray-400 hover:text-white hover:bg-gray-800 flex-shrink-0 ml-2"
+            >
+              <X className="w-5 h-5" />
+            </button>
+          </div>
         </div>
 
         {/* Navigation */}
@@ -86,14 +101,18 @@ export const AdminLayout = () => {
         </nav>
 
         {/* User info en la parte inferior */}
-        <div className="absolute bottom-0 w-full p-4 lg:p-6 border-t border-gray-700">
+        <div className="absolute bottom-0 w-full p-4 lg:p-6 border-t border-gray-700 bg-gray-900">
           <div className="flex items-center">
             <div className="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center flex-shrink-0">
               <User className="w-4 h-4 text-gray-900" />
             </div>
             <div className="ml-3 min-w-0 flex-1">
-              <p className="text-sm font-medium text-gray-200 truncate">{userLogged}</p>
-              <p className="text-xs text-gray-400 truncate">Basculas y balanzas SAS</p>
+              <p className="text-sm font-medium text-gray-200 truncate">
+                {userLogged || "Usuario"}
+              </p>
+              <p className="text-xs text-gray-400 truncate">
+                Básculas y balanzas SAS
+              </p>
             </div>
           </div>
         </div>
@@ -114,7 +133,7 @@ export const AdminLayout = () => {
         </div>
 
         {/* Outlet para el contenido */}
-        <div className="flex-1 overflow-hidden">
+        <div className="flex-1 overflow-auto">
           <Outlet />
         </div>
       </div>
