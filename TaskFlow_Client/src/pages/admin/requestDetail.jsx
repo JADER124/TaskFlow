@@ -1,6 +1,6 @@
 import { useState,useEffect,useCallback } from "react";
 import DetailRequest from "../../components/shared/detailCard";
-import { useParams } from "react-router-dom";
+import { useParams,Outlet } from "react-router-dom";
 import { getDetailRequest } from "../../API/allRequests";
 import Loader from "../../components/shared/loader"
 const RequestDetail = () => {
@@ -43,7 +43,14 @@ const RequestDetail = () => {
   
 
   
-  return <DetailRequest solicitud={solicitud} onRefresh={forceRefresh}/>;
+ return (
+    <div>
+      <DetailRequest solicitud={solicitud} onRefresh={forceRefresh} />
+
+      {/* Aquí se montará ViewForm al entrar en /admin/request/:id/form */}
+      <Outlet />
+    </div>
+  );
 };
 
 export default RequestDetail;

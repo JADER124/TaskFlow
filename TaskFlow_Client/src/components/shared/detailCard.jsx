@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate,NavLink  } from "react-router-dom";
 import {
   ArrowLeft,
   FileText,
@@ -21,6 +21,7 @@ import {
 } from "lucide-react";
 import { getAllUsers } from "../../API/allRequests";
 import ModalAllUsers from "../admin/modalAllUsers";
+import { MaintenanceCalendar } from "../admin/maintenanceCalendar";
 
 const DetailRequest = ({ solicitud, onRefresh }) => {
   const navigate = useNavigate();
@@ -55,48 +56,54 @@ const DetailRequest = ({ solicitud, onRefresh }) => {
     setExpandedSections((prev) => ({ ...prev, [section]: !prev[section] }));
   };
 
-// Badge fino (texto + fondo suave)
-const getStatusConfig = (estado) => {
-  const name = (estado || "").toLowerCase();
-  switch (name) {
-    case "abierta":
-      return { textColor: "text-cyan-700",    bgColor: "bg-cyan-50" };
-    case "asignada":
-      return { textColor: "text-blue-700",    bgColor: "bg-blue-50" };
-    case "en curso":
-      return { textColor: "text-yellow-700",  bgColor: "bg-yellow-50" };
-    case "pendiente":
-      return { textColor: "text-orange-700",  bgColor: "bg-orange-50" };
-    case "cerrada":
-      return { textColor: "text-red-700",     bgColor: "bg-red-50" };
-    case "finalizada":
-      return { textColor: "text-green-700",   bgColor: "bg-green-50" };
-    default:
-      return { textColor: "text-gray-700",    bgColor: "bg-gray-50" };
-  }
-};
+  // Badge fino (texto + fondo suave)
+  const getStatusConfig = (estado) => {
+    const name = (estado || "").toLowerCase();
+    switch (name) {
+      case "abierta":
+        return { textColor: "text-cyan-700", bgColor: "bg-cyan-50" };
+      case "asignada":
+        return { textColor: "text-blue-700", bgColor: "bg-blue-50" };
+      case "en curso":
+        return { textColor: "text-yellow-700", bgColor: "bg-yellow-50" };
+      case "pendiente":
+        return { textColor: "text-orange-700", bgColor: "bg-orange-50" };
+      case "cerrada":
+        return { textColor: "text-red-700", bgColor: "bg-red-50" };
+      case "finalizada":
+        return { textColor: "text-green-700", bgColor: "bg-green-50" };
+      default:
+        return { textColor: "text-gray-700", bgColor: "bg-gray-50" };
+    }
+  };
 
-// Chip relleno (fondo más marcado)
-const getStatusColor = (estado_nombre) => {
-  const name = (estado_nombre || "").toLowerCase();
-  switch (name) {
-    case "finalizada":
-      return "bg-green-100 text-green-700";
-    case "asignada":
-      return "bg-blue-100 text-blue-700";
-    case "en curso":
-      return "bg-yellow-100 text-yellow-700";
-    case "cerrada":
-      return "bg-red-100 text-red-700";
-    case "pendiente":
-      return "bg-orange-100 text-orange-700";
-    case "abierta":
-      return "bg-cyan-100 text-cyan-700";
-    default:
-      return "bg-gray-100 text-gray-600";
-  }
-};
+  // Chip relleno (fondo más marcado)
+  const getStatusColor = (estado_nombre) => {
+    const name = (estado_nombre || "").toLowerCase();
+    switch (name) {
+      case "finalizada":
+        return "bg-green-100 text-green-700";
+      case "asignada":
+        return "bg-blue-100 text-blue-700";
+      case "en curso":
+        return "bg-yellow-100 text-yellow-700";
+      case "cerrada":
+        return "bg-red-100 text-red-700";
+      case "pendiente":
+        return "bg-orange-100 text-orange-700";
+      case "abierta":
+        return "bg-cyan-100 text-cyan-700";
+      default:
+        return "bg-gray-100 text-gray-600";
+    }
+  };
 
+  const [appointment, setAppointment] = useState(null);
+
+  const handleSchedule = (appointmentData) => {
+    setAppointment(appointmentData);
+    console.log("Cita programada:", appointmentData);
+  };
 
   const statusConfig = getStatusConfig(solicitud?.estado_nombre || "");
 
@@ -116,10 +123,13 @@ const getStatusColor = (estado_nombre) => {
               </button>
               <div className="flex flex-col sm:flex-row sm:items-center sm:space-x-3 min-w-0 flex-1">
                 <h1 className="text-base sm:text-lg font-bold text-gray-900 truncate">
-                  {solicitud?.cliente_nombre || "Cliente"} #{solicitud?.id ?? "—"}
+                  {solicitud?.cliente_nombre || "Cliente"} #
+                  {solicitud?.id ?? "—"}
                 </h1>
                 <div className="flex flex-wrap items-center gap-2 mt-1 sm:mt-0">
-                  <span className={`text-xs sm:text-sm ${statusConfig.textColor} truncate`}>
+                  <span
+                    className={`text-xs sm:text-sm ${statusConfig.textColor} truncate`}
+                  >
                     • {solicitud?.tipo_servicio_nombre || "Servicio"}
                   </span>
                   <span
@@ -135,11 +145,14 @@ const getStatusColor = (estado_nombre) => {
 
             {/* Botón responsive */}
             <div className="flex items-center space-x-2 ml-2 flex-shrink-0">
-              <button className="bg-blue-600 hover:bg-blue-700 text-white px-2 sm:px-4 py-2 rounded-lg text-xs sm:text-sm flex items-center space-x-1 sm:space-x-2">
+              <NavLink
+                to="form" // <-- aquí va la ruta a la que quieres ir
+                className="bg-blue-600 hover:bg-blue-700 text-white px-2 sm:px-4 py-2 rounded-lg text-xs sm:text-sm flex items-center space-x-1 sm:space-x-2"
+              >
                 <FileText className="h-3 w-3 sm:h-4 sm:w-4" />
                 <span className="hidden sm:inline">Ver Formulario</span>
                 <span className="sm:hidden">Ver</span>
-              </button>
+              </NavLink>
             </div>
           </div>
         </div>
@@ -179,7 +192,8 @@ const getStatusColor = (estado_nombre) => {
                     {solicitud?.usuario_asociado_nombre}
                   </p>
                   <p className="text-xs text-gray-500 flex items-center">
-                    <Star className="h-3 w-3 text-yellow-500 mr-1" /> 4.8 • 127 servicios
+                    <Star className="h-3 w-3 text-yellow-500 mr-1" /> 4.8 • 127
+                    servicios
                   </p>
                 </div>
               </div>
@@ -211,15 +225,18 @@ const getStatusColor = (estado_nombre) => {
                   <Clock className="inline w-4 h-4 mr-1" />
                   Fecha de creación:{" "}
                   {solicitud?.fecha_creacion
-                    ? new Date(solicitud.fecha_creacion).toLocaleString("es-CO", {
-                        timeZone: "America/Bogota",
-                        day: "2-digit",
-                        month: "2-digit",
-                        year: "numeric",
-                        hour: "2-digit",
-                        minute: "2-digit",
-                        hour12: true,
-                      })
+                    ? new Date(solicitud.fecha_creacion).toLocaleString(
+                        "es-CO",
+                        {
+                          timeZone: "America/Bogota",
+                          day: "2-digit",
+                          month: "2-digit",
+                          year: "numeric",
+                          hour: "2-digit",
+                          minute: "2-digit",
+                          hour12: true,
+                        }
+                      )
                     : "—"}
                 </div>
               </div>
@@ -286,12 +303,16 @@ const getStatusColor = (estado_nombre) => {
                       <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                         <div className="bg-gray-50 rounded-lg p-3">
                           <p className="font-medium text-sm">XYZ-2000</p>
-                          <p className="text-xs text-gray-500">ID: BAL-001 • Serie: 2024-001</p>
+                          <p className="text-xs text-gray-500">
+                            ID: BAL-001 • Serie: 2024-001
+                          </p>
                           <p className="text-xs text-gray-500">Lab A</p>
                         </div>
                         <div className="bg-gray-50 rounded-lg p-3">
                           <p className="font-medium text-sm">XYZ-2000</p>
-                          <p className="text-xs text-gray-500">ID: BAL-002 • Serie: 2024-002</p>
+                          <p className="text-xs text-gray-500">
+                            ID: BAL-002 • Serie: 2024-002
+                          </p>
                           <p className="text-xs text-gray-500">Lab B</p>
                         </div>
                       </div>
@@ -319,10 +340,12 @@ const getStatusColor = (estado_nombre) => {
                     <div className="px-4 sm:px-6 pb-4">
                       <div className="space-y-3 text-sm">
                         <p>
-                          <strong>03/08 13:10</strong> • Solicitud asignada por A. García
+                          <strong>03/08 13:10</strong> • Solicitud asignada por
+                          A. García
                         </p>
                         <p>
-                          <strong>03/08 13:00</strong> • Solicitud creada por Sistema
+                          <strong>03/08 13:00</strong> • Solicitud creada por
+                          Sistema
                         </p>
                       </div>
                     </div>
@@ -351,10 +374,20 @@ const getStatusColor = (estado_nombre) => {
               </div>
               <div className="flex items-center space-x-3 mb-3">
                 <div className="w-10 h-10 bg-blue-600 rounded-full flex items-center justify-center text-white text-sm font-semibold">
-                  {solicitud?.usuario_asociado_nombre.trim().split(/\s+/).reduce((a,w,i,arr)=> i===0 ? w[0] : (i===arr.length-1 ? a+w[0] : a), '').toUpperCase()}
+                  {solicitud?.usuario_asociado_nombre
+                    .trim()
+                    .split(/\s+/)
+                    .reduce(
+                      (a, w, i, arr) =>
+                        i === 0 ? w[0] : i === arr.length - 1 ? a + w[0] : a,
+                      ""
+                    )
+                    .toUpperCase()}
                 </div>
                 <div>
-                  <p className="font-medium text-sm">{solicitud?.usuario_asociado_nombre}</p>
+                  <p className="font-medium text-sm">
+                    {solicitud?.usuario_asociado_nombre}
+                  </p>
                   <p className="text-xs text-gray-500 flex items-center">
                     <Star className="h-3 w-3 text-yellow-500 mr-1" /> Correo
                   </p>
@@ -362,35 +395,12 @@ const getStatusColor = (estado_nombre) => {
               </div>
             </div>
 
-            {/* Acciones rápidas */}
-            <div className="bg-white rounded-lg shadow-sm border p-4">
-              <h3 className="font-medium text-gray-900 mb-3 text-sm sm:text-base">
-                Acciones Rápidas
-              </h3>
-
-              <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-1 gap-2">
-                <button className="flex items-center space-x-2 text-xs sm:text-sm text-gray-700 hover:bg-gray-50 py-2 px-3 rounded transition-colors justify-center lg:justify-start">
-                  <Camera className="h-4 w-4 flex-shrink-0" />
-                  <span className="hidden sm:inline lg:inline">Tomar fotos</span>
-                  <span className="sm:hidden lg:hidden">Fotos</span>
-                </button>
-                <button className="flex items-center space-x-2 text-xs sm:text-sm text-gray-700 hover:bg-gray-50 py-2 px-3 rounded transition-colors justify-center lg:justify-start">
-                  <Download className="h-4 w-4 flex-shrink-0" />
-                  <span className="hidden sm:inline lg:inline">Generar PDF</span>
-                  <span className="sm:hidden lg:hidden">PDF</span>
-                </button>
-                <button className="flex items-center space-x-2 text-xs sm:text-sm text-gray-700 hover:bg-gray-50 py-2 px-3 rounded transition-colors justify-center lg:justify-start">
-                  <Edit className="h-4 w-4 flex-shrink-0" />
-                  <span className="hidden sm:inline lg:inline">Editar solicitud</span>
-                  <span className="sm:hidden lg:hidden">Editar</span>
-                </button>
-                <button className="flex items-center space-x-2 text-xs sm:text-sm text-gray-700 hover:bg-gray-50 py-2 px-3 rounded transition-colors justify-center lg:justify-start">
-                  <Calendar className="h-4 w-4 flex-shrink-0" />
-                  <span className="hidden sm:inline lg:inline">Reagendar</span>
-                  <span className="sm:hidden lg:hidden">Fecha</span>
-                </button>
-              </div>
-            </div>
+            {/* Reservar cita */}
+            {/* Calendario de mantenimiento */}
+            <MaintenanceCalendar
+              onSchedule={handleSchedule}
+              currentAppointment={appointment}
+            />
           </div>
         </div>
       </div>
